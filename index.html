@@ -106,7 +106,7 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 
 <section id="timetable" class="section">
 <h2>استعمال زمن الأساتذة</h2>
-<div class="notice">سجل حصص الأساتذة حسب اليوم والساعة والقسم والمادة، مع إمكانية طباعة الاستعمال الزمني الأسبوعي.</div>
+<div class="notice">استعمال زمن أسبوعي جاهز: الأيام والحصص ظاهرة دائمًا، وتظهر بيانات الأستاذ والقسم والمادة والتجربة داخل الخانة المناسبة بعد الإضافة.</div>
 <div class="panel form">
 <input id="ttTeacher" placeholder="اسم الأستاذ">
 <select id="ttSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
@@ -241,18 +241,17 @@ const teacherNames=[...new Set(state.timetable.map(x=>x.teacher).filter(Boolean)
  let tt=state.timetable.filter(x=>(!selectedTeacher||x.teacher===selectedTeacher)&&(!selectedDay||x.day===selectedDay)&&Object.values(x).join(' ').toLowerCase().includes(tq));
  by('ttTeacherFilter').innerHTML='<option value="">كل الأساتذة</option>'+teacherNames.map(n=>'<option '+(n===selectedTeacher?'selected':'')+'>'+esc(n)+'</option>').join('');
  const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس'];
- const slots=[...new Set(tt.map(x=>(x.start||'')+' - '+(x.end||'')).filter(x=>x.trim()!=='-'))].sort();
- if(tt.length){
+ const fixedSlots=['08:00 - 09:00','09:00 - 10:00','10:00 - 11:00','11:00 - 12:00','13:00 - 14:00','14:00 - 15:00','15:00 - 16:00','16:00 - 17:00'];
+ if(tt.length||true){
    by('timetableOut').innerHTML='<div class="tablewrap timetable"><table><tr><th>الساعة</th>'+days.map(d=>'<th>'+d+'</th>').join('')+'</tr>'+
-   slots.map(slot=>{
+   fixedSlots.map(slot=>{
      const parts=slot.split(' - '), start=parts[0], end=parts[1];
      return '<tr><th>'+esc(slot)+'</th>'+days.map(day=>{
        const items=tt.filter(x=>x.day===day&&x.start===start&&x.end===end);
-       return '<td class="tt-cell">'+items.map(x=>'<div class="lesson-card"><strong>'+esc(x.teacher)+'</strong>'+esc(x.subject)+' — '+esc(x.level)+'<br>القسم: '+esc(x.cls)+'<br>'+esc(x.room||'')+(x.activity?'<br>النشاط: '+esc(x.activity):'')+'</div>').join('')+'</td>';
+       return '<td class="tt-cell">'+(items.length?items.map(x=>'<div class="lesson-card"><strong>'+esc(x.teacher)+'</strong>'+esc(x.subject)+' — '+esc(x.level)+'<br>القسم: '+esc(x.cls)+'<br>'+esc(x.room||'')+(x.activity?'<br>النشاط: '+esc(x.activity):'')+'</div>').join(''):'<span class="small">فارغة</span>')+'</td>';
      }).join('')+'</tr>';
    }).join('')+'</table></div>';
- }else{
-   by('timetableOut').innerHTML='<div class="empty">لا توجد حصص مسجلة بعد.</div>';
+   if(!tt.length) by('timetableOut').innerHTML+='<div class="notice">الجدول جاهز وفارغ للتعبئة. أضف حصص الأساتذة من النموذج أعلاه، وستظهر تلقائيًا في اليوم والساعة المناسبين.</div>';
  }
  q=(by('rSearch').value||'').toLowerCase();a=state.reports.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
  by('reportsOut').innerHTML=a.length?'<div class="tablewrap"><table><tr><th>التاريخ</th><th>الأستاذ</th><th>القسم</th><th>التوقيت</th><th>المستوى</th><th>المادة</th><th>التجربة</th><th>الوسائل</th><th>النتيجة</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.teacher)+'</td><td>'+esc(x.cls)+'</td><td>'+esc(x.time)+'</td><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.title)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.result)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>':'<div class="empty">لا توجد تقارير مدخلة بعد.</div>';
