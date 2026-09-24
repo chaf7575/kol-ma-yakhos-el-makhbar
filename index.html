@@ -47,6 +47,9 @@ table{font-size:11px}
 <button data-s="experiments">التجارب والوسائل</button>
 <button data-s="schedule">التدرج الأسبوعي</button>
 <button data-s="reports">تقارير الأعمال التطبيقية</button>
+<button data-s="curriculum">المنهاج المرجعي</button>
+<button data-s="maintenance">الصيانة</button>
+<button data-s="sources">المصادر</button>
 </nav>
 
 <main>
@@ -140,6 +143,46 @@ table{font-size:11px}
 </div>
 
 <div id="repTable"></div>
+</section>
+
+
+<section id="curriculum" class="section">
+<h2>المنهاج المرجعي والمعلومات البيداغوجية</h2>
+<div class="notice">المحاور أدناه مجمعة من صفحات تعليمية حديثة للموسم 2026–2027، وتُستخدم كمرجع بحثي داخل المنصة. قبل اعتماد التدرج الأسبوعي النهائي، يُطابق مع الوثيقة المعتمدة في المؤسسة.</div>
+<div class="toolbar">
+<select id="curLevel" onchange="renderCurriculum()"><option value="">كل المستويات</option><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
+<input id="curSearch" placeholder="ابحث عن درس أو محور..." oninput="renderCurriculum()">
+</div>
+<div id="curriculumOut"></div>
+</section>
+
+<section id="maintenance" class="section">
+<h2>سجل الصيانة والأعطال</h2>
+<div class="form">
+<input id="mDate" type="date">
+<input id="mItem" placeholder="اسم الجهاز أو الوسيلة">
+<select id="mState"><option>مسجل</option><option>قيد الإصلاح</option><option>تم الإصلاح</option><option>خارج الخدمة</option></select>
+<input id="mBy" placeholder="المكلف">
+<textarea id="mProblem" class="wide" placeholder="وصف العطل"></textarea>
+<textarea id="mAction" class="wide" placeholder="الإجراء المتخذ وقطع الغيار"></textarea>
+<button class="primary" onclick="addMaintenance()">حفظ سجل الصيانة</button>
+</div>
+<div class="toolbar"><button onclick="printSection('maintenance')">طباعة سجل الصيانة</button></div>
+<div id="maintenanceOut"></div>
+</section>
+
+<section id="sources" class="section">
+<h2>الوثائق والمصادر</h2>
+<div class="panel">
+<p><b>وزارة التربية الوطنية الجزائرية:</b> الوثائق الرسمية البيداغوجية للتعليم المتوسط.</p>
+<p><a href="https://www.education.gov.dz/2017/11/15/%D8%A7%D9%84%D9%88%D8%AB%D8%A7%D8%A6%D9%82-%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%D8%A9-%D8%A7%D9%84%D8%A8%D9%8A%D8%AF%D8%A7%D8%BA%D9%88%D8%AC%D9%8A%D8%A9-%D9%84%D9%85%D8%B1%D8%AD%D9%84%D8%AA%D9%8A/" target="_blank">فتح صفحة الوثائق الرسمية</a></p>
+<p><b>مراجع حديثة للتوزيعات 2026–2027:</b> صفحات التوزيع السنوي لعلوم الطبيعة والحياة حسب المستوى.</p>
+<p><a href="https://education-onec-dz.blogspot.com/2019/08/2019-2020_72.html" target="_blank">علوم الطبيعة والحياة — 1 متوسط 2026–2027</a></p>
+<p><a href="https://education-onec-dz.blogspot.com/2019/08/2019-2020_83.html" target="_blank">علوم الطبيعة والحياة — 2 متوسط 2026–2027</a></p>
+<p><a href="https://education-onec-dz.blogspot.com/2019/09/2019-2020_36.html" target="_blank">علوم الطبيعة والحياة — 3 متوسط 2026–2027</a></p>
+<p><a href="https://education-onec-dz.blogspot.com/2019/05/blog-post_774.html" target="_blank">علوم الطبيعة والحياة — 4 متوسط 2026–2027</a></p>
+<p class="small">المصادر التعليمية ليست بديلًا عن الوثيقة الرسمية المعتمدة في المؤسسة.</p>
+</div>
 </section>
 
 </main>
@@ -409,6 +452,55 @@ document.getElementById(id)
 }
 
 render();
+
+const curriculum=[
+['1 متوسط','التغذية عند الإنسان','مصدر وتركيب الأغذية؛ دور الأغذية في الجسم؛ التغذية عند النبات الأخضر؛ انتقال النسغ عبر أعضاء النبات الأخضر'],
+['1 متوسط','الإنسان والصحة','محاور متعلقة بالتغذية والصحة والإنسان'],
+['2 متوسط','الإنسان والمحيط','النظام البيئي وشروط توازنه؛ تنوع الأنظمة البيئية؛ دور الإنسان في استقرار النظام البيئي'],
+['2 متوسط','توزع الكائنات الحية في أوساطها','تكيف النباتات مع الأوساط؛ تنفس الحيوانات واحتلال الأوساط؛ تأثير الإنسان على التوزع الطبيعي للحيوانات'],
+['2 متوسط','التكاثر وإعمار الأوساط','أنماط التكاثر عند الحيوانات ومقاطع مرتبطة بالتكاثر'],
+['3 متوسط','الديناميكية الداخلية للكرة الأرضية','الزلازل والديناميكية الداخلية للكرة الأرضية'],
+['3 متوسط','استغلال الموارد الطبيعية الباطنية','الثروات الباطنية في الجزائر؛ استغلال الموارد الطبيعية'],
+['3 متوسط','التربة ثروة طبيعية هشة','التربة وسط حي هش؛ تشكل التربة؛ حماية التربة'],
+['4 متوسط','التغذية عند الإنسان','تحولات الأغذية في الأنبوب الهضمي؛ الهضم؛ امتصاص المغذيات؛ نقل المغذيات'],
+['4 متوسط','الاتصال والتنسيق الوظيفي','الاتصال العصبي؛ التنسيق الوظيفي؛ محاور مرتبطة بالمناعة']
+];
+
+const seedExperiments=[
+{level:'1 متوسط',subject:'علوم الطبيعة والحياة',title:'الكشف عن النشاء في الأغذية',tools:'محلول اليود/لوغول؛ عينات غذائية؛ أطباق أو أدوات اختبار',goal:'الكشف عن وجود النشاء',safety:'استعمال الكاشف بحذر وتجنب العينين'},
+{level:'1 متوسط',subject:'علوم الطبيعة والحياة',title:'ملاحظة أعضاء النبات الأخضر',tools:'نبات أخضر؛ عدسة مكبرة؛ أدوات ملاحظة',goal:'التعرف على الأعضاء ووظائفها',safety:'الحذر مع أدوات التشريح'},
+{level:'2 متوسط',subject:'علوم الطبيعة والحياة',title:'ملاحظة تكيف النباتات مع الوسط',tools:'عينات نباتية/صور؛ أدوات ملاحظة',goal:'ربط خصائص النبات بوسط العيش',safety:'عدم استهلاك العينات'},
+{level:'3 متوسط',subject:'علوم الطبيعة والحياة',title:'مكونات التربة',tools:'عينات تربة؛ ماء؛ أوعية؛ أدوات ملاحظة',goal:'تمييز مكونات عينة التربة',safety:'غسل اليدين بعد النشاط'},
+{level:'4 متوسط',subject:'علوم الطبيعة والحياة',title:'التحولات الهضمية',tools:'مواد ومحاليل تعليمية وفق بطاقة النشاط المعتمدة',goal:'إبراز مبدأ التحولات أثناء الهضم',safety:'اتباع بروتوكول الأستاذ والكواشف'}
+];
+
+if(!db[KEY.ex].length){db[KEY.ex]=seedExperiments;localStorage.setItem(KEY.ex,JSON.stringify(db[KEY.ex]))}
+if(!db.km2_maint) db.km2_maint=[];
+
+function renderCurriculum(){
+  const f=document.getElementById('curLevel').value;
+  const q=(document.getElementById('curSearch').value||'').toLowerCase();
+  const a=curriculum.filter(x=>(!f||x[0]===f)&&x.join(' ').toLowerCase().includes(q));
+  document.getElementById('curriculumOut').innerHTML='<div class="tablewrap"><table><tr><th>المستوى</th><th>المحور/المقطع</th><th>موضوعات</th></tr>'+
+  a.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+esc(x[1])+'</td><td>'+esc(x[2])+'</td></tr>').join('')+
+  '</table></div>';
+}
+function addMaintenance(){
+  db.km2_maint.push({date:mDate.value,item:mItem.value,state:mState.value,by:mBy.value,problem:mProblem.value,action:mAction.value});
+  localStorage.setItem('km2_maint',JSON.stringify(db.km2_maint));
+  ['mDate','mItem','mBy','mProblem','mAction'].forEach(x=>document.getElementById(x).value='');
+  renderMaintenance();
+}
+function renderMaintenance(){
+  const a=db.km2_maint;
+  document.getElementById('maintenanceOut').innerHTML=a.length?
+  '<div class="tablewrap"><table><tr><th>التاريخ</th><th>الوسيلة</th><th>الحالة</th><th>المكلف</th><th>العطل</th><th>الإجراء</th><th></th></tr>'+
+  a.map((x,i)=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.item)+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.by)+'</td><td>'+esc(x.problem)+'</td><td>'+esc(x.action)+'</td><td><button class="danger" onclick="db.km2_maint.splice('+i+',1);localStorage.setItem(\'km2_maint\',JSON.stringify(db.km2_maint));renderMaintenance()">حذف</button></td></tr>').join('')+
+  '</table></div>':'<div class="empty">لا يوجد سجل صيانة بعد.</div>';
+}
+function printSection(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('printable'));document.getElementById(id).classList.add('printable');window.print();setTimeout(()=>document.getElementById(id).classList.remove('printable'),500)}
+renderCurriculum();renderMaintenance();
+
 </script>
 
 </body>
