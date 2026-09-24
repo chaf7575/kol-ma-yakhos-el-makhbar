@@ -25,7 +25,14 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 .notice{background:#fff8db;border:1px solid #efdf9e;padding:12px;border-radius:10px;margin:10px 0}
 .small{font-size:12px;color:#667085}.empty{padding:22px;text-align:center;color:#667085;background:#fff;border:1px dashed #cbd5e1;border-radius:10px}
 @media print{nav,header,.no-print,.form,.toolbar,.notice{display:none!important}.section{display:none!important}.section.printable{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}}
-</style>
+.chem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.chem-card{background:#fff;border:1px solid #dce5ed;border-radius:12px;padding:14px}
+.chem-card h3{margin:0 0 8px}.chem-meta{font-size:13px;line-height:1.8;color:#475467}
+.overlay{position:fixed;inset:0;background:#0008;display:none;z-index:100;padding:18px;overflow:auto}
+.overlay.show{display:block}.modal{background:#fff;max-width:1100px;margin:20px auto;border-radius:14px;padding:18px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.kpi .card{background:#f7fafc}.danger-text{color:#a00000;font-weight:700}.ok-text{color:#137333;font-weight:700}
+@media print{.overlay{display:none!important}}</style>
 </head>
 <body>
 <header>
@@ -35,7 +42,7 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 
 <nav id="nav">
 <button class="active" data-id="home">الرئيسية</button>
-<button data-id="inventory">المخزون والجرد</button>
+<button data-id="inventory">المخزون والجرد</button><button data-id="chemicals">المواد الكيميائية</button>
 <button data-id="experiments">التجارب والوسائل</button>
 <button data-id="weekly">الخطة الأسبوعية</button>
 <button data-id="reports">الأعمال التطبيقية</button>
@@ -70,6 +77,25 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 </div>
 <div class="toolbar no-print"><input id="invSearch" placeholder="بحث في الجرد"><button id="printInv" class="secondary">طباعة الجرد</button></div>
 <div id="inventoryOut"></div>
+</section>
+
+<section id="chemicals" class="section">
+<h2>المخزون الكيميائي</h2>
+<div class="notice">لكل مادة كيميائية بطاقة مستقلة. يسجل فيها تاريخ الشراء والجهة المستخرج/المشتراة منها، ثم يسجل كل استعمال باسم الأستاذ وتاريخه وحجم الاستعمال، ويحسب المتبقي تلقائيًا.</div>
+<div class="panel form">
+<input id="chemName" placeholder="اسم المادة الكيميائية">
+<input id="chemFormula" placeholder="الصيغة / الرمز">
+<input id="chemStock" type="number" min="0" step="0.01" placeholder="المخزون الأولي">
+<select id="chemUnit"><option>mL</option><option>L</option><option>g</option><option>kg</option><option>وحدة</option></select>
+<input id="chemPurchaseDate" type="date" title="تاريخ الشراء">
+<input id="chemSource" placeholder="الجهة المستخرج/المشتراة منها">
+<input id="chemStorage" placeholder="مكان التخزين">
+<input id="chemHazard" placeholder="احتياطات/تصنيف السلامة">
+<textarea id="chemNote" class="full" placeholder="ملاحظات"></textarea>
+<button id="addChemBtn" class="primary">إضافة مادة كيميائية</button>
+</div>
+<div class="toolbar no-print"><input id="chemSearch" placeholder="بحث في المواد الكيميائية"><button id="printChem" class="secondary">طباعة المخزون الكيميائي</button></div>
+<div id="chemicalsOut"></div>
 </section>
 
 <section id="experiments" class="section">
@@ -129,6 +155,7 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 <div id="curriculumOut"></div>
 </section>
 </main>
+<div id="chemicalPage" class="overlay" onclick="if(event.target===this)closeChemical()"></div>
 
 <script>
 const inventorySeed=[["بيشر 100 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["بيشر 250 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["بيشر 500 مل","زجاجيات",8,2,"جيدة","خزانة الزجاجيات"],["مخبار مدرج 100 مل","زجاجيات",10,2,"جيدة","خزانة القياس"],["مخبار مدرج 250 مل","زجاجيات",8,2,"جيدة","خزانة القياس"],["أنابيب اختبار","زجاجيات",30,10,"جيدة","خزانة الاختبارات"],["حامل أنابيب اختبار","معدات عامة",6,2,"جيدة","خزانة الاختبارات"],["قطارات","معدات عامة",20,5,"جيدة","خزانة الأدوات"],["قمع زجاجي","زجاجيات",8,2,"جيدة","خزانة الزجاجيات"],["ورق ترشيح","معدات عامة",50,10,"جيدة","رف المواد الاستهلاكية"],["ميزان إلكتروني","أجهزة قياس",2,1,"جيدة","خزانة الأجهزة"],["ميزان ذو كفتين","أجهزة قياس",2,1,"متوسطة","خزانة الأجهزة"],["مخبر حرارة/ترمومتر","أجهزة قياس",6,2,"جيدة","خزانة الأجهزة"],["ساعة إيقاف","أجهزة قياس",4,1,"جيدة","خزانة الأجهزة"],["مغناطيس قضيب","أجهزة قياس",8,2,"جيدة","خزانة الفيزياء"],["بوصلة","أجهزة قياس",8,2,"جيدة","خزانة الفيزياء"],["عدسة مكبرة","أجهزة بصرية",8,2,"جيدة","خزانة SVT"],["مجهر ضوئي","أجهزة بصرية",2,1,"جيدة","خزانة المجاهر"],["شرائح مجهرية","أجهزة بصرية",30,10,"جيدة","خزانة المجاهر"],["أغطية شرائح","أجهزة بصرية",40,10,"جيدة","خزانة المجاهر"],["مرآة مستوية","أجهزة بصرية",8,2,"جيدة","خزانة البصريات"],["عدسة محدبة","أجهزة بصرية",8,2,"جيدة","خزانة البصريات"],["عدسة مقعرة","أجهزة بصرية",6,2,"جيدة","خزانة البصريات"],["مصدر ضوئي","أجهزة بصرية",4,1,"جيدة","خزانة البصريات"],["مولد توتر منخفض","أجهزة كهربائية",4,1,"جيدة","خزانة الكهرباء"],["مصابيح صغيرة","أجهزة كهربائية",20,5,"جيدة","خزانة الكهرباء"],["أسلاك توصيل","أجهزة كهربائية",40,10,"جيدة","خزانة الكهرباء"],["مفاتيح كهربائية","أجهزة كهربائية",12,3,"جيدة","خزانة الكهرباء"],["مقاومات كهربائية","أجهزة كهربائية",30,10,"جيدة","خزانة الكهرباء"],["أمبيرمتر مدرسي","أجهزة قياس",4,1,"جيدة","خزانة الكهرباء"],["فولتمتر مدرسي","أجهزة قياس",4,1,"جيدة","خزانة الكهرباء"],["متعدد القياسات","أجهزة قياس",2,1,"جيدة","خزانة الأجهزة"],["زنبرك","ميكانيك",8,2,"جيدة","خزانة الميكانيك"],["ثقل/كتل معيارية","ميكانيك",12,3,"جيدة","خزانة الميكانيك"],["بكرة","ميكانيك",4,1,"جيدة","خزانة الميكانيك"],["حامل معدني ومشابك","معدات عامة",4,1,"جيدة","خزانة الميكانيك"],["قضيب مدرج","أجهزة قياس",4,1,"جيدة","خزانة القياس"],["نظارات واقية","معدات سلامة",10,4,"جيدة","خزانة السلامة"],["قفازات مخبرية","معدات سلامة",20,5,"جيدة","خزانة السلامة"],["مئزر مخبري","معدات سلامة",10,4,"جيدة","خزانة السلامة"],["ماصة بلاستيكية","معدات عامة",20,5,"جيدة","رف المواد الاستهلاكية"],["ملقط","معدات عامة",10,3,"جيدة","خزانة الأدوات"],["ملعقة مخبرية","معدات عامة",8,2,"جيدة","خزانة الأدوات"],["مقص","معدات عامة",6,2,"جيدة","خزانة الأدوات"],["مسطرة 30 سم","أجهزة قياس",10,3,"جيدة","خزانة القياس"],["ماء مقطر","مواد وكواشف تعليمية",6,2,"جيدة","رف المواد الاستهلاكية"],["محلول اليود/لوغول","مواد وكواشف تعليمية",2,1,"جيدة","خزانة الكواشف"],["كلوريد الصوديوم","مواد وكواشف تعليمية",2,1,"جيدة","خزانة المواد"]];
@@ -139,7 +166,7 @@ const curriculumSeed=[["1 متوسط","علوم الطبيعة والحياة","
 
 const state={inventory:inventorySeed.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'بيانات أولية — تراجع بالجرد الفعلي'})),
 experiments:experimentSeed.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة تقريبًا',safety:'حسب تعليمات النشاط',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'})),
-weekly:[],reports:[],maintenance:[]};
+weekly:[],reports:[],maintenance:[],chemicals:[]};
 
 const unitMap={
 '1 متوسط|علوم الطبيعة والحياة':['التغذية عند الإنسان','مصدر وتركيب الأغذية','دور الأغذية في الجسم','التغذية عند النبات الأخضر','انتقال النسغ','الصحة والتغذية'],
@@ -159,10 +186,20 @@ for(const level of ['1 متوسط','2 متوسط','3 متوسط','4 متوسط']
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function by(id){return document.getElementById(id)}
 function save(){localStorage.setItem('km_fixed',JSON.stringify(state))}
-function load(){try{const x=JSON.parse(localStorage.getItem('km_fixed')||'null');if(x){if(Array.isArray(x.reports))state.reports=x.reports;if(Array.isArray(x.maintenance))state.maintenance=x.maintenance;if(Array.isArray(x.inventory)&&x.inventory.length>50)state.inventory=x.inventory;if(Array.isArray(x.experiments)&&x.experiments.length>30)state.experiments=x.experiments;if(Array.isArray(x.weekly)&&x.weekly.length>200)state.weekly=x.weekly}}catch(e){}}
+function load(){try{const x=JSON.parse(localStorage.getItem('km_fixed')||'null');if(x){if(Array.isArray(x.reports))state.reports=x.reports;if(Array.isArray(x.maintenance))state.maintenance=x.maintenance;if(Array.isArray(x.inventory)&&x.inventory.length>50)state.inventory=x.inventory;if(Array.isArray(x.experiments)&&x.experiments.length>30)state.experiments=x.experiments;if(Array.isArray(x.weekly)&&x.weekly.length>200)state.weekly=x.weekly;if(Array.isArray(x.chemicals))state.chemicals=x.chemicals}}catch(e){}}
 function renderAll(){
  let q=(by('invSearch').value||'').toLowerCase(),a=state.inventory.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
  by('inventoryOut').innerHTML='<div class="tablewrap"><table><tr><th>الوسيلة</th><th>الصنف</th><th>الكمية</th><th>الحد</th><th>الحالة</th><th>المكان</th><th>المرجع</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+esc(x.name)+'</td><td>'+esc(x.cat)+'</td><td>'+x.qty+'</td><td>'+x.min+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.place)+'</td><td>'+esc(x.ref)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>';
+
+ q=(by('chemSearch').value||'').toLowerCase();
+ const ca=state.chemicals.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
+ by('chemicalsOut').innerHTML=ca.length?'<div class="chem-grid">'+ca.map((x,i)=>{
+   const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
+   const remaining=Math.max(0,(parseFloat(x.stock)||0)-used);
+   const cls=remaining<=0?'danger-text':'ok-text';
+   return '<div class="chem-card"><h3>'+esc(x.name)+'</h3><div class="chem-meta">الصيغة: '+esc(x.formula||'—')+'<br>تاريخ الشراء: '+esc(x.purchaseDate||'—')+'<br>الجهة: '+esc(x.source||'—')+'<br>المخزون الأولي: '+esc(x.stock)+' '+esc(x.unit)+'<br>المستعمل: '+used.toFixed(2)+' '+esc(x.unit)+'<br><span class="'+cls+'">المتبقي: '+remaining.toFixed(2)+' '+esc(x.unit)+'</span><br>التخزين: '+esc(x.storage||'—')+'</div><div class="toolbar no-print"><button class="primary" onclick="openChemical('+i+')">فتح صفحة المادة</button></div></div>';
+ }).join('')+'</div>':'<div class="empty">لا توجد مواد كيميائية مدخلة بعد.</div>';
+
  let ef=by('exFilter').value,eq=(by('exSearch').value||'').toLowerCase();a=state.experiments.filter(x=>(!ef||x.level===ef)&&Object.values(x).join(' ').toLowerCase().includes(eq));
  by('experimentsOut').innerHTML='<div class="tablewrap"><table><tr><th>المستوى</th><th>المادة</th><th>المحور</th><th>التجربة</th><th>الوسائل</th><th>الهدف</th><th>المدة</th><th>السلامة</th></tr>'+a.map(x=>'<tr><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.unit)+'</td><td>'+esc(x.title)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.goal)+'</td><td>'+esc(x.time)+'</td><td>'+esc(x.safety)+'</td></tr>').join('')+'</table></div>';
  let wl=by('wLevelFilter').value,ws=by('wSubjectFilter').value,ww=by('wWeekFilter').value;a=state.weekly.filter(x=>(!wl||x.level===wl)&&(!ws||x.subject===ws)&&(!ww||String(x.week)===ww)).sort((x,y)=>x.week-y.week);
@@ -180,12 +217,54 @@ function addExperiment(){state.experiments.push({level:by('exLevel').value,subje
 function addWeekly(){state.weekly.push({week:+by('wWeek').value||0,level:by('wLevel').value,subject:by('wSubject').value,lesson:by('wLesson').value,exp:by('wExp').value,tools:by('wTools').value,status:by('wStatus').value,note:by('wNote').value});save();clearIds(['wWeek','wLesson','wExp','wTools','wNote']);renderAll()}
 function addReport(){state.reports.push({date:by('rDate').value,teacher:by('rTeacher').value,cls:by('rClass').value,time:by('rTime').value,level:by('rLevel').value,subject:by('rSubject').value,title:by('rTitle').value,tools:by('rTools').value,result:by('rResult').value,note:by('rNote').value});save();clearIds(['rDate','rTeacher','rClass','rTime','rTitle','rTools','rResult','rNote']);renderAll()}
 function addMaintenance(){state.maintenance.push({date:by('mDate').value,item:by('mItem').value,state:by('mState').value,by:by('mBy').value,problem:by('mProblem').value,action:by('mAction').value});save();clearIds(['mDate','mItem','mBy','mProblem','mAction']);renderAll()}
+
+function addChemical(){
+ const name=by('chemName').value.trim();
+ const stock=parseFloat(by('chemStock').value)||0;
+ if(!name){alert('أدخل اسم المادة الكيميائية');return}
+ state.chemicals.push({name,formula:by('chemFormula').value.trim(),stock,unit:by('chemUnit').value,purchaseDate:by('chemPurchaseDate').value,source:by('chemSource').value.trim(),storage:by('chemStorage').value.trim(),hazard:by('chemHazard').value.trim(),note:by('chemNote').value.trim(),usages:[]});
+ save(); clearIds(['chemName','chemFormula','chemStock','chemPurchaseDate','chemSource','chemStorage','chemHazard','chemNote']); renderAll();
+}
+function openChemical(index){
+ const x=state.chemicals[index]; if(!x)return;
+ const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
+ const remaining=Math.max(0,(parseFloat(x.stock)||0)-used);
+ by('chemicalPage').innerHTML=
+ '<div class="modal">'+
+ '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2>بطاقة المادة: '+esc(x.name)+'</h2><button class="secondary no-print" onclick="closeChemical()">إغلاق</button></div>'+
+ '<div class="kpi"><div class="card"><b>المخزون الأولي</b><div class="num">'+esc(x.stock)+' '+esc(x.unit)+'</div></div>'+
+ '<div class="card"><b>إجمالي الاستعمال</b><div class="num">'+used.toFixed(2)+' '+esc(x.unit)+'</div></div>'+
+ '<div class="card"><b>المتبقي</b><div class="num '+(remaining<=0?'danger-text':'ok-text')+'">'+remaining.toFixed(2)+' '+esc(x.unit)+'</div></div></div>'+
+ '<div class="panel"><table style="min-width:0"><tr><th>الصيغة</th><td>'+esc(x.formula||'—')+'</td><th>تاريخ الشراء</th><td>'+esc(x.purchaseDate||'—')+'</td></tr>'+
+ '<tr><th>الجهة</th><td>'+esc(x.source||'—')+'</td><th>مكان التخزين</th><td>'+esc(x.storage||'—')+'</td></tr>'+
+ '<tr><th>السلامة</th><td>'+esc(x.hazard||'—')+'</td><th>ملاحظات</th><td>'+esc(x.note||'—')+'</td></tr></table></div>'+
+ '<h3>تسجيل استعمال جديد</h3>'+
+ '<div class="panel form"><input id="useTeacher" placeholder="الأستاذ الذي استعملها"><input id="useDate" type="date"><input id="useVolume" type="number" min="0" step="0.01" placeholder="حجم الاستعمال"><input id="useClass" placeholder="القسم"><input id="useExperiment" placeholder="عنوان التجربة"><textarea id="useNote" class="full" placeholder="ملاحظات الاستعمال"></textarea><button class="primary" onclick="addChemicalUse('+index+')">حفظ الاستعمال</button></div>'+
+ '<h3>سجل استعمال المادة</h3>'+
+ ((x.usages||[]).length?'<div class="tablewrap"><table><tr><th>التاريخ</th><th>الأستاذ</th><th>القسم</th><th>التجربة</th><th>حجم الاستعمال</th><th>ملاحظات</th></tr>'+
+ (x.usages||[]).slice().reverse().map(u=>'<tr><td>'+esc(u.date)+'</td><td>'+esc(u.teacher)+'</td><td>'+esc(u.cls)+'</td><td>'+esc(u.experiment)+'</td><td>'+esc(u.volume)+' '+esc(x.unit)+'</td><td>'+esc(u.note||'')+'</td></tr>').join('')+'</table></div>':'<div class="empty">لم يسجل أي استعمال لهذه المادة بعد.</div>')+
+ '</div>';
+ by('chemicalPage').classList.add('show');
+}
+function addChemicalUse(index){
+ const x=state.chemicals[index]; if(!x)return;
+ const volume=parseFloat(by('useVolume').value)||0;
+ const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
+ const remaining=(parseFloat(x.stock)||0)-used;
+ if(!by('useTeacher').value.trim()||!by('useDate').value||volume<=0){alert('أدخل الأستاذ والتاريخ وحجم الاستعمال');return}
+ if(volume>remaining){alert('حجم الاستعمال أكبر من المتبقي في المخزون');return}
+ x.usages=x.usages||[];
+ x.usages.push({teacher:by('useTeacher').value.trim(),date:by('useDate').value,volume,cls:by('useClass').value.trim(),experiment:by('useExperiment').value.trim(),note:by('useNote').value.trim()});
+ save(); renderAll(); openChemical(index);
+}
+function closeChemical(){by('chemicalPage').classList.remove('show');by('chemicalPage').innerHTML=''}
+
 function printSection(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('printable'));by(id).classList.add('printable');window.print();setTimeout(()=>by(id).classList.remove('printable'),500)}
 
 document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));by(b.dataset.id).classList.add('active')}));
-['invSearch','exFilter','exSearch','wLevelFilter','wSubjectFilter','wWeekFilter','rSearch','cLevel','cSubject','cSearch'].forEach(id=>by(id).addEventListener('input',renderAll));
-by('addInvBtn').addEventListener('click',addInventory);by('addExBtn').addEventListener('click',addExperiment);by('addWBtn').addEventListener('click',addWeekly);by('addRBtn').addEventListener('click',addReport);by('addMBtn').addEventListener('click',addMaintenance);
-by('printInv').addEventListener('click',()=>printSection('inventory'));by('printEx').addEventListener('click',()=>printSection('experiments'));by('printW').addEventListener('click',()=>printSection('weekly'));by('printR').addEventListener('click',()=>printSection('reports'));by('printM').addEventListener('click',()=>printSection('maintenance'));
+['invSearch','chemSearch','exFilter','exSearch','wLevelFilter','wSubjectFilter','wWeekFilter','rSearch','cLevel','cSubject','cSearch'].forEach(id=>by(id).addEventListener('input',renderAll));
+by('addInvBtn').addEventListener('click',addInventory);by('addChemBtn').addEventListener('click',addChemical);by('addExBtn').addEventListener('click',addExperiment);by('addWBtn').addEventListener('click',addWeekly);by('addRBtn').addEventListener('click',addReport);by('addMBtn').addEventListener('click',addMaintenance);
+by('printInv').addEventListener('click',()=>printSection('inventory'));by('printChem').addEventListener('click',()=>printSection('chemicals'));by('printEx').addEventListener('click',()=>printSection('experiments'));by('printW').addEventListener('click',()=>printSection('weekly'));by('printR').addEventListener('click',()=>printSection('reports'));by('printM').addEventListener('click',()=>printSection('maintenance'));
 const weekOpts=['<option value="">كل الأسابيع</option>'].concat(Array.from({length:36},(_,i)=>'<option value="'+(i+1)+'">الأسبوع '+(i+1)+'</option>')).join('');by('wWeekFilter').innerHTML=weekOpts;
 load();renderAll();
 </script>
