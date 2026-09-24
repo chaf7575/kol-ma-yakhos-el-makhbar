@@ -44,6 +44,7 @@ table{font-size:11px}
 <nav id="nav">
 <button class="active" data-s="dashboard">الرئيسية</button>
 <button data-s="inventory">المخزون والجرد</button>
+<button data-s="reference">المحاور المرجعية</button>
 <button data-s="experiments">التجارب والوسائل</button>
 <button data-s="schedule">التدرج الأسبوعي</button>
 <button data-s="reports">تقارير الأعمال التطبيقية</button>
@@ -91,6 +92,17 @@ table{font-size:11px}
 <div id="invTable"></div>
 </section>
 
+<section id="reference" class="section">
+<h2>مرجع المواد والمحاور</h2>
+<div class="notice">المحاور التالية مستخلصة من صفحات المخططات السنوية المنشورة للموسم 2026–2027. هي مرجع لتنظيم عمل المخبر وليست بديلًا عن الوثيقة الرسمية المعتمدة.</div>
+<div class="toolbar no-print">
+<select id="refSubject" onchange="renderReference()"><option value="">كل المواد</option><option>علوم الطبيعة والحياة</option><option>علوم فيزيائية وتكنولوجيا</option></select>
+<select id="refLevel" onchange="renderReference()"><option value="">كل المستويات</option><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
+<input id="refSearch" placeholder="بحث..." oninput="renderReference()">
+</div>
+<div id="referenceOut"></div>
+</section>
+
 <section id="experiments" class="section">
 <h2>التجارب والوسائل المطلوبة</h2>
 
@@ -103,6 +115,10 @@ table{font-size:11px}
 </div>
 
 <div id="expTable"></div>
+<div class="panel">
+<h3>أنشطة مخبرية مرتبطة بالمحاور</h3>
+<div id="activitiesOut"></div>
+</div>
 </section>
 
 <section id="schedule" class="section">
@@ -232,6 +248,8 @@ x=>document.getElementById(x).value=''
 );
 
 render();
+document.getElementById('activitiesOut').innerHTML=renderActivities();
+renderReference();
 }
 
 function addExp(){
@@ -293,6 +311,20 @@ function del(k,i){
 db[k].splice(i,1);
 save(k);
 render();
+}
+
+function renderReference(){
+let s=document.getElementById('refSubject')?.value||'',l=document.getElementById('refLevel')?.value||'',q=(document.getElementById('refSearch')?.value||'').toLowerCase();
+let a=referenceData.filter(x=>(!s||x[0]===s)&&(!l||x[1]===l)&&x.join(' ').toLowerCase().includes(q));
+let out='<div class="tablewrap"><table><tr><th>المادة</th><th>المستوى</th><th>المجال/المحاور</th><th>الموضوعات</th></tr>';
+out+=a.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+esc(x[1])+'</td><td>'+esc(x[2])+'</td><td>'+esc(x[3])+'</td></tr>').join('');
+out+='</table></div>'; document.getElementById('referenceOut').innerHTML=a.length?out:'<div class="empty">لا توجد نتائج.</div>';
+}
+
+function renderActivities(){
+let out='<div class="tablewrap"><table><tr><th>المستوى</th><th>المادة</th><th>النشاط المخبري</th><th>الوسائل</th><th>الهدف</th><th>مخرجات النشاط</th></tr>';
+out+=labActivities.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+esc(x[1])+'</td><td>'+esc(x[2])+'</td><td>'+esc(x[3])+'</td><td>'+esc(x[4])+'</td><td>'+esc(x[5])+'</td></tr>').join('');
+out+='</table></div>'; return out;
 }
 
 function render(){
