@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>استعمال زمن الأساتذة — كل ما يخص المخبر</title>
+<style>
+body{font-family:Arial,Tahoma,sans-serif;background:#f4f7fb;margin:0;color:#172033}
+header{background:#123b5d;color:#fff;padding:18px}
+main{max-width:1200px;margin:18px auto;padding:0 12px}
+.panel{background:#fff;border:1px solid #dce5ed;border-radius:12px;padding:15px;margin-bottom:14px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}
+input,select,textarea,button{width:100%;box-sizing:border-box;padding:10px;font:inherit;border:1px solid #cbd5e1;border-radius:8px}
+button{cursor:pointer}.primary{background:#176b87;color:white;border:0}.secondary{background:#edf2f7;border:0}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1100px;background:#fff}
+th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-align:top}th{background:#edf3f8;white-space:nowrap}
+td{height:70px}.lesson{background:#f4f8fb;border:1px solid #d8e4ed;border-radius:8px;padding:7px;font-size:12px;line-height:1.5}
+.small{font-size:12px;color:#667085}.top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.top a{display:inline-block;padding:10px 14px;border-radius:8px;text-decoration:none;background:#edf2f7;color:#17324d}
+@media print{.no-print,header{display:none!important}body{background:#fff}table{font-size:9px}}
+</style></head>
+<body>
+<header><h1 style="margin:0">📅 استعمال زمن الأساتذة</h1><div>كل ما يخص المخبر</div></header>
+<main>
+<div class="top no-print"><a href="index.html">العودة إلى المنصة</a><button class="secondary" id="printBtn">طباعة الاستعمال</button></div>
+<div class="panel form no-print">
+<input id="teacher" placeholder="اسم الأستاذ"><select id="subject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
+<select id="level"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
+<input id="cls" placeholder="القسم — مثال: 1م1"><select id="day"><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
+<input id="start" type="time"><input id="end" type="time"><input id="room" placeholder="القاعة/المخبر"><input id="activity" placeholder="التجربة/النشاط">
+<button id="add" class="primary">إضافة الحصة</button>
+</div>
+<div class="panel">
+<div class="tablewrap" id="out"></div>
+</div>
+</main>
+<script>
+const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس'];
+const slots=['08:00 - 09:00','09:00 - 10:00','10:00 - 11:00','11:00 - 12:00','13:00 - 14:00','14:00 - 15:00','15:00 - 16:00','16:00 - 17:00'];
+const KEY='km_fixed';
+function read(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+function write(x){localStorage.setItem(KEY,JSON.stringify(x))}
+function esc(v){return String(v??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function render(){
+ const st=read(), rows=Array.isArray(st.timetable)?st.timetable:[];
+ document.getElementById('out').innerHTML='<table><tr><th>الساعة</th>'+days.map(d=>'<th>'+d+'</th>').join('')+'</tr>'+
+ slots.map(slot=>{const p=slot.split(' - ');return '<tr><th>'+slot+'</th>'+days.map(d=>{
+ const a=rows.filter(x=>x.day===d&&x.start===p[0]&&x.end===p[1]);
+ return '<td>'+(a.length?a.map(x=>'<div class="lesson"><b>'+esc(x.teacher)+'</b><br>'+esc(x.subject)+' — '+esc(x.level)+'<br>القسم: '+esc(x.cls)+'<br>'+esc(x.room||'')+(x.activity?'<br>'+esc(x.activity):'')+'</div>').join(''):'<span class="small">فارغة</span>')+'</td>'
+ }).join('')+'</tr>'}).join('')+'</table>';
+}
+document.getElementById('add').addEventListener('click',()=>{
+ const teacher=document.getElementById('teacher').value.trim(),cls=document.getElementById('cls').value.trim(),start=document.getElementById('start').value,end=document.getElementById('end').value;
+ if(!teacher||!cls||!start||!end){alert('أدخل الأستاذ والقسم والتوقيت');return}
+ if(end<=start){alert('وقت النهاية يجب أن يكون بعد البداية');return}
+ const st=read();if(!Array.isArray(st.timetable))st.timetable=[];
+ st.timetable.push({teacher,subject:document.getElementById('subject').value,level:document.getElementById('level').value,cls,day:document.getElementById('day').value,start,end,room:document.getElementById('room').value.trim(),activity:document.getElementById('activity').value.trim()});
+ write(st);render();document.getElementById('teacher').value='';document.getElementById('cls').value='';document.getElementById('start').value='';document.getElementById('end').value='';document.getElementById('room').value='';document.getElementById('activity').value='';
+});
+document.getElementById('printBtn').onclick=()=>window.print();
+render();
+</script></body></html>
