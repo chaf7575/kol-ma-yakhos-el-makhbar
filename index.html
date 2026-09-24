@@ -701,5 +701,41 @@ try{ window.renderCurriculum && renderCurriculum(); }catch(e){}
 try{ window.renderReferences && renderReferences(); }catch(e){}
 </script>
 
+
+<script>
+/* إعادة تهيئة البيانات الأولية عند الحاجة، مع الحفاظ على أي بيانات أكبر أدخلها المستخدم */
+try{
+  if(Array.isArray(db[KEY.inv]) && db[KEY.inv].length < 30 && typeof catalogInv!=='undefined'){
+    db[KEY.inv]=catalogInv.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'بيانات أولية — تُراجع بالجرد الفعلي'}));
+    localStorage.setItem(KEY.inv,JSON.stringify(db[KEY.inv]));
+  }
+  if(Array.isArray(db[KEY.ex]) && db[KEY.ex].length < 25 && typeof expandedExperiments!=='undefined'){
+    db[KEY.ex]=expandedExperiments.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة واحدة تقريبًا',safety:'حسب بطاقة النشاط وتعليمات الأستاذ',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'}));
+    localStorage.setItem(KEY.ex,JSON.stringify(db[KEY.ex]));
+  }
+  if(Array.isArray(db.km2_weekly) && db.km2_weekly.length < 200 && typeof units!=='undefined'){
+    db.km2_weekly=[];
+    const levels=['1 متوسط','2 متوسط','3 متوسط','4 متوسط'];
+    const subjects=['علوم الطبيعة والحياة','علوم فيزيائية وتكنولوجيا'];
+    for(const level of levels){
+      for(const subject of subjects){
+        const u=units[level+'|'+subject]||[];
+        const candidates=db[KEY.ex].filter(x=>x.level===level&&x.subject===subject);
+        for(let w=1;w<=36;w++){
+          const exp=candidates.length?candidates[(w-1)%candidates.length]:{title:'نشاط مخبري مرتبط بالمحور',tools:'تحدد حسب النشاط'};
+          db.km2_weekly.push({week:w,level,subject,lesson:u[(w-1)%u.length]||'المحور/النشاط',exp:exp.title,tools:exp.tools,status:'مبرمج',note:'خطة تشغيلية أولية — تُراجع مع التدرج الرسمي'});
+        }
+      }
+    }
+    localStorage.setItem('km2_weekly',JSON.stringify(db.km2_weekly));
+  }
+  if(typeof render==='function') render();
+  if(typeof renderWeekly==='function') renderWeekly();
+  if(typeof renderCurriculum==='function') renderCurriculum();
+  if(typeof renderMaintenance==='function') renderMaintenance();
+  if(typeof updateCounts==='function') updateCounts();
+}catch(e){console.log('تهيئة البيانات:',e)}
+</script>
+
 </body>
 </html>
