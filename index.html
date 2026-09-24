@@ -614,9 +614,9 @@ const catalogInv=[
 ['كلوريد الصوديوم','مواد تعليمية',2,1,'جيدة','خزانة المواد']
 ];
 
-if(!db[KEY.inv].length){
-  db[KEY.inv]=catalogInv.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'رصيد أولي — يراجع حسب الجرد الفعلي'}));
-  localStorage.setItem(KEY.inv,JSON.stringify(db[KEY.inv]));
+if(!db[K.inv].length){
+  db[K.inv]=catalogInv.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'رصيد أولي — يراجع حسب الجرد الفعلي'}));
+  localStorage.setItem(K.inv,JSON.stringify(db[K.inv]));
 }
 
 const expandedExperiments=[
@@ -655,9 +655,9 @@ const expandedExperiments=[
 ['4 متوسط','علوم الطبيعة والحياة','التنسيق','استجابة عصبية بسيطة','وثائق/نماذج أو نشاط مناسب','تحديد عناصر القوس الانعكاسية'],
 ];
 
-if(!db[KEY.ex].length || db[KEY.ex].length<15){
-  db[KEY.ex]=expandedExperiments.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة واحدة تقريبًا',safety:'حسب بطاقة النشاط وتعليمات الأستاذ',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'}));
-  localStorage.setItem(KEY.ex,JSON.stringify(db[KEY.ex]));
+if(!db[K.ex].length || db[K.ex].length<15){
+  db[K.ex]=expandedExperiments.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة واحدة تقريبًا',safety:'حسب بطاقة النشاط وتعليمات الأستاذ',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'}));
+  localStorage.setItem(K.ex,JSON.stringify(db[K.ex]));
 }
 
 const units={
@@ -685,7 +685,7 @@ if(!db.km2_weekly || db.km2_weekly.length<200){
         const unit=u[(w-1)%u.length];
         const template=(subject==='علوم الطبيعة والحياة'?'ملاحظة/تجربة مرتبطة بالمحور':'نشاط قياس/تركيب مرتبط بالمحور');
         const act=subject==='علوم الطبيعة والحياة'?actMap[subject][(w-1)%actMap[subject].length]:actMap[subject][(w-1)%actMap[subject].length];
-        const candidates=db[KEY.ex].filter(x=>x.level===level&&x.subject===subject);
+        const candidates=db[K.ex].filter(x=>x.level===level&&x.subject===subject);
         const exp=candidates.length?candidates[(w-1)%candidates.length]:{title:template,tools:'تحدد حسب النشاط'};
         db.km2_weekly.push({week:w,level,subject,lesson:unit,exp:exp.title,tools:exp.tools,status:'مبرمج',note:'خطة تشغيلية أولية — تُراجع مع التدرج الرسمي المعتمد'});
       }
@@ -705,13 +705,13 @@ try{ window.renderReferences && renderReferences(); }catch(e){}
 <script>
 /* إعادة تهيئة البيانات الأولية عند الحاجة، مع الحفاظ على أي بيانات أكبر أدخلها المستخدم */
 try{
-  if(Array.isArray(db[KEY.inv]) && db[KEY.inv].length < 30 && typeof catalogInv!=='undefined'){
-    db[KEY.inv]=catalogInv.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'بيانات أولية — تُراجع بالجرد الفعلي'}));
-    localStorage.setItem(KEY.inv,JSON.stringify(db[KEY.inv]));
+  if(Array.isArray(db[K.inv]) && db[K.inv].length < 30 && typeof catalogInv!=='undefined'){
+    db[K.inv]=catalogInv.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'بيانات أولية — تُراجع بالجرد الفعلي'}));
+    localStorage.setItem(K.inv,JSON.stringify(db[K.inv]));
   }
-  if(Array.isArray(db[KEY.ex]) && db[KEY.ex].length < 25 && typeof expandedExperiments!=='undefined'){
-    db[KEY.ex]=expandedExperiments.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة واحدة تقريبًا',safety:'حسب بطاقة النشاط وتعليمات الأستاذ',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'}));
-    localStorage.setItem(KEY.ex,JSON.stringify(db[KEY.ex]));
+  if(Array.isArray(db[K.ex]) && db[K.ex].length < 25 && typeof expandedExperiments!=='undefined'){
+    db[K.ex]=expandedExperiments.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة واحدة تقريبًا',safety:'حسب بطاقة النشاط وتعليمات الأستاذ',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'}));
+    localStorage.setItem(K.ex,JSON.stringify(db[K.ex]));
   }
   if(Array.isArray(db.km2_weekly) && db.km2_weekly.length < 200 && typeof units!=='undefined'){
     db.km2_weekly=[];
@@ -720,7 +720,7 @@ try{
     for(const level of levels){
       for(const subject of subjects){
         const u=units[level+'|'+subject]||[];
-        const candidates=db[KEY.ex].filter(x=>x.level===level&&x.subject===subject);
+        const candidates=db[K.ex].filter(x=>x.level===level&&x.subject===subject);
         for(let w=1;w<=36;w++){
           const exp=candidates.length?candidates[(w-1)%candidates.length]:{title:'نشاط مخبري مرتبط بالمحور',tools:'تحدد حسب النشاط'};
           db.km2_weekly.push({week:w,level,subject,lesson:u[(w-1)%u.length]||'المحور/النشاط',exp:exp.title,tools:exp.tools,status:'مبرمج',note:'خطة تشغيلية أولية — تُراجع مع التدرج الرسمي'});
