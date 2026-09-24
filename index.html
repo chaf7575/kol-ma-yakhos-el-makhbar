@@ -32,7 +32,13 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 .overlay.show{display:block}.modal{background:#fff;max-width:1100px;margin:20px auto;border-radius:14px;padding:18px}
 .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
 .kpi .card{background:#f7fafc}.danger-text{color:#a00000;font-weight:700}.ok-text{color:#137333;font-weight:700}
-@media print{.overlay{display:none!important}}</style>
+@media print{.overlay{display:none!important}}.timetable{overflow:auto}
+.timetable table{min-width:1100px}
+.tt-cell{min-width:150px;height:78px}
+.lesson-card{background:#f4f8fb;border:1px solid #d8e4ed;border-radius:8px;padding:7px;font-size:12px;line-height:1.5;margin-bottom:5px}
+.lesson-card strong{display:block;font-size:13px}
+.teacher-chip{font-weight:700}
+</style>
 </head>
 <body>
 <header>
@@ -42,7 +48,7 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 
 <nav id="nav">
 <button class="active" data-id="home">الرئيسية</button>
-<button data-id="inventory">المخزون والجرد</button><button data-id="chemicals">المواد الكيميائية</button>
+<button data-id="inventory">المخزون والجرد</button><button data-id="chemicals">المواد الكيميائية</button><button data-id="timetable">استعمال زمن الأساتذة</button>
 <button data-id="experiments">التجارب والوسائل</button>
 <button data-id="weekly">الخطة الأسبوعية</button>
 <button data-id="reports">الأعمال التطبيقية</button>
@@ -96,6 +102,31 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 </div>
 <div class="toolbar no-print"><input id="chemSearch" placeholder="بحث في المواد الكيميائية"><button id="printChem" class="secondary">طباعة المخزون الكيميائي</button></div>
 <div id="chemicalsOut"></div>
+</section>
+
+<section id="timetable" class="section">
+<h2>استعمال زمن الأساتذة</h2>
+<div class="notice">سجل حصص الأساتذة حسب اليوم والساعة والقسم والمادة، مع إمكانية طباعة الاستعمال الزمني الأسبوعي.</div>
+<div class="panel form">
+<input id="ttTeacher" placeholder="اسم الأستاذ">
+<select id="ttSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
+<select id="ttLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
+<input id="ttClass" placeholder="القسم — مثال: 1م1">
+<select id="ttDay"><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
+<input id="ttStart" type="time">
+<input id="ttEnd" type="time">
+<input id="ttRoom" placeholder="القاعة/المخبر">
+<input id="ttActivity" placeholder="التجربة / النشاط">
+<textarea id="ttNote" class="full" placeholder="ملاحظات"></textarea>
+<button id="addTTBtn" class="primary">إضافة حصة</button>
+</div>
+<div class="toolbar no-print">
+<input id="ttSearch" placeholder="بحث في استعمال الزمن">
+<select id="ttTeacherFilter"><option value="">كل الأساتذة</option></select>
+<select id="ttDayFilter"><option value="">كل الأيام</option><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
+<button id="printTT" class="secondary">طباعة استعمال الزمن</button>
+</div>
+<div id="timetableOut"></div>
 </section>
 
 <section id="experiments" class="section">
@@ -166,7 +197,7 @@ const curriculumSeed=[["1 متوسط","علوم الطبيعة والحياة","
 
 const state={inventory:inventorySeed.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'بيانات أولية — تراجع بالجرد الفعلي'})),
 experiments:experimentSeed.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة تقريبًا',safety:'حسب تعليمات النشاط',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'})),
-weekly:[],reports:[],maintenance:[],chemicals:[]};
+weekly:[],reports:[],maintenance:[],chemicals:[],timetable:[]};
 
 const unitMap={
 '1 متوسط|علوم الطبيعة والحياة':['التغذية عند الإنسان','مصدر وتركيب الأغذية','دور الأغذية في الجسم','التغذية عند النبات الأخضر','انتقال النسغ','الصحة والتغذية'],
@@ -186,7 +217,7 @@ for(const level of ['1 متوسط','2 متوسط','3 متوسط','4 متوسط']
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function by(id){return document.getElementById(id)}
 function save(){localStorage.setItem('km_fixed',JSON.stringify(state))}
-function load(){try{const x=JSON.parse(localStorage.getItem('km_fixed')||'null');if(x){if(Array.isArray(x.reports))state.reports=x.reports;if(Array.isArray(x.maintenance))state.maintenance=x.maintenance;if(Array.isArray(x.inventory)&&x.inventory.length>50)state.inventory=x.inventory;if(Array.isArray(x.experiments)&&x.experiments.length>30)state.experiments=x.experiments;if(Array.isArray(x.weekly)&&x.weekly.length>200)state.weekly=x.weekly;if(Array.isArray(x.chemicals))state.chemicals=x.chemicals}}catch(e){}}
+function load(){try{const x=JSON.parse(localStorage.getItem('km_fixed')||'null');if(x){if(Array.isArray(x.reports))state.reports=x.reports;if(Array.isArray(x.maintenance))state.maintenance=x.maintenance;if(Array.isArray(x.inventory)&&x.inventory.length>50)state.inventory=x.inventory;if(Array.isArray(x.experiments)&&x.experiments.length>30)state.experiments=x.experiments;if(Array.isArray(x.weekly)&&x.weekly.length>200)state.weekly=x.weekly;if(Array.isArray(x.chemicals))state.chemicals=x.chemicals;if(Array.isArray(x.timetable))state.timetable=x.timetable}}catch(e){}}
 function renderAll(){
  let q=(by('invSearch').value||'').toLowerCase(),a=state.inventory.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
  by('inventoryOut').innerHTML='<div class="tablewrap"><table><tr><th>الوسيلة</th><th>الصنف</th><th>الكمية</th><th>الحد</th><th>الحالة</th><th>المكان</th><th>المرجع</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+esc(x.name)+'</td><td>'+esc(x.cat)+'</td><td>'+x.qty+'</td><td>'+x.min+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.place)+'</td><td>'+esc(x.ref)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>';
@@ -204,6 +235,25 @@ function renderAll(){
  by('experimentsOut').innerHTML='<div class="tablewrap"><table><tr><th>المستوى</th><th>المادة</th><th>المحور</th><th>التجربة</th><th>الوسائل</th><th>الهدف</th><th>المدة</th><th>السلامة</th></tr>'+a.map(x=>'<tr><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.unit)+'</td><td>'+esc(x.title)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.goal)+'</td><td>'+esc(x.time)+'</td><td>'+esc(x.safety)+'</td></tr>').join('')+'</table></div>';
  let wl=by('wLevelFilter').value,ws=by('wSubjectFilter').value,ww=by('wWeekFilter').value;a=state.weekly.filter(x=>(!wl||x.level===wl)&&(!ws||x.subject===ws)&&(!ww||String(x.week)===ww)).sort((x,y)=>x.week-y.week);
  by('weeklyOut').innerHTML='<div class="tablewrap"><table><tr><th>الأسبوع</th><th>المستوى</th><th>المادة</th><th>الدرس/المحور</th><th>التجربة/النشاط</th><th>الوسائل</th><th>الحالة</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+x.week+'</td><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.lesson)+'</td><td>'+esc(x.exp)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.status)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>';
+const teacherNames=[...new Set(state.timetable.map(x=>x.teacher).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ar'));
+ const selectedTeacher=by('ttTeacherFilter').value, selectedDay=by('ttDayFilter').value;
+ const tq=(by('ttSearch').value||'').toLowerCase();
+ let tt=state.timetable.filter(x=>(!selectedTeacher||x.teacher===selectedTeacher)&&(!selectedDay||x.day===selectedDay)&&Object.values(x).join(' ').toLowerCase().includes(tq));
+ by('ttTeacherFilter').innerHTML='<option value="">كل الأساتذة</option>'+teacherNames.map(n=>'<option '+(n===selectedTeacher?'selected':'')+'>'+esc(n)+'</option>').join('');
+ const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس'];
+ const slots=[...new Set(tt.map(x=>(x.start||'')+' - '+(x.end||'')).filter(x=>x.trim()!=='-'))].sort();
+ if(tt.length){
+   by('timetableOut').innerHTML='<div class="tablewrap timetable"><table><tr><th>الساعة</th>'+days.map(d=>'<th>'+d+'</th>').join('')+'</tr>'+
+   slots.map(slot=>{
+     const parts=slot.split(' - '), start=parts[0], end=parts[1];
+     return '<tr><th>'+esc(slot)+'</th>'+days.map(day=>{
+       const items=tt.filter(x=>x.day===day&&x.start===start&&x.end===end);
+       return '<td class="tt-cell">'+items.map(x=>'<div class="lesson-card"><strong>'+esc(x.teacher)+'</strong>'+esc(x.subject)+' — '+esc(x.level)+'<br>القسم: '+esc(x.cls)+'<br>'+esc(x.room||'')+(x.activity?'<br>النشاط: '+esc(x.activity):'')+'</div>').join('')+'</td>';
+     }).join('')+'</tr>';
+   }).join('')+'</table></div>';
+ }else{
+   by('timetableOut').innerHTML='<div class="empty">لا توجد حصص مسجلة بعد.</div>';
+ }
  q=(by('rSearch').value||'').toLowerCase();a=state.reports.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
  by('reportsOut').innerHTML=a.length?'<div class="tablewrap"><table><tr><th>التاريخ</th><th>الأستاذ</th><th>القسم</th><th>التوقيت</th><th>المستوى</th><th>المادة</th><th>التجربة</th><th>الوسائل</th><th>النتيجة</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.teacher)+'</td><td>'+esc(x.cls)+'</td><td>'+esc(x.time)+'</td><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.title)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.result)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>':'<div class="empty">لا توجد تقارير مدخلة بعد.</div>';
  by('maintenanceOut').innerHTML=state.maintenance.length?'<div class="tablewrap"><table><tr><th>التاريخ</th><th>الوسيلة</th><th>الحالة</th><th>المكلف</th><th>العطل</th><th>الإجراء</th></tr>'+state.maintenance.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.item)+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.by)+'</td><td>'+esc(x.problem)+'</td><td>'+esc(x.action)+'</td></tr>').join('')+'</table></div>':'<div class="empty">لا يوجد سجل صيانة.</div>';
@@ -259,12 +309,21 @@ function addChemicalUse(index){
 }
 function closeChemical(){by('chemicalPage').classList.remove('show');by('chemicalPage').innerHTML=''}
 
+function addTimetable(){
+ const teacher=by('ttTeacher').value.trim(), cls=by('ttClass').value.trim(), start=by('ttStart').value, end=by('ttEnd').value;
+ if(!teacher||!cls||!start||!end){alert('أدخل الأستاذ والقسم ووقت البداية والنهاية');return}
+ if(end<=start){alert('وقت النهاية يجب أن يكون بعد وقت البداية');return}
+ const clash=state.timetable.some(x=>x.day===by('ttDay').value&&x.start===start&&x.end===end&&x.room===by('ttRoom').value&&x.cls===cls);
+ if(clash){alert('توجد حصة مسجلة للقسم نفسه في نفس التوقيت والقاعة');return}
+ state.timetable.push({teacher,subject:by('ttSubject').value,level:by('ttLevel').value,cls,day:by('ttDay').value,start,end,room:by('ttRoom').value.trim(),activity:by('ttActivity').value.trim(),note:by('ttNote').value.trim()});
+ save();clearIds(['ttTeacher','ttClass','ttStart','ttEnd','ttRoom','ttActivity','ttNote']);renderAll();
+}
 function printSection(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('printable'));by(id).classList.add('printable');window.print();setTimeout(()=>by(id).classList.remove('printable'),500)}
 
 document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));by(b.dataset.id).classList.add('active')}));
-['invSearch','chemSearch','exFilter','exSearch','wLevelFilter','wSubjectFilter','wWeekFilter','rSearch','cLevel','cSubject','cSearch'].forEach(id=>by(id).addEventListener('input',renderAll));
-by('addInvBtn').addEventListener('click',addInventory);by('addChemBtn').addEventListener('click',addChemical);by('addExBtn').addEventListener('click',addExperiment);by('addWBtn').addEventListener('click',addWeekly);by('addRBtn').addEventListener('click',addReport);by('addMBtn').addEventListener('click',addMaintenance);
-by('printInv').addEventListener('click',()=>printSection('inventory'));by('printChem').addEventListener('click',()=>printSection('chemicals'));by('printEx').addEventListener('click',()=>printSection('experiments'));by('printW').addEventListener('click',()=>printSection('weekly'));by('printR').addEventListener('click',()=>printSection('reports'));by('printM').addEventListener('click',()=>printSection('maintenance'));
+['invSearch','chemSearch','ttSearch','ttTeacherFilter','ttDayFilter','exFilter','exSearch','wLevelFilter','wSubjectFilter','wWeekFilter','rSearch','cLevel','cSubject','cSearch'].forEach(id=>by(id).addEventListener('input',renderAll));
+by('addInvBtn').addEventListener('click',addInventory);by('addChemBtn').addEventListener('click',addChemical);by('addTTBtn').addEventListener('click',addTimetable);by('addExBtn').addEventListener('click',addExperiment);by('addWBtn').addEventListener('click',addWeekly);by('addRBtn').addEventListener('click',addReport);by('addMBtn').addEventListener('click',addMaintenance);
+by('printInv').addEventListener('click',()=>printSection('inventory'));by('printChem').addEventListener('click',()=>printSection('chemicals'));by('printTT').addEventListener('click',()=>printSection('timetable'));by('printEx').addEventListener('click',()=>printSection('experiments'));by('printW').addEventListener('click',()=>printSection('weekly'));by('printR').addEventListener('click',()=>printSection('reports'));by('printM').addEventListener('click',()=>printSection('maintenance'));
 const weekOpts=['<option value="">كل الأسابيع</option>'].concat(Array.from({length:36},(_,i)=>'<option value="'+(i+1)+'">الأسبوع '+(i+1)+'</option>')).join('');by('wWeekFilter').innerHTML=weekOpts;
 load();renderAll();
 </script>
