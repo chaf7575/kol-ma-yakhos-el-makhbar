@@ -1,1 +1,415 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>كل ما يخص المخبر</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#123b5d;color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:24px}.badge{background:#1f6f8b;padding:7px 12px;border-radius:20px;font-size:13px}
+nav{background:#fff;padding:10px;display:flex;gap:8px;flex-wrap:wrap;box-shadow:0 2px 8px #0001;position:sticky;top:0;z-index:5}
+nav button,.actions button{border:0;border-radius:8px;padding:10px 14px;background:#e8eef5;color:#17324d;cursor:pointer}
+nav button.active,button.primary{background:#176b87;color:#fff}
+main{max-width:1200px;margin:22px auto;padding:0 14px}
+.section{display:none}.section.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 2px 10px #0000000d}
+.card b{font-size:28px;display:block;margin-top:8px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.toolbar input,.toolbar select,.form input,.form select,.form textarea{padding:10px;border:1px solid #ccd6e0;border-radius:8px;width:100%}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;background:#fff;padding:16px;border-radius:12px;margin-bottom:15px}
+.form .wide{grid-column:1/-1}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}
+th,td{padding:10px;border-bottom:1px solid #e5e9ef;text-align:right}
+th{background:#edf3f8}
+.empty{padding:25px;text-align:center;color:#667085;background:#fff;border-radius:10px}
+@media print{
+nav,header,.toolbar,.form,.no-print{display:none!important}
+.section{display:none}
+.section.printable{display:block!important}
+body{background:#fff}
+table{font-size:11px}
+}
+</style>
+</head>
+<body>
 
+<header>
+<h1>🔬 كل ما يخص المخبر</h1>
+<span class="badge">تسيير وتنظيم أعمال المخبر</span>
+</header>
+
+<nav id="nav">
+<button class="active" data-s="dashboard">الرئيسية</button>
+<button data-s="inventory">المخزون والجرد</button>
+<button data-s="experiments">التجارب والوسائل</button>
+<button data-s="schedule">التدرج الأسبوعي</button>
+<button data-s="reports">تقارير الأعمال التطبيقية</button>
+</nav>
+
+<main>
+
+<section id="dashboard" class="section active">
+<h2>لوحة التحكم</h2>
+<div class="cards">
+<div class="card">مواد ووسائل المخزون<b id="cInv">0</b></div>
+<div class="card">التجارب المسجلة<b id="cExp">0</b></div>
+<div class="card">أسابيع التدرج<b id="cSch">0</b></div>
+<div class="card">تقارير الأعمال التطبيقية<b id="cRep">0</b></div>
+</div>
+</section>
+
+<section id="inventory" class="section">
+<h2>المخزون والجرد</h2>
+
+<div class="form">
+<input id="invName" placeholder="اسم الوسيلة أو المادة">
+<input id="invQty" type="number" min="0" placeholder="الكمية">
+
+<select id="invState">
+<option>جيدة</option>
+<option>متوسطة</option>
+<option>تحتاج إصلاح</option>
+<option>تالفة</option>
+</select>
+
+<input id="invPlace" placeholder="مكان التخزين">
+
+<button class="primary" onclick="addInv()">إضافة إلى الجرد</button>
+</div>
+
+<div class="toolbar">
+<input id="invSearch" placeholder="بحث في الجرد..." oninput="render()">
+<button onclick="printSection('inventory')">طباعة الجرد</button>
+</div>
+
+<div id="invTable"></div>
+</section>
+
+<section id="experiments" class="section">
+<h2>التجارب والوسائل المطلوبة</h2>
+
+<div class="form">
+<input id="expLevel" placeholder="المستوى (مثال: 4 متوسط)">
+<input id="expSubject" placeholder="المادة">
+<input id="expTitle" placeholder="عنوان التجربة">
+<input id="expTools" class="wide" placeholder="الوسائل والمواد المطلوبة">
+<button class="primary" onclick="addExp()">إضافة تجربة</button>
+</div>
+
+<div id="expTable"></div>
+</section>
+
+<section id="schedule" class="section">
+<h2>التدرج السنوي حسب الأسابيع</h2>
+
+<div class="form">
+<input id="schWeek" type="number" min="1" max="52" placeholder="رقم الأسبوع">
+<input id="schLevel" placeholder="المستوى">
+<input id="schSubject" placeholder="المادة">
+<input id="schLesson" class="wide" placeholder="الدرس / النشاط">
+<input id="schExp" placeholder="التجربة إن وجدت">
+<button class="primary" onclick="addSch()">إضافة أسبوع</button>
+</div>
+
+<div class="toolbar">
+<button onclick="printSection('schedule')">طباعة التدرج</button>
+</div>
+
+<div id="schTable"></div>
+</section>
+
+<section id="reports" class="section">
+<h2>تقارير الأعمال التطبيقية المنجزة</h2>
+
+<div class="form">
+<input id="repDate" type="date">
+<input id="repTeacher" placeholder="اسم الأستاذ">
+<input id="repClass" placeholder="القسم">
+<input id="repTime" placeholder="التوقيت">
+<input id="repTitle" class="wide" placeholder="عنوان التجربة">
+<input id="repTools" class="wide" placeholder="الوسائل المستعملة">
+<textarea id="repNotes" class="wide" placeholder="ملاحظات"></textarea>
+<button class="primary" onclick="addRep()">حفظ التقرير</button>
+</div>
+
+<div class="toolbar">
+<button onclick="printSection('reports')">طباعة التقارير</button>
+</div>
+
+<div id="repTable"></div>
+</section>
+
+</main>
+
+<script>
+const K={
+inv:'mk_inv',
+exp:'mk_exp',
+sch:'mk_sch',
+rep:'mk_rep'
+};
+
+let db=Object.fromEntries(
+Object.values(K).map(k=>[k,JSON.parse(localStorage.getItem(k)||'[]')])
+);
+
+function save(k){
+localStorage.setItem(k,JSON.stringify(db[k]));
+updateCounts();
+}
+
+function esc(x){
+return String(x??'').replace(
+/[&<>"']/g,
+m=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#039;'
+}[m])
+);
+}
+
+function addInv(){
+db[K.inv].push({
+name:invName.value,
+qty:invQty.value,
+state:invState.value,
+place:invPlace.value
+});
+
+save(K.inv);
+
+['invName','invQty','invPlace'].forEach(
+x=>document.getElementById(x).value=''
+);
+
+render();
+}
+
+function addExp(){
+db[K.exp].push({
+level:expLevel.value,
+subject:expSubject.value,
+title:expTitle.value,
+tools:expTools.value
+});
+
+save(K.exp);
+
+['expLevel','expSubject','expTitle','expTools'].forEach(
+x=>document.getElementById(x).value=''
+);
+
+render();
+}
+
+function addSch(){
+db[K.sch].push({
+week:schWeek.value,
+level:schLevel.value,
+subject:schSubject.value,
+lesson:schLesson.value,
+exp:schExp.value
+});
+
+save(K.sch);
+
+['schWeek','schLevel','schSubject','schLesson','schExp'].forEach(
+x=>document.getElementById(x).value=''
+);
+
+render();
+}
+
+function addRep(){
+db[K.rep].push({
+date:repDate.value,
+teacher:repTeacher.value,
+cls:repClass.value,
+time:repTime.value,
+title:repTitle.value,
+tools:repTools.value,
+notes:repNotes.value
+});
+
+save(K.rep);
+
+['repDate','repTeacher','repClass','repTime','repTitle','repTools','repNotes'].forEach(
+x=>document.getElementById(x).value=''
+);
+
+render();
+}
+
+function del(k,i){
+db[k].splice(i,1);
+save(k);
+render();
+}
+
+function render(){
+
+let q=(document.getElementById('invSearch')?.value||'').toLowerCase();
+
+let inv=db[K.inv].filter(x=>
+Object.values(x).join(' ').toLowerCase().includes(q)
+);
+
+document.getElementById('invTable').innerHTML=
+inv.length?
+`<table>
+<tr>
+<th>الوسيلة / المادة</th>
+<th>الكمية</th>
+<th>الحالة</th>
+<th>المكان</th>
+<th>إجراء</th>
+</tr>
+${inv.map((x,i)=>`
+<tr>
+<td>${esc(x.name)}</td>
+<td>${esc(x.qty)}</td>
+<td>${esc(x.state)}</td>
+<td>${esc(x.place)}</td>
+<td>
+<button onclick="del('${K.inv}',${db[K.inv].indexOf(x)})">حذف</button>
+</td>
+</tr>
+`).join('')}
+</table>`
+:
+'<div class="empty">لا توجد بيانات في الجرد.</div>';
+
+document.getElementById('expTable').innerHTML=
+db[K.exp].length?
+`<table>
+<tr>
+<th>المستوى</th>
+<th>المادة</th>
+<th>التجربة</th>
+<th>الوسائل</th>
+<th>إجراء</th>
+</tr>
+${db[K.exp].map((x,i)=>`
+<tr>
+<td>${esc(x.level)}</td>
+<td>${esc(x.subject)}</td>
+<td>${esc(x.title)}</td>
+<td>${esc(x.tools)}</td>
+<td>
+<button onclick="del('${K.exp}',${i})">حذف</button>
+</td>
+</tr>
+`).join('')}
+</table>`
+:
+'<div class="empty">لا توجد تجارب مسجلة.</div>';
+
+document.getElementById('schTable').innerHTML=
+db[K.sch].length?
+`<table>
+<tr>
+<th>الأسبوع</th>
+<th>المستوى</th>
+<th>المادة</th>
+<th>الدرس / النشاط</th>
+<th>التجربة</th>
+<th>إجراء</th>
+</tr>
+${db[K.sch].sort((a,b)=>a.week-b.week).map((x,i)=>`
+<tr>
+<td>${esc(x.week)}</td>
+<td>${esc(x.level)}</td>
+<td>${esc(x.subject)}</td>
+<td>${esc(x.lesson)}</td>
+<td>${esc(x.exp)}</td>
+<td>
+<button onclick="del('${K.sch}',${i})">حذف</button>
+</td>
+</tr>
+`).join('')}
+</table>`
+:
+'<div class="empty">لم تتم إضافة التدرج الأسبوعي بعد.</div>';
+
+document.getElementById('repTable').innerHTML=
+db[K.rep].length?
+`<table>
+<tr>
+<th>التاريخ</th>
+<th>الأستاذ</th>
+<th>القسم</th>
+<th>التوقيت</th>
+<th>التجربة</th>
+<th>الوسائل</th>
+<th>ملاحظات</th>
+<th>إجراء</th>
+</tr>
+${db[K.rep].map((x,i)=>`
+<tr>
+<td>${esc(x.date)}</td>
+<td>${esc(x.teacher)}</td>
+<td>${esc(x.cls)}</td>
+<td>${esc(x.time)}</td>
+<td>${esc(x.title)}</td>
+<td>${esc(x.tools)}</td>
+<td>${esc(x.notes)}</td>
+<td>
+<button onclick="del('${K.rep}',${i})">حذف</button>
+</td>
+</tr>
+`).join('')}
+</table>`
+:
+'<div class="empty">لا توجد تقارير بعد.</div>';
+
+updateCounts();
+}
+
+function updateCounts(){
+cInv.textContent=db[K.inv].length;
+cExp.textContent=db[K.exp].length;
+cSch.textContent=db[K.sch].length;
+cRep.textContent=db[K.rep].length;
+}
+
+document.querySelectorAll('nav button').forEach(b=>{
+b.onclick=()=>{
+document.querySelectorAll('nav button')
+.forEach(x=>x.classList.remove('active'));
+
+b.classList.add('active');
+
+document.querySelectorAll('.section')
+.forEach(x=>x.classList.remove('active'));
+
+document.getElementById(b.dataset.s)
+.classList.add('active');
+};
+});
+
+function printSection(id){
+document.querySelectorAll('.section')
+.forEach(x=>x.classList.remove('printable'));
+
+document.getElementById(id)
+.classList.add('printable');
+
+window.print();
+
+setTimeout(()=>{
+document.getElementById(id)
+.classList.remove('printable');
+},500);
+}
+
+render();
+</script>
+
+</body>
+</html>
