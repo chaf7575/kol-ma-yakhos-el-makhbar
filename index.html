@@ -39,7 +39,31 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 .lesson-card strong{display:block;font-size:13px}
 .teacher-chip{font-weight:700}
 </style>
-</head>
+</head><script>
+  // نظام أكواد التفعيل - منصة المخبري
+  const ACTIVATION_KEY = "LAB2026";
+
+  function checkActivationCode() {
+    const savedCode = localStorage.getItem("lab_activation_code");
+
+    if (savedCode === ACTIVATION_KEY) {
+      return true;
+    }
+
+    const code = prompt("أدخل كود تفعيل منصة المخبري:");
+
+    if (code === ACTIVATION_KEY) {
+      localStorage.setItem("lab_activation_code", code);
+      alert("تم تفعيل منصة المخبري بنجاح.");
+      return true;
+    }
+
+    alert("كود التفعيل غير صحيح.");
+    return false;
+  }
+
+  window.addEventListener("load", checkActivationCode);
+</script>
 <body>
 <header>
 <div><h1>🔬 كل ما يخص المخبر</h1><div class="sub">منصة عمل المخبري — الجرد، التجارب، التدرج، التقارير والصيانة</div></div>
