@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مخبرية | تسيير الجرد، الكيمياء وطلبات الأساتذة</title>
+  <title>مخبرية | تسيير الجرد، الكيمياء، طلبات الأساتذة والتقارير اليومية</title>
 
   <style>
     :root {
@@ -25,16 +25,15 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, Arial, system-ui, sans-serif; }
-    body { min-height: 100vh; background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 30%), var(--bg); color: var(--text); padding-bottom: 90px; }
+    body { min-height: 100vh; background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 30%), var(--bg); color: var(--text); padding-bottom: 120px; }
     header { padding: 1.5rem 1rem 4.7rem; background: linear-gradient(135deg, #172554 0%, #1d4ed8 58%, #0f766e 100%); color: #fff; }
-    .header-content { width: min(1180px, calc(100% - 2rem)); margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .header-content { width: min(1180px, calc(100% - 2rem)); margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     .brand { display: flex; align-items: center; gap: 0.85rem; }
     .brand-icon { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 15px; background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.24); font-size: 1.65rem; }
     .brand h1 { font-size: clamp(1.05rem, 3vw, 1.4rem); margin-bottom: 0.25rem; }
     .brand p { color: rgba(255, 255, 255, 0.78); font-size: 0.86rem; }
     .today { padding: 0.65rem 0.85rem; border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 12px; background: rgba(255, 255, 255, 0.12); font-size: 0.85rem; white-space: nowrap; }
 
-    /* شاشة كود التفعيل */
     #activationOverlay {
       position: fixed; top:0; left:0; right:0; bottom:0;
       background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px);
@@ -69,8 +68,7 @@
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-success { background: var(--success); color: #fff; }
     .btn-danger { background: var(--danger-soft); color: var(--danger); }
-    .btn-secondary { background: #f1f5f9; color: #334155; }
-
+    
     .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
     table { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 0.86rem; }
     th, td { padding: 0.82rem 0.7rem; text-align: center; border-bottom: 1px solid var(--border); vertical-align: middle; }
@@ -79,7 +77,6 @@
 
     .badge { display: inline-flex; align-items: center; justify-content: center; padding: 0.32rem 0.6rem; border-radius: 999px; font-size: 0.76rem; font-weight: 800; white-space: nowrap; cursor: pointer; }
     .badge-good { color: #047857; background: #d1fae5; }
-    .badge-danger { color: #b91c1c; background: #fee2e2; }
     .badge-warning { color: #92400e; background: #fef3c7; }
 
     .chem-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; margin-top: 1rem; }
@@ -95,9 +92,29 @@
     .timetable th { background: var(--primary-dark); color: white; }
     .timetable td input { border: none; text-align: center; background: transparent; }
 
-    nav { position: fixed; z-index: 1000; bottom: 0; right: 0; left: 0; display: flex; justify-content: center; gap: 0.5rem; padding: 0.7rem 1rem; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--border); overflow-x: auto; }
-    nav button { border: none; padding: 0.7rem 1rem; border-radius: 10px; background: transparent; color: var(--muted); font-size: 0.86rem; font-weight: 800; cursor: pointer; white-space: nowrap; }
-    nav button.active { background: var(--primary-soft); color: var(--primary); }
+    .report-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+    .report-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.6rem; margin-bottom: 0.8rem; }
+    .report-card-title { font-weight: bold; color: var(--primary-dark); font-size: 1rem; }
+
+    /* شريط التنقل السفلي الواضح */
+    nav {
+      position: fixed; z-index: 1000; bottom: 0; right: 0; left: 0;
+      display: flex; justify-content: center; gap: 0.3rem; padding: 0.6rem 0.4rem;
+      background: #ffffff; backdrop-filter: blur(12px); border-top: 2px solid var(--border);
+      overflow-x: auto; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+    nav button {
+      border: 1px solid var(--border); padding: 0.6rem 0.7rem; border-radius: 10px;
+      background: #f8fafc; color: var(--muted); font-size: 0.78rem; font-weight: 800;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
+    }
+    nav button.active { background: var(--primary-soft); color: var(--primary); border-color: var(--primary); }
+    /* تمييز زر التقارير في الشريط السفلي بلون مختلف لكي تراه فوراً */
+    #btnReportsNav {
+      background: #ecfdf5 !important;
+      color: #047857 !important;
+      border-color: #10b981 !important;
+    }
 
     #toast { position: fixed; z-index: 2000; top: 1rem; left: 50%; transform: translate(-50%, -150%); min-width: min(360px, calc(100% - 2rem)); padding: 0.85rem 1rem; border-radius: 12px; background: #0f172a; color: #fff; text-align: center; transition: transform 0.25s ease; font-size: 0.9rem; }
     #toast.show { transform: translate(-50%, 0); }
@@ -116,7 +133,6 @@
 </head>
 <body>
 
-  <!-- شاشة كود التفعيل -->
   <div id="activationOverlay">
     <div class="activation-card">
       <div style="font-size:3rem; margin-bottom:1rem;">🔐</div>
@@ -136,22 +152,25 @@
         <div class="brand-icon">🧪</div>
         <div>
           <h1>منصة تسيير مخبر العلوم الفيزيائية والتكنولوجيا</h1>
-          <p>إدارة طلبات الأساتذة الإلكترونية، المخزون الكيميائي، والجرد العام</p>
+          <p>إدارة طلبات الأساتذة، المخزون، الجرد، والتقارير اليومية</p>
         </div>
       </div>
-      <div class="today" id="todayLabel"></div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <!-- زر سريع جداً في الأعلى للوصول للتقارير لضمان عدم ضياعها -->
+        <button class="btn" style="background:#059669; color:#fff; font-size:0.8rem;" onclick="showSection('dailyReports', document.getElementById('btnReportsNav'))">📈 التقارير اليومية</button>
+        <div class="today" id="todayLabel"></div>
+      </div>
     </div>
   </header>
 
   <main>
 
-    <!-- 1. طلبات الأساتذة عبر الموقع (محدث) -->
+    <!-- 1. طلبات الأساتذة -->
     <section id="teacherRequests" class="section active">
       <div class="panel no-print" style="border-right: 5px solid var(--primary);">
         <div class="panel-header">
           <div class="panel-title">
             <h2>📝 استمارة طلب الوسائل والأدوات المخبرية (خاصة بالأستاذ)</h2>
-            <p>يمكن للأستاذ ملء الاستمارة لإيداع طلب تحضير تجربة أو حصة تطبيقية مباشرة</p>
           </div>
         </div>
         <form id="teacherOrderForm" onsubmit="addTeacherRequest(event)">
@@ -162,7 +181,7 @@
             <div class="field"><label>توقيت الحصة</label><input id="reqTime" required placeholder="مثال: 08:00 - 09:00"></div>
             <div class="field" style="grid-column: 1 / -1;">
               <label>قائمة الوسائل، الأجهزة والمواد الكيميائية المطلوبة</label>
-              <textarea id="reqItems" required placeholder="اكتب بالتفصيل: اسم التجربة، الأجهزة المطلوبة، الزجاجيات، والمحاليل الكيميائية بتركيزها..."></textarea>
+              <textarea id="reqItems" required placeholder="اكتب بالتفصيل..."></textarea>
             </div>
           </div>
           <div class="actions">
@@ -174,20 +193,13 @@
       <div class="panel">
         <div class="panel-header no-print">
           <h2>سجل متابعة واستلام طلبات الأساتذة</h2>
-          <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة سجل الطلبات</button>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة السجل</button>
         </div>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>#</th>
-                <th>الأستاذ</th>
-                <th>القسم</th>
-                <th>تاريخ الحصة</th>
-                <th>التوقيت</th>
-                <th>الوسائل والمواد المطلوبة</th>
-                <th>حالة الطلب</th>
-                <th class="no-print">إجراءات</th>
+                <th>#</th><th>الأستاذ</th><th>القسم</th><th>تاريخ الحصة</th><th>التوقيت</th><th>الوسائل والمواد</th><th>حالة الطلب</th><th class="no-print">إجراءات</th>
               </tr>
             </thead>
             <tbody id="requestsTable"></tbody>
@@ -196,20 +208,17 @@
       </div>
     </section>
 
-    <!-- 2. المواد الكيميائية والمخزون -->
+    <!-- 2. المواد الكيميائية -->
     <section id="chemicals" class="section">
       <div class="panel no-print">
         <div class="panel-header">
-          <div class="panel-title">
-            <h2>🧪 إضافة مادة كيميائية جديدة (بطاقة مخزون)</h2>
-            <p>سجّل بيانات المادة، المصدر، والكمية الابتدائية بالجرام أو اللتر</p>
-          </div>
+          <div class="panel-title"><h2>🧪 إضافة مادة كيميائية جديدة (بطاقة مخزون)</h2></div>
         </div>
         <div class="form-grid">
           <div class="field"><label>اسم المادة الكيميائية</label><input id="chemName" placeholder="مثال: حمض كلور الماء"></div>
           <div class="field"><label>الصيغة الكيميائية</label><input id="chemFormula" placeholder="مثال: HCl"></div>
-          <div class="field"><label>المصدر / المورد</label><input id="chemSource" placeholder="مثال: ميزانية المؤسسة / مديرية التربية"></div>
-          <div class="field"><label>الكمية الابتدائية الكلية</label><input id="chemTotalQty" type="number" step="0.01" placeholder="مثال: 1000"></div>
+          <div class="field"><label>المصدر / المورد</label><input id="chemSource" placeholder="ميزانية المؤسسة"></div>
+          <div class="field"><label>الكمية الابتدائية الكلية</label><input id="chemTotalQty" type="number" step="0.01" placeholder="1000"></div>
           <div class="field"><label>وحدة القياس</label>
             <select id="chemUnit">
               <option value="مل (ml)">مليلتر (ml)</option>
@@ -228,34 +237,19 @@
           </div>
         </div>
         <div class="actions">
-          <button class="btn btn-success" onclick="addChemical()">＋ إنشاء بطاقة مادة كيميائية</button>
+          <button class="btn btn-success" onclick="addChemical()">＋ إنشاء بطاقة مادة</button>
         </div>
       </div>
 
       <div class="panel no-print" style="border-right: 4px solid var(--warning);">
         <div class="panel-header">
-          <div class="panel-title">
-            <h2>📋 تسجيل خصم / استهلاك مادة كيميائية للأستاذ</h2>
-            <p>تخفيض تلقائي للكمية المتبقية وتسجيل الأستاذ المستعمل</p>
-          </div>
+          <div class="panel-title"><h2>📋 تسجيل خصم / استهلاك مادة كيميائية للأستاذ</h2></div>
         </div>
         <div class="form-grid">
-          <div class="field">
-            <label>اختر المادة الكيميائية</label>
-            <select id="useChemSelect"></select>
-          </div>
-          <div class="field">
-            <label>اسم الأستاذ المستعمل</label>
-            <input id="useTeacherName" placeholder="اسم الأستاذ الحصة">
-          </div>
-          <div class="field">
-            <label>الكمية المستهلكة</label>
-            <input id="useQty" type="number" step="0.01" placeholder="مثال: 50">
-          </div>
-          <div class="field">
-            <label>تاريخ الاستعمال</label>
-            <input id="useDate" type="date">
-          </div>
+          <div class="field"><label>اختر المادة الكيميائية</label><select id="useChemSelect"></select></div>
+          <div class="field"><label>اسم الأستاذ المستعمل</label><input id="useTeacherName" placeholder="اسم الأستاذ"></div>
+          <div class="field"><label>الكمية المستهلكة</label><input id="useQty" type="number" step="0.01" placeholder="50"></div>
+          <div class="field"><label>تاريخ الاستعمال</label><input id="useDate" type="date"></div>
         </div>
         <div class="actions">
           <button class="btn btn-primary" onclick="recordUsage()">📉 خصم الكمية وتسجيل الاستهلاك</button>
@@ -265,22 +259,17 @@
       <div class="panel">
         <div class="panel-header">
           <h2>بطاقات مراقبة المخزون الكيميائي والكميات المتبقية</h2>
-          <button class="btn btn-primary no-print" onclick="window.print()">🖨️ طباعة بطاقات الكيمياء</button>
+          <button class="btn btn-primary no-print" onclick="window.print()">🖨️ طباعة</button>
         </div>
-        
         <div id="chemCardsContainer" class="chem-cards-grid"></div>
       </div>
 
       <div class="panel">
-        <div class="panel-header">
-          <h2>سجل متابعة الاستهلاك واستعمالات الأساتذة</h2>
-        </div>
+        <div class="panel-header"><h2>سجل متابعة الاستهلاك واستعمالات الأساتذة</h2></div>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>#</th><th>تاريخ الاستعمال</th><th>اسم المادة</th><th>الأستاذ المستعمل</th><th>الكمية المستهلكة</th><th class="no-print">إجراءات</th>
-              </tr>
+              <tr><th>#</th><th>تاريخ الاستعمال</th><th>اسم المادة</th><th>الأستاذ المستعمل</th><th>الكمية المستهلكة</th><th class="no-print">إجراءات</th></tr>
             </thead>
             <tbody id="usageHistoryTable"></tbody>
           </table>
@@ -292,18 +281,14 @@
     <section id="inventory" class="section">
       <div class="panel no-print">
         <div class="panel-header">
-          <div class="panel-title">
-            <h2>إضافة أداة / وسيلة للجرد العام</h2>
-            <p>تسجيل الأجهزة والأدوات الزجاجية والمعدات المخبرية</p>
-          </div>
+          <div class="panel-title"><h2>إضافة أداة / وسيلة للجرد العام</h2></div>
         </div>
         <div class="form-grid">
           <div class="field"><label>رقم الجرد</label><input id="invNo" placeholder="مثال: G-2026/01"></div>
           <div class="field"><label>اسم الوسيلة</label><input id="invName" placeholder="مثال: مجهر ضوئي"></div>
           <div class="field"><label>الكمية</label><input id="invQty" type="number" min="0" value="1"></div>
           <div class="field"><label>تاريخ الدخول</label><input id="invDate" type="date"></div>
-          <div class="field">
-            <label>الحالة</label>
+          <div class="field"><label>الحالة</label>
             <select id="invState">
               <option value="جيدة">جيدة</option>
               <option value="متوسطة">متوسطة</option>
@@ -325,9 +310,7 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>#</th><th>اسم الوسيلة</th><th>الكمية</th><th>رقم الجرد</th><th>التاريخ</th><th>الحالة</th><th class="no-print">إجراءات</th>
-              </tr>
+              <tr><th>#</th><th>اسم الوسيلة</th><th>الكمية</th><th>رقم الجرد</th><th>التاريخ</th><th>الحالة</th><th class="no-print">إجراءات</th></tr>
             </thead>
             <tbody id="inventoryTable"></tbody>
           </table>
@@ -339,12 +322,9 @@
     <section id="timetable" class="section">
       <div class="panel">
         <div class="panel-header no-print">
-          <div class="panel-title">
-            <h2>جدول استعمال زمن المخبر للأعمال التطبيقية</h2>
-          </div>
+          <div class="panel-title"><h2>جدول استعمال زمن المخبر للأعمال التطبيقية</h2></div>
           <button class="btn btn-success" onclick="saveTimetable()">💾 حفظ الجدول</button>
         </div>
-
         <div class="table-wrap">
           <table class="timetable">
             <thead>
@@ -365,13 +345,52 @@
       </div>
     </section>
 
+    <!-- 5. التقارير اليومية للمخبر (التفاعلي) -->
+    <section id="dailyReports" class="section">
+      <div class="panel no-print" style="border-right: 5px solid var(--secondary);">
+        <div class="panel-header">
+          <div class="panel-title">
+            <h2>📈 تحرير وإنشاء التقرير اليومي للمخبر</h2>
+            <p>تدوين الحصص المنجزة، حالة الوسائل، والملاحظات الإدارية اليومية</p>
+          </div>
+        </div>
+        <form id="dailyReportForm" onsubmit="addDailyReport(event)">
+          <div class="form-grid">
+            <div class="field"><label>تاريخ التقرير</label><input id="repDate" type="date" required></div>
+            <div class="field"><label>المسؤول عن التحرير</label><input id="repAuthor" required placeholder="اسم ملحق المختبر / المسؤول"></div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>أبرز الحصص التطبيقية المنفذة اليوم</label>
+              <textarea id="repClasses" required placeholder="اذكر الأقسام التي أجرت حصصاً تطبيقية والتجارب المنجزة..."></textarea>
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>حالة الوسائل والمواد المستخدمة والملاحظات/النواقص</label>
+              <textarea id="repNotes" required placeholder="سجل الملاحظات هنا..."></textarea>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn btn-success" style="width: 100%;">💾 حفظ وإنشاء التقرير اليومي</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h2>سجل التقارير اليومية المحفوظة للمخبر</h2>
+          <button class="btn btn-primary no-print" onclick="window.print()">🖨️ طباعة التقارير</button>
+        </div>
+        <div id="reportsContainer"></div>
+      </div>
+    </section>
+
   </main>
 
+  <!-- شريط التنقل السفلي -->
   <nav class="no-print">
     <button class="active" onclick="showSection('teacherRequests', this)">📝 طلبات الأساتذة</button>
-    <button onclick="showSection('chemicals', this)">🧪 المواد الكيميائية والمخزون</button>
+    <button onclick="showSection('chemicals', this)">🧪 الكيمياء والمخزون</button>
     <button onclick="showSection('inventory', this)">📦 الجرد العام</button>
     <button onclick="showSection('timetable', this)">📅 استعمال الزمن</button>
+    <button id="btnReportsNav" onclick="showSection('dailyReports', this)">📈 التقارير اليومية</button>
   </nav>
 
   <div id="toast"></div>
@@ -380,12 +399,13 @@
     const SECRET_CODE = "2026";
 
     const storageKeys = {
-      activated: "lab_activated_v6",
-      inventory: "lab_inventory_v6",
-      chemicals: "lab_chemicals_v6",
-      chemUsage: "lab_chem_usage_v6",
-      requests: "lab_requests_v6",
-      timetable: "lab_timetable_v6"
+      activated: "lab_activated_v10",
+      inventory: "lab_inventory_v10",
+      chemicals: "lab_chemicals_v10",
+      chemUsage: "lab_chem_usage_v10",
+      requests: "lab_requests_v10",
+      timetable: "lab_timetable_v10",
+      dailyReports: "lab_daily_reports_v10"
     };
 
     const store = {
@@ -393,7 +413,8 @@
       chemicals: JSON.parse(localStorage.getItem(storageKeys.chemicals) || "[]"),
       chemUsage: JSON.parse(localStorage.getItem(storageKeys.chemUsage) || "[]"),
       requests: JSON.parse(localStorage.getItem(storageKeys.requests) || "[]"),
-      timetable: JSON.parse(localStorage.getItem(storageKeys.timetable) || "{}")
+      timetable: JSON.parse(localStorage.getItem(storageKeys.timetable) || "{}"),
+      dailyReports: JSON.parse(localStorage.getItem(storageKeys.dailyReports) || "[]")
     };
 
     function uid() { return `${Date.now()}-${Math.random().toString(16).slice(2, 6)}`; }
@@ -425,32 +446,21 @@
       document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
       document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
       document.getElementById(id).classList.add("active");
-      btn.classList.add("active");
+      if(btn) btn.classList.add("active");
     }
 
-    /* 1. طلبات الأساتذة بالموقع */
     function addTeacherRequest(e) {
       e.preventDefault();
-      
       const teacher = document.getElementById("reqTeacher").value.trim();
       const cls = document.getElementById("reqClass").value.trim();
       const date = document.getElementById("reqDate").value;
       const time = document.getElementById("reqTime").value.trim();
       const items = document.getElementById("reqItems").value.trim();
 
-      store.requests.unshift({
-        id: uid(),
-        teacher,
-        cls,
-        date,
-        time,
-        items,
-        status: "قيد التحضير ⏳"
-      });
-
+      store.requests.unshift({ id: uid(), teacher, cls, date, time, items, status: "قيد التحضير ⏳" });
       localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
       renderRequests();
-      showToast("تم إرسال طلبك بنجاح إلى المخبر!");
+      showToast("تم إرسال الطلب بنجاح!");
       document.getElementById("teacherOrderForm").reset();
     }
 
@@ -460,7 +470,6 @@
         req.status = (req.status === "قيد التحضير ⏳") ? "جاهز للمعاينة 🟢" : "قيد التحضير ⏳";
         localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
         renderRequests();
-        showToast("تم تغيير حالة الطلب");
       }
     }
 
@@ -474,48 +483,35 @@
           <td>${req.date}</td>
           <td>${req.time}</td>
           <td style="text-align:right;">${req.items}</td>
-          <td>
-            <span class="badge ${req.status.includes('جاهز')?'badge-good':'badge-warning'}" onclick="toggleRequestStatus('${req.id}')" title="اضغط لتغيير الحالة">
-              ${req.status}
-            </span>
-          </td>
-          <td class="no-print">
-            <button class="btn btn-danger" onclick="deleteReq('${req.id}')">🗑️ حذف</button>
-          </td>
+          <td><span class="badge ${req.status.includes('جاهز')?'badge-good':'badge-warning'}" onclick="toggleRequestStatus('${req.id}')">${req.status}</span></td>
+          <td class="no-print"><button class="btn btn-danger" onclick="deleteReq('${req.id}')">🗑️</button></td>
         </tr>
-      `).join("") || "<tr><td colspan='8'>لا توجد طلبات أستاذ حالية</td></tr>";
+      `).join("") || "<tr><td colspan='8'>لا توجد طلبات حالية</td></tr>";
     }
 
     function deleteReq(id) {
-      if(!confirm("هل تريد حذف هذا الطلب؟")) return;
       store.requests = store.requests.filter(x => x.id !== id);
       localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
       renderRequests();
     }
 
-    /* 2. إدارة المواد الكيميائية والمخزون */
     function addChemical() {
       const name = document.getElementById("chemName").value.trim();
       const totalQty = parseFloat(document.getElementById("chemTotalQty").value || 0);
-
-      if (!name) return showToast("يرجى كتابة اسم المادة الكيميائية");
-      if (totalQty <= 0) return showToast("يرجى إدخال كمية ابتدائية صحيحة");
+      if (!name || totalQty <= 0) return showToast("يرجى ملء الحقول بشكل صحيح");
 
       store.chemicals.unshift({
-        id: uid(),
-        name,
+        id: uid(), name,
         formula: document.getElementById("chemFormula").value.trim() || "—",
         source: document.getElementById("chemSource").value.trim() || "غير محدد",
-        totalQty: totalQty,
-        remainingQty: totalQty,
+        totalQty, remainingQty: totalQty,
         unit: document.getElementById("chemUnit").value,
         hazard: document.getElementById("chemHazard").value
       });
 
       localStorage.setItem(storageKeys.chemicals, JSON.stringify(store.chemicals));
       renderChemicals();
-      showToast("تم إنشاء بطاقة المادة الكيميائية بنجاح");
-      
+      showToast("تمت إضافة المادة بنجاح");
       document.getElementById("chemName").value = "";
       document.getElementById("chemTotalQty").value = "";
     }
@@ -526,34 +522,18 @@
       const qtyUsed = parseFloat(document.getElementById("useQty").value || 0);
       const date = document.getElementById("useDate").value || new Date().toISOString().slice(0,10);
 
-      if (!chemId) return showToast("يرجى اختيار مادة كيميائية");
-      if (!teacher) return showToast("يرجى تحديد اسم الأستاذ");
-      if (qtyUsed <= 0) return showToast("يرجى تحديد كمية مستهلكة صحيحة");
-
+      if (!chemId || !teacher || qtyUsed <= 0) return showToast("تأكد من إدخال كافة بيانات الاستهلاك");
       const chem = store.chemicals.find(c => c.id === chemId);
       if (!chem) return;
 
-      if (qtyUsed > chem.remainingQty) {
-        return showToast(`الكمية المتبقية غير كافية! المتبقي حالياً: ${chem.remainingQty} ${chem.unit}`);
-      }
-
+      if (qtyUsed > chem.remainingQty) return showToast("الكمية المتبقية غير كافية!");
       chem.remainingQty = parseFloat((chem.remainingQty - qtyUsed).toFixed(2));
 
-      store.chemUsage.unshift({
-        id: uid(),
-        chemName: chem.name,
-        teacher,
-        qtyUsed,
-        unit: chem.unit,
-        date
-      });
-
+      store.chemUsage.unshift({ id: uid(), chemName: chem.name, teacher, qtyUsed, unit: chem.unit, date });
       localStorage.setItem(storageKeys.chemicals, JSON.stringify(store.chemicals));
       localStorage.setItem(storageKeys.chemUsage, JSON.stringify(store.chemUsage));
-
       renderChemicals();
-      showToast("تم خصم الكمية وتسجيل الاستهلاك بالأستاذ");
-      
+      showToast("تم خصم الكمية بنجاح");
       document.getElementById("useTeacherName").value = "";
       document.getElementById("useQty").value = "";
     }
@@ -561,13 +541,11 @@
     function renderChemicals() {
       const container = document.getElementById("chemCardsContainer");
       const select = document.getElementById("useChemSelect");
-
       select.innerHTML = "<option value=''>-- اختر المادة الكيميائية --</option>";
-      
+
       container.innerHTML = store.chemicals.map(chem => {
         select.innerHTML += `<option value="${chem.id}">${chem.name} (المتبقي: ${chem.remainingQty} ${chem.unit})</option>`;
         const isLow = chem.remainingQty <= (chem.totalQty * 0.2);
-
         return `
           <div class="chem-card">
             <div class="chem-card-header">
@@ -576,34 +554,25 @@
             </div>
             <div class="chem-info-list">
               <div><strong>المصدر:</strong> ${chem.source}</div>
-              <div><strong>الدرجة / الخطورة:</strong> ${chem.hazard}</div>
-              <div><strong>الكمية الكلية الأصلية:</strong> ${chem.totalQty} ${chem.unit}</div>
+              <div><strong>الخطورة:</strong> ${chem.hazard}</div>
+              <div><strong>الكمية الكلية:</strong> ${chem.totalQty} ${chem.unit}</div>
             </div>
-            <div class="chem-qty-box ${isLow ? 'low' : ''}">
-              الكمية المتبقية: ${chem.remainingQty} ${chem.unit} ${isLow ? '⚠️ (مخزون منخفض)' : ''}
-            </div>
-            <div style="text-align:left;" class="no-print">
-              <button class="btn btn-danger" onclick="deleteChem('${chem.id}')">🗑️ حذف البطاقة</button>
-            </div>
+            <div class="chem-qty-box ${isLow ? 'low' : ''}">المتبقي: ${chem.remainingQty} ${chem.unit}</div>
+            <div style="text-align:left;" class="no-print"><button class="btn btn-danger" onclick="deleteChem('${chem.id}')">🗑️ حذف</button></div>
           </div>
         `;
-      }).join("") || "<p style='grid-column:1/-1; text-align:center;'>لا توجد بطاقات مواد كيميائية مسجلة بعد.</p>";
+      }).join("") || "<p style='grid-column:1/-1; text-align:center;'>لا توجد مواد كيميائية مسجلة</p>";
 
-      const usageTbody = document.getElementById("usageHistoryTable");
-      usageTbody.innerHTML = store.chemUsage.map((use, i) => `
+      document.getElementById("usageHistoryTable").innerHTML = store.chemUsage.map((u, i) => `
         <tr>
-          <td>${i+1}</td>
-          <td>${use.date}</td>
-          <td><strong>${use.chemName}</strong></td>
-          <td>${use.teacher}</td>
-          <td><span class="badge badge-warning">-${use.qtyUsed} ${use.unit}</span></td>
-          <td class="no-print"><button class="btn btn-danger" onclick="deleteUsage('${use.id}')">🗑️</button></td>
+          <td>${i+1}</td><td>${u.date}</td><td><strong>${u.chemName}</strong></td><td>${u.teacher}</td>
+          <td><span class="badge badge-warning">-${u.qtyUsed} ${u.unit}</span></td>
+          <td class="no-print"><button class="btn btn-danger" onclick="deleteUsage('${u.id}')">🗑️</button></td>
         </tr>
-      `).join("") || "<tr><td colspan='6'>لا يوجد سجل استهلاك بعد</td></tr>";
+      `).join("") || "<tr><td colspan='6'>لا يوجد استهلاك مسجل</td></tr>";
     }
 
     function deleteChem(id) {
-      if(!confirm("هل أنت تأكد من حذف بطاقة هذه المادة الكيميائية؟")) return;
       store.chemicals = store.chemicals.filter(x => x.id !== id);
       localStorage.setItem(storageKeys.chemicals, JSON.stringify(store.chemicals));
       renderChemicals();
@@ -615,38 +584,28 @@
       renderChemicals();
     }
 
-    /* 3. الجرد العام */
     function addInventory() {
       const name = document.getElementById("invName").value.trim();
       if (!name) return showToast("يرجى إدخال اسم الوسيلة");
-
       store.inventory.unshift({
-        id: uid(),
-        no: document.getElementById("invNo").value.trim() || "—",
-        name,
-        qty: document.getElementById("invQty").value || 1,
+        id: uid(), no: document.getElementById("invNo").value.trim() || "—",
+        name, qty: document.getElementById("invQty").value || 1,
         date: document.getElementById("invDate").value || "—",
         state: document.getElementById("invState").value
       });
-
       localStorage.setItem(storageKeys.inventory, JSON.stringify(store.inventory));
       renderInventory();
-      showToast("تمت الإضافة للعموم بنجاح");
+      showToast("تمت الإضافة للجرد");
     }
 
     function renderInventory() {
-      const tbody = document.getElementById("inventoryTable");
-      tbody.innerHTML = store.inventory.map((item, i) => `
+      document.getElementById("inventoryTable").innerHTML = store.inventory.map((item, i) => `
         <tr>
-          <td>${i+1}</td>
-          <td><strong>${item.name}</strong></td>
-          <td>${item.qty}</td>
-          <td>${item.no}</td>
-          <td>${item.date}</td>
+          <td>${i+1}</td><td><strong>${item.name}</strong></td><td>${item.qty}</td><td>${item.no}</td><td>${item.date}</td>
           <td><span class="badge ${item.state==='جيدة'?'badge-good':'badge-warning'}">${item.state}</span></td>
           <td class="no-print"><button class="btn btn-danger" onclick="deleteInv('${item.id}')">🗑️</button></td>
         </tr>
-      `).join("") || "<tr><td colspan='7'>لا توجد مواد مسجلة</td></tr>";
+      `).join("") || "<tr><td colspan='7'>لا توجد مواد بالجرد</td></tr>";
     }
 
     function deleteInv(id) {
@@ -655,44 +614,75 @@
       renderInventory();
     }
 
-    /* 4. استعمال الزمن */
     const days = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس"];
     const hours = ["08-09", "09-10", "10-11", "11-12", "13-14", "14-15", "15-16"];
 
     function renderTimetable() {
-      const tbody = document.getElementById("timetableBody");
-      tbody.innerHTML = days.map(day => `
+      document.getElementById("timetableBody").innerHTML = days.map(day => `
         <tr>
           <td><strong>${day}</strong></td>
-          ${hours.map(h => {
-            const key = `${day}_${h}`;
-            const val = store.timetable[key] || "";
-            return `<td><input type="text" data-key="${key}" value="${val}" placeholder="..."></td>`;
-          }).join("")}
+          ${hours.map(h => `<td><input type="text" data-key="${day}_${h}" value="${store.timetable[`${day}_${h}`] || ""}" placeholder="..."></td>`).join("")}
         </tr>
       `).join("");
     }
 
     function saveTimetable() {
-      const inputs = document.querySelectorAll("#timetableBody input");
-      inputs.forEach(input => {
-        const key = input.getAttribute("data-key");
-        store.timetable[key] = input.value;
+      document.querySelectorAll("#timetableBody input").forEach(input => {
+        store.timetable[input.getAttribute("data-key")] = input.value;
       });
-
       localStorage.setItem(storageKeys.timetable, JSON.stringify(store.timetable));
-      showToast("تم حفظ استعمال الزمن بنجاح!");
+      showToast("تم حفظ استعمال الزمن بنجاح");
+    }
+
+    function addDailyReport(e) {
+      e.preventDefault();
+      const date = document.getElementById("repDate").value;
+      const author = document.getElementById("repAuthor").value.trim();
+      const classes = document.getElementById("repClasses").value.trim();
+      const notes = document.getElementById("repNotes").value.trim();
+
+      store.dailyReports.unshift({ id: uid(), date, author, classes, notes });
+      localStorage.setItem(storageKeys.dailyReports, JSON.stringify(store.dailyReports));
+      renderDailyReports();
+      showToast("تم حفظ التقرير اليومي بنجاح!");
+      document.getElementById("dailyReportForm").reset();
+      document.getElementById("repDate").value = new Date().toISOString().slice(0,10);
+    }
+
+    function renderDailyReports() {
+      document.getElementById("reportsContainer").innerHTML = store.dailyReports.map((rep, i) => `
+        <div class="report-card">
+          <div class="report-card-header">
+            <span class="report-card-title">تقرير يوم: ${rep.date} (بواسطة: ${rep.author})</span>
+            <button class="btn btn-danger no-print" onclick="deleteDailyReport('${rep.id}')">🗑️ حذف</button>
+          </div>
+          <div style="font-size:0.9rem; display:flex; flex-direction:column; gap:0.5rem; color:#334155;">
+            <div><strong>🎓 الحصص والتجارب المنفذة:</strong> <p style="margin-top:2px; color:#475569;">${rep.classes}</p></div>
+            <div><strong>⚠️ الملاحظات والنواقص:</strong> <p style="margin-top:2px; color:#475569;">${rep.notes}</p></div>
+          </div>
+        </div>
+      `).join("") || "<p style='text-align:center; color:var(--muted);'>لا توجد تقارير يومية محفوظة حتى الآن.</p>";
+    }
+
+    function deleteDailyReport(id) {
+      store.dailyReports = store.dailyReports.filter(x => x.id !== id);
+      localStorage.setItem(storageKeys.dailyReports, JSON.stringify(store.dailyReports));
+      renderDailyReports();
+      showToast("تم حذف التقرير");
     }
 
     function initialize() {
       initActivation();
+      const todayStr = new Date().toISOString().slice(0,10);
       document.getElementById("todayLabel").textContent = new Intl.DateTimeFormat("ar-DZ", { weekday: "long", year: "numeric", month: "long", day: "numeric" }).format(new Date());
-      document.getElementById("useDate").value = new Date().toISOString().slice(0,10);
-      document.getElementById("reqDate").value = new Date().toISOString().slice(0,10);
+      document.getElementById("useDate").value = todayStr;
+      document.getElementById("reqDate").value = todayStr;
+      document.getElementById("repDate").value = todayStr;
       renderRequests();
       renderChemicals();
       renderInventory();
       renderTimetable();
+      renderDailyReports();
     }
 
     initialize();
