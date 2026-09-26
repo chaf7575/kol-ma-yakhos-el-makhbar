@@ -1,420 +1,619 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>التقرير اليومي والجرد المخبري</title>
-<style>
-:root {
-  --primary: #1e3a8a;
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --text: #0f172a;
-  --border: #cbd5e1;
-  --danger: #ef4444;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مخبرية | تسيير الجرد والتقارير</title>
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
-body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
+  <style>
+    :root {
+      --primary: #1d4ed8;
+      --primary-dark: #1e3a8a;
+      --primary-soft: #eff6ff;
+      --secondary: #0f766e;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
+    }
 
-header {
-  background: var(--primary);
-  color: white;
-  padding: 1rem;
-  text-align: center;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Tahoma, Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
 
-/* Nav Bar for Mobile */
-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: #fff;
-  display: flex;
-  border-top: 1px solid var(--border);
-  z-index: 1000;
-}
-nav button {
-  flex: 1; padding: 0.8rem 0.2rem;
-  border: none; background: none;
-  font-size: 0.85rem; font-weight: bold;
-  color: #64748b; cursor: pointer;
-}
-nav button.active { color: var(--primary); border-top: 3px solid var(--primary); }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      padding-bottom: 90px;
+    }
 
-main { max-width: 1100px; margin: 1rem auto; padding: 0 0.8rem; }
-.section { display: none; }
-.section.active { display: block; }
+    header {
+      padding: 1.5rem 1rem 4.7rem;
+      background: linear-gradient(135deg, #172554 0%, #1d4ed8 58%, #0f766e 100%);
+      color: #fff;
+    }
 
-.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; margin-bottom: 1.5rem; }
-.panel h2 { font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem; border-bottom: 2px solid var(--bg); padding-bottom: 0.5rem; }
+    .header-content {
+      width: min(1180px, calc(100% - 2rem));
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
 
-.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
-.full-width { grid-column: 1 / -1; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
 
-input, select, textarea {
-  width: 100%; padding: 0.6rem;
-  border: 1px solid var(--border); border-radius: 6px;
-  font-size: 0.9rem; background: #fff;
-}
+    .brand-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      font-size: 1.65rem;
+    }
 
-button.btn {
-  padding: 0.6rem 1.2rem; border-radius: 6px; border: none;
-  font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;
-}
-.btn-primary { background: var(--primary); color: white; }
-.btn-success { background: #10b981; color: white; }
-.btn-danger { background: var(--danger); color: white; }
-.btn-secondary { background: #e2e8f0; color: #1e293b; }
+    .brand h1 {
+      font-size: clamp(1.05rem, 3vw, 1.4rem);
+      margin-bottom: 0.25rem;
+    }
 
-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.88rem; }
-th, td { border: 1px solid var(--border); padding: 0.6rem; text-align: center; }
-th { background: #f1f5f9; font-weight: bold; }
+    .brand p {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.86rem;
+    }
 
-/* Styling Official Daily Report Paper */
-.official-report {
-  background: #fff;
-  padding: 2rem;
-  border: 1px solid #000;
-  margin-top: 1rem;
-}
-.official-header { text-align: center; font-weight: bold; line-height: 1.6; margin-bottom: 1.5rem; }
-.official-title { text-align: center; font-size: 1.6rem; font-weight: 900; text-decoration: underline; margin: 1.5rem 0; }
-.meta-info { display: flex; justify-content: space-between; margin-bottom: 1rem; font-weight: bold; }
+    .today {
+      padding: 0.65rem 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
 
-.report-section-title { font-weight: bold; margin-top: 1.2rem; margin-bottom: 0.4rem; text-decoration: underline; }
-.signatures { display: flex; justify-content: space-between; margin-top: 3.5rem; text-align: center; font-weight: bold; }
-.signatures div { width: 30%; }
+    main {
+      width: min(1180px, calc(100% - 2rem));
+      margin: -2.8rem auto 0;
+      position: relative;
+    }
 
-@media print {
-  nav, .no-print, button, input, select { display: none !important; }
-  body { background: white; padding: 0; }
-  main { max-width: 100%; margin: 0; padding: 0; }
-  .panel { border: none; padding: 0; }
-  .official-report { border: none; padding: 0; }
-  table { border: 1px solid #000; }
-  th, td { border: 1px solid #000 !important; }
-}
-</style>
+    .section {
+      display: none;
+      animation: fade 0.25s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(7px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      background: var(--primary-soft);
+    }
+
+    .stat-card.success .stat-icon { background: #ecfdf5; }
+    .stat-card.warning .stat-icon { background: #fffbeb; }
+    .stat-card.danger .stat-icon { background: #fef2f2; }
+
+    .stat-card small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+      font-size: 0.78rem;
+    }
+
+    .stat-card strong {
+      font-size: 1.25rem;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .panel-title h2 {
+      color: var(--primary-dark);
+      font-size: 1.06rem;
+      margin-bottom: 0.22rem;
+    }
+
+    .panel-title p {
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.38rem;
+    }
+
+    .field label {
+      color: #334155;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.72rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 88px;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.86rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 5px 12px rgba(29, 78, 216, 0.22);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .search-input {
+      max-width: 320px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      font-size: 0.86rem;
+    }
+
+    th, td {
+      padding: 0.82rem 0.7rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    th {
+      color: #334155;
+      background: #f8fafc;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    .empty-cell {
+      padding: 2rem !important;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.32rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge-good {
+      color: #047857;
+      background: #d1fae5;
+    }
+
+    .badge-medium {
+      color: #92400e;
+      background: #fef3c7;
+    }
+
+    .badge-repair {
+      color: #9a3412;
+      background: #ffedd5;
+    }
+
+    .badge-damaged {
+      color: #b91c1c;
+      background: #fee2e2;
+    }
+
+    .official-report {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff;
+      color: #111827;
+      padding: 2.5rem;
+      border: 1px solid #94a3b8;
+      border-radius: 10px;
+    }
+
+    .official-header {
+      text-align: center;
+      line-height: 1.85;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .official-title {
+      text-align: center;
+      margin: 1.6rem 0;
+      font-size: 1.45rem;
+      font-weight: 900;
+      text-decoration: underline;
+    }
+
+    .meta-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 0.75rem 0;
+      border-top: 1px solid #cbd5e1;
+      border-bottom: 1px solid #cbd5e1;
+      font-weight: 700;
+    }
+
+    .report-section-title {
+      margin: 1.4rem 0 0.55rem;
+      font-weight: 800;
+      text-decoration: underline;
+    }
+
+    .signatures {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 4rem;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .signature-line {
+      margin-top: 2.7rem;
+      border-top: 1px dotted #475569;
+      padding-top: 0.35rem;
+      font-weight: 400;
+      color: #475569;
+    }
+
+    nav {
+      position: fixed;
+      z-index: 1000;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+    }
+
+    nav button {
+      border: none;
+      padding: 0.7rem 1rem;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    nav button.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    #toast {
+      position: fixed;
+      z-index: 2000;
+      top: 1rem;
+      left: 50%;
+      transform: translate(-50%, -150%);
+      min-width: min(360px, calc(100% - 2rem));
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: #0f172a;
+      color: #fff;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease;
+      font-size: 0.9rem;
+    }
+
+    #toast.show {
+      transform: translate(-50%, 0);
+    }
+
+    @media (max-width: 780px) {
+      .header-content {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .official-report {
+        padding: 1rem;
+        font-size: 0.88rem;
+      }
+
+      .signatures {
+        font-size: 0.78rem;
+      }
+
+      .today {
+        display: none;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      header, nav, .no-print, .stats-grid {
+        display: none !important;
+      }
+
+      main {
+        width: 100%;
+        margin: 0;
+      }
+
+      .section {
+        display: none !important;
+      }
+
+      .section.active {
+        display: block !important;
+      }
+
+      .panel {
+        padding: 0;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+      }
+
+      .official-report {
+        width: 100%;
+        max-width: none;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+      }
+
+      .table-wrap {
+        border: none;
+      }
+
+      table {
+        min-width: 0;
+        font-size: 0.72rem;
+      }
+
+      th, td {
+        border: 1px solid #000 !important;
+        padding: 0.38rem;
+      }
+
+      textarea {
+        border: 1px solid #000;
+        border-radius: 0;
+        min-height: 60px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="no-print">
-  <h1>🔬 المنصة المتقدمة لتسيير المخبر المتوسط</h1>
-</header>
-
-<main>
-
-  <!-- 1. قسم الجرد -->
-  <section id="inventory" class="section active">
-    <div class="panel no-print">
-      <h2>📦 إضافة مادة / وسيلة للجرد</h2>
-      <div class="form-grid">
-        <input id="invNo" placeholder="رقم الجرد (مثال: G-2026/01)">
-        <input id="invName" placeholder="اسم المادة / الوسيلة">
-        <input id="invQty" type="number" placeholder="العدد (الكمية)">
-        <input id="invDate" type="date" placeholder="تاريخ الدخول">
-        <select id="invState">
-          <option value="جيدة">جيدة</option>
-          <option value="متوسطة">متوسطة</option>
-          <option value="تحتاج إصلاح">تحتاج إصلاح</option>
-          <option value="تالفة">تالفة</option>
-        </select>
-      </div>
-      <div style="margin-top:1rem;">
-        <button class="btn btn-primary" onclick="addInventory()">إضافة إلى الجرد</button>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div style="display:flex; justify-content:space-between; align-items:center;" class="no-print">
-        <h2>📋 سجل الجرد العام</h2>
-        <button class="btn btn-secondary" onclick="window.print()">🖨️ طباعة الجرد</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>الرقم</th>
-              <th>اسم المادة</th>
-              <th>العدد</th>
-              <th>رقم الجرد</th>
-              <th>تاريخ الدخول</th>
-              <th>الحالة</th>
-              <th class="no-print">إجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="inventoryTable"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2. قسم التقرير اليومي -->
-  <section id="dailyReport" class="section">
-    <div class="panel no-print">
-      <h2>⚙️ إعداد بيانات التقرير اليومي</h2>
-      <div class="form-grid">
-        <input id="schoolName" placeholder="اسم المتوسطة" oninput="updateReportMeta()">
-        <input id="reportNo" placeholder="رقم التقرير (مثال: 05/2026)" oninput="updateReportMeta()">
-        <input id="reportDate" type="date" onchange="updateReportMeta()">
-      </div>
-
-      <h3 style="margin-top:1rem; font-size:1rem; color:var(--primary);">➕ إضافة أستاذ وحصة للجدول اليومي:</h3>
-      <div class="form-grid" style="margin-top:0.5rem;">
-        <input id="teacherName" placeholder="اسم الأستاذ">
-        <input id="lessonTime" placeholder="التوقيت (مثال: 08:00 - 09:00)">
-        <input id="className" placeholder="القسم (مثال: 4م1)">
-        <input id="roomNo" placeholder="رقم القاعة">
-        <input id="appTitle" placeholder="عنوان التطبيق / التجربة">
-        <input id="toolsUsed" placeholder="الأدوات المستعملة">
-        <input id="teacherNote" placeholder="ملاحظة">
-      </div>
-      <div style="margin-top:0.8rem;">
-        <button class="btn btn-success" onclick="addTeacherRow()">إضافة الأستاذ إلى التقرير</button>
-      </div>
-    </div>
-
-    <!-- المعاينة والورقة الرسمية للتقرير اليومي -->
-    <div class="panel">
-      <div style="text-align: left; margin-bottom: 1rem;" class="no-print">
-        <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة التقرير اليومي</button>
-      </div>
-
-      <div class="official-report">
-        <div class="official-header">
-          الجمهورية الجزائرية الديمقراطية الشعبية<br>
-          وزارة التربية الوطنية<br>
-          مديرية التربية لولاية: ..................<br>
-          المتوسطة: <span id="lblSchool">....................................</span>
-        </div>
-
-        <div class="meta-info">
-          <span>التقرير رقم: <span id="lblReportNo">......</span></span>
-          <span>التاريخ: <span id="lblDate">..../../..</span></span>
-        </div>
-
-        <div class="official-title">التقرير اليومي للمخبر</div>
-
-        <!-- جدول الحصص والأساتذة -->
-        <table>
-          <thead>
-            <tr>
-              <th>اسم الأستاذ</th>
-              <th>التوقيت</th>
-              <th>القسم</th>
-              <th>رقم القاعة</th>
-              <th>عنوان التطبيق</th>
-              <th>الأدوات المستعملة</th>
-              <th>ملاحظة</th>
-              <th class="no-print">إجراء</th>
-            </tr>
-          </thead>
-          <tbody id="reportTableBody">
-          </tbody>
-        </table>
-
-        <!-- قسم حالة الأدوات والملاحظات -->
-        <div class="report-section-title">1. حالة الأدوات المستعملة:</div>
-        <textarea id="repToolsStatus" rows="2" placeholder="اكتب هنا حالة الأدوات بعد الاستعمال..."></textarea>
-
-        <div class="report-section-title">2. الأدوات المحتاجة غير المتوفرة:</div>
-        <div class="form-grid no-print" style="margin-bottom:0.5rem;">
-          <input id="missingToolName" placeholder="اسم الاداة غير المتوفرة">
-          <input id="missingToolDate" type="date">
-          <button class="btn btn-secondary" onclick="addMissingTool()">إضافة</button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>الأداة غير المتوفرة</th>
-              <th>تاريخ الاحتياج</th>
-              <th class="no-print">إجراء</th>
-            </tr>
-          </thead>
-          <tbody id="missingToolsBody"></tbody>
-        </table>
-
-        <div class="report-section-title">3. ملاحظات مختلفة:</div>
-        <textarea id="repOtherNotes" rows="2" placeholder="أي ملاحظات إضافية تخص سير العمل بالسياسة المخبرية..."></textarea>
-
-        <!-- التوقيعات الرسمية -->
-        <div class="signatures">
-          <div>المحضّر المخبري<br><br>........................</div>
-          <div>مستشار التربية<br><br>........................</div>
-          <div>المدير<br><br>........................</div>
+  <header class="no-print">
+    <div class="header-content">
+      <div class="brand">
+        <div class="brand-icon">🔬</div>
+        <div>
+          <h1>منصة تسيير المخبر المتوسط</h1>
+          <p>إدارة الجرد والتقرير اليومي بطريقة منظمة وسهلة</p>
         </div>
       </div>
+      <div class="today" id="todayLabel"></div>
     </div>
-  </section>
-</main>
+  </header>
 
-<nav class="no-print">
-  <button class="active" onclick="showSection('inventory', this)">📦 سجل الجرد</button>
-  <button onclick="showSection('dailyReport', this)">📑 التقرير اليومي</button>
-</nav>
+  <main>
 
-<script>
-// State Management
-const store = {
-  inventory: JSON.parse(localStorage.getItem('mb_inv_v2') || '[]'),
-  reportRows: JSON.parse(localStorage.getItem('mb_rep_rows') || '[]'),
-  missingTools: JSON.parse(localStorage.getItem('mb_rep_missing') || '[]'),
-  meta: JSON.parse(localStorage.getItem('mb_rep_meta') || '{"school":"","no":"","date":""}')
-};
+    <!-- قسم الجرد -->
+    <section id="inventory" class="section active">
 
-function saveData() {
-  localStorage.setItem('mb_inv_v2', JSON.stringify(store.inventory));
-  localStorage.setItem('mb_rep_rows', JSON.stringify(store.reportRows));
-  localStorage.setItem('mb_rep_missing', JSON.stringify(store.missingTools));
-  localStorage.setItem('mb_rep_meta', JSON.stringify(store.meta));
-  renderAll();
-}
+      <div class="stats-grid no-print">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div>
+            <small>عدد المواد</small>
+            <strong id="statItems">0</strong>
+          </div>
+        </div>
 
-function showSection(id, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-}
+        <div class="stat-card success">
+          <div class="stat-icon">🔢</div>
+          <div>
+            <small>إجمالي الكمية</small>
+            <strong id="statQuantity">0</strong>
+          </div>
+        </div>
 
-// 1. Inventory Logic
-function addInventory() {
-  const name = document.getElementById('invName').value.trim();
-  if(!name) return alert('يرجى كتابة اسم المادة');
+        <div class="stat-card warning">
+          <div class="stat-icon">🛠️</div>
+          <div>
+            <small>تحتاج إصلاح</small>
+            <strong id="statRepair">0</strong>
+          </div>
+        </div>
 
-  store.inventory.push({
-    id: Date.now(),
-    no: document.getElementById('invNo').value || '—',
-    name: name,
-    qty: document.getElementById('invQty').value || 0,
-    date: document.getElementById('invDate').value || '—',
-    state: document.getElementById('invState').value
-  });
+        <div class="stat-card danger">
+          <div class="stat-icon">⚠️</div>
+          <div>
+            <small>مواد تالفة</small>
+            <strong id="statDamaged">0</strong>
+          </div>
+        </div>
+      </div>
 
-  ['invNo','invName','invQty','invDate'].forEach(id => document.getElementById(id).value = '');
-  saveData();
-}
+      <div class="panel no-print">
+        <div class="panel-header">
+          <div class="panel-title">
+            <h2>إضافة مادة أو وسيلة للجرد</h2>
+            <p>سجّل المعدات والمواد المخبرية مع حالتها الحالية.</p>
+          </div>
+        </div>
 
-function deleteInventory(id) {
-  if(confirm('حذف هذا العنصر من الجرد؟')) {
-    store.inventory = store.inventory.filter(i => i.id !== id);
-    saveData();
-  }
-}
-
-function renderInventory() {
-  const tbody = document.getElementById('inventoryTable');
-  tbody.innerHTML = store.inventory.map((item, index) => `
-    <tr>
-      <td>${index + 1}</td>
-      <td><b>${item.name}</b></td>
-      <td>${item.qty}</td>
-      <td>${item.no}</td>
-      <td>${item.date}</td>
-      <td>${item.state}</td>
-      <td class="no-print"><button class="btn btn-danger" onclick="deleteInventory(${item.id})">مسح</button></td>
-    </tr>
-  `).join('') || '<tr><td colspan="7">لا توجد عناصر مسجلة في الجرد</td></tr>';
-}
-
-// 2. Daily Report Logic
-function updateReportMeta() {
-  store.meta.school = document.getElementById('schoolName').value;
-  store.meta.no = document.getElementById('reportNo').value;
-  store.meta.date = document.getElementById('reportDate').value;
-  saveData();
-}
-
-function addTeacherRow() {
-  const teacher = document.getElementById('teacherName').value.trim();
-  if(!teacher) return alert('يرجى كتابة اسم الأستاذ');
-
-  store.reportRows.push({
-    id: Date.now(),
-    teacher,
-    time: document.getElementById('lessonTime').value,
-    cls: document.getElementById('className').value,
-    room: document.getElementById('roomNo').value,
-    title: document.getElementById('appTitle').value,
-    tools: document.getElementById('toolsUsed').value,
-    note: document.getElementById('teacherNote').value
-  });
-
-  ['teacherName','lessonTime','className','roomNo','appTitle','toolsUsed','teacherNote'].forEach(id => document.getElementById(id).value = '');
-  saveData();
-}
-
-function deleteTeacherRow(id) {
-  store.reportRows = store.reportRows.filter(r => r.id !== id);
-  saveData();
-}
-
-function addMissingTool() {
-  const name = document.getElementById('missingToolName').value.trim();
-  if(!name) return;
-
-  store.missingTools.push({
-    id: Date.now(),
-    name,
-    date: document.getElementById('missingToolDate').value || '—'
-  });
-
-  document.getElementById('missingToolName').value = '';
-  document.getElementById('missingToolDate').value = '';
-  saveData();
-}
-
-function deleteMissingTool(id) {
-  store.missingTools = store.missingTools.filter(t => t.id !== id);
-  saveData();
-}
-
-function renderReport() {
-  // Update Header Elements
-  document.getElementById('lblSchool').textContent = store.meta.school || '....................................';
-  document.getElementById('lblReportNo').textContent = store.meta.no || '......';
-  document.getElementById('lblDate').textContent = store.meta.date || '..../../..';
-
-  document.getElementById('schoolName').value = store.meta.school || '';
-  document.getElementById('reportNo').value = store.meta.no || '';
-  document.getElementById('reportDate').value = store.meta.date || '';
-
-  // Render Teachers Table
-  const tbody = document.getElementById('reportTableBody');
-  tbody.innerHTML = store.reportRows.map(r => `
-    <tr>
-      <td><b>${r.teacher}</b></td>
-      <td>${r.time}</td>
-      <td>${r.cls}</td>
-      <td>${r.room}</td>
-      <td>${r.title}</td>
-      <td>${r.tools}</td>
-      <td>${r.note}</td>
-      <td class="no-print"><button class="btn btn-danger" onclick="deleteTeacherRow(${r.id})">مسح</button></td>
-    </tr>
-  `).join('') || '<tr><td colspan="8">لم يتم إضافة أي أستاذ بعد لهذا اليوم</td></tr>';
-
-  // Render Missing Tools
-  const mBody = document.getElementById('missingToolsBody');
-  mBody.innerHTML = store.missingTools.map(m => `
-    <tr>
-      <td>${m.name}</td>
-      <td>${m.date}</td>
-      <td class="no-print"><button class="btn btn-danger" onclick="deleteMissingTool(${m.id})">مسح</button></td>
-    </tr>
-  `).join('') || '<tr><td colspan="3">لا توجد أدوات ناقصة مسجلة</td></tr>';
-}
-
-function renderAll() {
-  renderInventory();
-  renderReport();
-}
-
-// Initial Load
-if(!store.meta.date) {
-  store.meta.date = new Date().toISOString().split('T')[0];
-}
-renderAll();
-</script>
-</body>
-</html>
+        <div class="form-grid">
+          <div class="field">
+            <label for="invNo">رقم الجرد</label>
+            <input id="invNo" placeho
