@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مخبرية | تسيير المواد الكيميائية والمخزون</title>
+  <title>مخبرية | تسيير الجرد، الكيمياء وطلبات الأساتذة</title>
 
   <style>
     :root {
@@ -62,7 +62,7 @@
     .field label { color: #334155; font-size: 0.82rem; font-weight: 700; }
     input, select, textarea { width: 100%; padding: 0.72rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; color: var(--text); background: #fff; font-size: 0.9rem; outline: none; }
     input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12); }
-    textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
     .actions { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-top: 1rem; }
     .btn { border: none; border-radius: 10px; padding: 0.7rem 1rem; cursor: pointer; font-weight: 700; font-size: 0.86rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; }
@@ -77,12 +77,11 @@
     th { color: #334155; background: #f8fafc; font-size: 0.8rem; white-space: nowrap; }
     tbody tr:hover { background: #f8fbff; }
 
-    .badge { display: inline-flex; align-items: center; justify-content: center; padding: 0.32rem 0.6rem; border-radius: 999px; font-size: 0.76rem; font-weight: 800; white-space: nowrap; }
+    .badge { display: inline-flex; align-items: center; justify-content: center; padding: 0.32rem 0.6rem; border-radius: 999px; font-size: 0.76rem; font-weight: 800; white-space: nowrap; cursor: pointer; }
     .badge-good { color: #047857; background: #d1fae5; }
     .badge-danger { color: #b91c1c; background: #fee2e2; }
     .badge-warning { color: #92400e; background: #fef3c7; }
 
-    /* شبكة بطاقات المواد الكيميائية */
     .chem-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; margin-top: 1rem; }
     .chem-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; box-shadow: var(--shadow); position: relative; }
     .chem-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.5rem; }
@@ -92,7 +91,6 @@
     .chem-qty-box { background: var(--primary-soft); padding: 0.6rem; border-radius: 8px; text-align: center; margin: 0.8rem 0; font-weight: bold; color: var(--primary-dark); }
     .chem-qty-box.low { background: #fee2e2; color: #b91c1c; }
 
-    /* جدول استعمال الزمن */
     .timetable { min-width: 600px; }
     .timetable th { background: var(--primary-dark); color: white; }
     .timetable td input { border: none; text-align: center; background: transparent; }
@@ -138,7 +136,7 @@
         <div class="brand-icon">🧪</div>
         <div>
           <h1>منصة تسيير مخبر العلوم الفيزيائية والتكنولوجيا</h1>
-          <p>بطاقات مراقبة المخزون الكيميائي، استهلاك الأساتذة، والجرد العام</p>
+          <p>إدارة طلبات الأساتذة الإلكترونية، المخزون الكيميائي، والجرد العام</p>
         </div>
       </div>
       <div class="today" id="todayLabel"></div>
@@ -147,10 +145,59 @@
 
   <main>
 
-    <!-- 1. بطاقات وسجلات المواد الكيميائية (محدث بالكامل) -->
-    <section id="chemicals" class="section active">
-      
-      <!-- إدراج أداة كيميائية جديدة -->
+    <!-- 1. طلبات الأساتذة عبر الموقع (محدث) -->
+    <section id="teacherRequests" class="section active">
+      <div class="panel no-print" style="border-right: 5px solid var(--primary);">
+        <div class="panel-header">
+          <div class="panel-title">
+            <h2>📝 استمارة طلب الوسائل والأدوات المخبرية (خاصة بالأستاذ)</h2>
+            <p>يمكن للأستاذ ملء الاستمارة لإيداع طلب تحضير تجربة أو حصة تطبيقية مباشرة</p>
+          </div>
+        </div>
+        <form id="teacherOrderForm" onsubmit="addTeacherRequest(event)">
+          <div class="form-grid">
+            <div class="field"><label>اسم الأستاذ(ة)</label><input id="reqTeacher" required placeholder="الاسم واللقب"></div>
+            <div class="field"><label>المستوى / القسم</label><input id="reqClass" required placeholder="مثال: 4 متوسط 1"></div>
+            <div class="field"><label>تاريخ الحصة التطبيقية</label><input id="reqDate" type="date" required></div>
+            <div class="field"><label>توقيت الحصة</label><input id="reqTime" required placeholder="مثال: 08:00 - 09:00"></div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label>قائمة الوسائل، الأجهزة والمواد الكيميائية المطلوبة</label>
+              <textarea id="reqItems" required placeholder="اكتب بالتفصيل: اسم التجربة، الأجهزة المطلوبة، الزجاجيات، والمحاليل الكيميائية بتركيزها..."></textarea>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">📤 إرسال الطلب إلى المخبر</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header no-print">
+          <h2>سجل متابعة واستلام طلبات الأساتذة</h2>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة سجل الطلبات</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الأستاذ</th>
+                <th>القسم</th>
+                <th>تاريخ الحصة</th>
+                <th>التوقيت</th>
+                <th>الوسائل والمواد المطلوبة</th>
+                <th>حالة الطلب</th>
+                <th class="no-print">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="requestsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. المواد الكيميائية والمخزون -->
+    <section id="chemicals" class="section">
       <div class="panel no-print">
         <div class="panel-header">
           <div class="panel-title">
@@ -162,7 +209,7 @@
           <div class="field"><label>اسم المادة الكيميائية</label><input id="chemName" placeholder="مثال: حمض كلور الماء"></div>
           <div class="field"><label>الصيغة الكيميائية</label><input id="chemFormula" placeholder="مثال: HCl"></div>
           <div class="field"><label>المصدر / المورد</label><input id="chemSource" placeholder="مثال: ميزانية المؤسسة / مديرية التربية"></div>
-          <div class="field"><label>الكمية الابتدائية (الكلية)</label><input id="chemTotalQty" type="number" step="0.01" placeholder="مثال: 1000 (مل/غ)"></div>
+          <div class="field"><label>الكمية الابتدائية الكلية</label><input id="chemTotalQty" type="number" step="0.01" placeholder="مثال: 1000"></div>
           <div class="field"><label>وحدة القياس</label>
             <select id="chemUnit">
               <option value="مل (ml)">مليلتر (ml)</option>
@@ -185,12 +232,11 @@
         </div>
       </div>
 
-      <!-- تسجيل استهلاك مادة من طرف أستاذ -->
       <div class="panel no-print" style="border-right: 4px solid var(--warning);">
         <div class="panel-header">
           <div class="panel-title">
-            <h2>📋 تسجيل خروج / استهلاك مادة كيميائية للأستاذ</h2>
-            <p>تخفيض تلقائي للكمية المتبقية وتسجيل اسم الأستاذ المستعمل</p>
+            <h2>📋 تسجيل خصم / استهلاك مادة كيميائية للأستاذ</h2>
+            <p>تخفيض تلقائي للكمية المتبقية وتسجيل الأستاذ المستعمل</p>
           </div>
         </div>
         <div class="form-grid">
@@ -200,7 +246,7 @@
           </div>
           <div class="field">
             <label>اسم الأستاذ المستعمل</label>
-            <input id="useTeacherName" placeholder="اسم الأستاذ والحصة">
+            <input id="useTeacherName" placeholder="اسم الأستاذ الحصة">
           </div>
           <div class="field">
             <label>الكمية المستهلكة</label>
@@ -216,19 +262,15 @@
         </div>
       </div>
 
-      <!-- بطاقات المواد الكيميائية المخزنة -->
       <div class="panel">
         <div class="panel-header">
           <h2>بطاقات مراقبة المخزون الكيميائي والكميات المتبقية</h2>
           <button class="btn btn-primary no-print" onclick="window.print()">🖨️ طباعة بطاقات الكيمياء</button>
         </div>
         
-        <div id="chemCardsContainer" class="chem-cards-grid">
-          <!-- تظهر بطاقات المواد الكيميائية هنا -->
-        </div>
+        <div id="chemCardsContainer" class="chem-cards-grid"></div>
       </div>
 
-      <!-- سجل الاستهلاك التفصيلي -->
       <div class="panel">
         <div class="panel-header">
           <h2>سجل متابعة الاستهلاك واستعمالات الأساتذة</h2>
@@ -244,10 +286,9 @@
           </table>
         </div>
       </div>
-
     </section>
 
-    <!-- 2. سجل الجرد العام -->
+    <!-- 3. سجل الجرد العام -->
     <section id="inventory" class="section">
       <div class="panel no-print">
         <div class="panel-header">
@@ -294,48 +335,6 @@
       </div>
     </section>
 
-    <!-- 3. طلبات الأساتذة -->
-    <section id="teacherRequests" class="section">
-      <div class="panel no-print">
-        <div class="panel-header">
-          <div class="panel-title">
-            <h2>تسجيل طلب الأستاذ للوسائل المخبرية</h2>
-            <p>إيداع الطلبات المسبقة لإعداد التجارب</p>
-          </div>
-        </div>
-        <div class="form-grid">
-          <div class="field"><label>اسم الأستاذ</label><input id="reqTeacher" placeholder="الاسم واللقب"></div>
-          <div class="field"><label>المستوى/القسم</label><input id="reqClass" placeholder="مثال: 4 متوسط"></div>
-          <div class="field"><label>تاريخ الحصة</label><input id="reqDate" type="date"></div>
-          <div class="field"><label>التوقيت</label><input id="reqTime" placeholder="مثال: 08:00 - 09:00"></div>
-          <div class="field" style="grid-column: 1 / -1;">
-            <label>الأدوات والمواد الكيميائية المطلوبة</label>
-            <textarea id="reqItems" placeholder="اكتب قائمة الأدوات والمحلول المطلوب بالتفصيل..."></textarea>
-          </div>
-        </div>
-        <div class="actions">
-          <button class="btn btn-primary" onclick="addTeacherRequest()">＋ تسجيل الطلب</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-header no-print">
-          <h2>سجل الطلبات المسبقة للأساتذة</h2>
-          <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة الطلبات</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>الأستاذ</th><th>القسم</th><th>التاريخ</th><th>التوقيت</th><th>الوسائل والمواد المطلوبة</th><th class="no-print">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="requestsTable"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
     <!-- 4. استعمال زمن المخبر -->
     <section id="timetable" class="section">
       <div class="panel">
@@ -369,9 +368,9 @@
   </main>
 
   <nav class="no-print">
-    <button class="active" onclick="showSection('chemicals', this)">🧪 المواد الكيميائية والمخزون</button>
+    <button class="active" onclick="showSection('teacherRequests', this)">📝 طلبات الأساتذة</button>
+    <button onclick="showSection('chemicals', this)">🧪 المواد الكيميائية والمخزون</button>
     <button onclick="showSection('inventory', this)">📦 الجرد العام</button>
-    <button onclick="showSection('teacherRequests', this)">📝 طلبات الأساتذة</button>
     <button onclick="showSection('timetable', this)">📅 استعمال الزمن</button>
   </nav>
 
@@ -381,12 +380,12 @@
     const SECRET_CODE = "2026";
 
     const storageKeys = {
-      activated: "lab_activated_v5",
-      inventory: "lab_inventory_v5",
-      chemicals: "lab_chemicals_v5",
-      chemUsage: "lab_chem_usage_v5",
-      requests: "lab_requests_v5",
-      timetable: "lab_timetable_v5"
+      activated: "lab_activated_v6",
+      inventory: "lab_inventory_v6",
+      chemicals: "lab_chemicals_v6",
+      chemUsage: "lab_chem_usage_v6",
+      requests: "lab_requests_v6",
+      timetable: "lab_timetable_v6"
     };
 
     const store = {
@@ -429,13 +428,78 @@
       btn.classList.add("active");
     }
 
-    /* إدارة المواد الكيميائية والمخزون */
+    /* 1. طلبات الأساتذة بالموقع */
+    function addTeacherRequest(e) {
+      e.preventDefault();
+      
+      const teacher = document.getElementById("reqTeacher").value.trim();
+      const cls = document.getElementById("reqClass").value.trim();
+      const date = document.getElementById("reqDate").value;
+      const time = document.getElementById("reqTime").value.trim();
+      const items = document.getElementById("reqItems").value.trim();
+
+      store.requests.unshift({
+        id: uid(),
+        teacher,
+        cls,
+        date,
+        time,
+        items,
+        status: "قيد التحضير ⏳"
+      });
+
+      localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
+      renderRequests();
+      showToast("تم إرسال طلبك بنجاح إلى المخبر!");
+      document.getElementById("teacherOrderForm").reset();
+    }
+
+    function toggleRequestStatus(id) {
+      const req = store.requests.find(r => r.id === id);
+      if (req) {
+        req.status = (req.status === "قيد التحضير ⏳") ? "جاهز للمعاينة 🟢" : "قيد التحضير ⏳";
+        localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
+        renderRequests();
+        showToast("تم تغيير حالة الطلب");
+      }
+    }
+
+    function renderRequests() {
+      const tbody = document.getElementById("requestsTable");
+      tbody.innerHTML = store.requests.map((req, i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td><strong>${req.teacher}</strong></td>
+          <td>${req.cls}</td>
+          <td>${req.date}</td>
+          <td>${req.time}</td>
+          <td style="text-align:right;">${req.items}</td>
+          <td>
+            <span class="badge ${req.status.includes('جاهز')?'badge-good':'badge-warning'}" onclick="toggleRequestStatus('${req.id}')" title="اضغط لتغيير الحالة">
+              ${req.status}
+            </span>
+          </td>
+          <td class="no-print">
+            <button class="btn btn-danger" onclick="deleteReq('${req.id}')">🗑️ حذف</button>
+          </td>
+        </tr>
+      `).join("") || "<tr><td colspan='8'>لا توجد طلبات أستاذ حالية</td></tr>";
+    }
+
+    function deleteReq(id) {
+      if(!confirm("هل تريد حذف هذا الطلب؟")) return;
+      store.requests = store.requests.filter(x => x.id !== id);
+      localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
+      renderRequests();
+    }
+
+    /* 2. إدارة المواد الكيميائية والمخزون */
     function addChemical() {
       const name = document.getElementById("chemName").value.trim();
       const totalQty = parseFloat(document.getElementById("chemTotalQty").value || 0);
 
       if (!name) return showToast("يرجى كتابة اسم المادة الكيميائية");
-      if (totalQty <= 0) return showToast("يرجى أدخال كمية ابتدائية صحيحة");
+      if (totalQty <= 0) return showToast("يرجى إدخال كمية ابتدائية صحيحة");
 
       store.chemicals.unshift({
         id: uid(),
@@ -502,7 +566,6 @@
       
       container.innerHTML = store.chemicals.map(chem => {
         select.innerHTML += `<option value="${chem.id}">${chem.name} (المتبقي: ${chem.remainingQty} ${chem.unit})</option>`;
-        
         const isLow = chem.remainingQty <= (chem.totalQty * 0.2);
 
         return `
@@ -526,7 +589,6 @@
         `;
       }).join("") || "<p style='grid-column:1/-1; text-align:center;'>لا توجد بطاقات مواد كيميائية مسجلة بعد.</p>";
 
-      // جدول تاريخ الاستعمال
       const usageTbody = document.getElementById("usageHistoryTable");
       usageTbody.innerHTML = store.chemUsage.map((use, i) => `
         <tr>
@@ -553,7 +615,7 @@
       renderChemicals();
     }
 
-    /* 2. الجرد العام */
+    /* 3. الجرد العام */
     function addInventory() {
       const name = document.getElementById("invName").value.trim();
       if (!name) return showToast("يرجى إدخال اسم الوسيلة");
@@ -593,45 +655,6 @@
       renderInventory();
     }
 
-    /* 3. طلبات الأساتذة */
-    function addTeacherRequest() {
-      const teacher = document.getElementById("reqTeacher").value.trim();
-      if (!teacher) return showToast("يرجى إدخال اسم الأستاذ");
-
-      store.requests.unshift({
-        id: uid(),
-        teacher,
-        cls: document.getElementById("reqClass").value.trim() || "—",
-        date: document.getElementById("reqDate").value || "—",
-        time: document.getElementById("reqTime").value.trim() || "—",
-        items: document.getElementById("reqItems").value.trim() || "—"
-      });
-
-      localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
-      renderRequests();
-      showToast("تم إيداع طلب الأستاذ");
-    }
-
-    function renderRequests() {
-      const tbody = document.getElementById("requestsTable");
-      tbody.innerHTML = store.requests.map(req => `
-        <tr>
-          <td><strong>${req.teacher}</strong></td>
-          <td>${req.cls}</td>
-          <td>${req.date}</td>
-          <td>${req.time}</td>
-          <td style="text-align:right;">${req.items}</td>
-          <td class="no-print"><button class="btn btn-danger" onclick="deleteReq('${req.id}')">🗑️</button></td>
-        </tr>
-      `).join("") || "<tr><td colspan='6'>لا توجد طلبات أستاذ حالية</td></tr>";
-    }
-
-    function deleteReq(id) {
-      store.requests = store.requests.filter(x => x.id !== id);
-      localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
-      renderRequests();
-    }
-
     /* 4. استعمال الزمن */
     const days = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس"];
     const hours = ["08-09", "09-10", "10-11", "11-12", "13-14", "14-15", "15-16"];
@@ -665,9 +688,10 @@
       initActivation();
       document.getElementById("todayLabel").textContent = new Intl.DateTimeFormat("ar-DZ", { weekday: "long", year: "numeric", month: "long", day: "numeric" }).format(new Date());
       document.getElementById("useDate").value = new Date().toISOString().slice(0,10);
+      document.getElementById("reqDate").value = new Date().toISOString().slice(0,10);
+      renderRequests();
       renderChemicals();
       renderInventory();
-      renderRequests();
       renderTimetable();
     }
 
