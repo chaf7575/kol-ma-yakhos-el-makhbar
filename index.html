@@ -32,36 +32,26 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 .overlay.show{display:block}.modal{background:#fff;max-width:1100px;margin:20px auto;border-radius:14px;padding:18px}
 .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
 .kpi .card{background:#f7fafc}.danger-text{color:#a00000;font-weight:700}.ok-text{color:#137333;font-weight:700}
-@media print{.overlay{display:none!important}}.timetable{overflow:auto}
-.timetable table{min-width:1100px}
+.timetable{overflow:auto}.timetable table{min-width:1100px}
 .tt-cell{min-width:150px;height:78px}
-.lesson-card{background:#f4f8fb;border:1px solid #d8e4ed;border-radius:8px;padding:7px;font-size:12px;line-height:1.5;margin-bottom:5px}
+.lesson-card{background:#f4f8fb;border:1px solid #d8e4ed;border-radius:8px;padding:7px;font-size:12px;line-height:1.5;margin-bottom:5px;position:relative}
 .lesson-card strong{display:block;font-size:13px}
-.teacher-chip{font-weight:700}
 </style>
-</head><script>
-  // نظام أكواد التفعيل - منصة المخبري
+</head>
+<script>
   const ACTIVATION_KEY = "LAB2026";
-
   function checkActivationCode() {
     const savedCode = localStorage.getItem("lab_activation_code");
-
-    if (savedCode === ACTIVATION_KEY) {
-      return true;
-    }
-
+    if (savedCode === ACTIVATION_KEY) return true;
     const code = prompt("أدخل كود تفعيل منصة المخبري:");
-
     if (code === ACTIVATION_KEY) {
       localStorage.setItem("lab_activation_code", code);
       alert("تم تفعيل منصة المخبري بنجاح.");
       return true;
     }
-
     alert("كود التفعيل غير صحيح.");
     return false;
   }
-
   window.addEventListener("load", checkActivationCode);
 </script>
 <body>
@@ -72,7 +62,9 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 
 <nav id="nav">
 <button class="active" data-id="home">الرئيسية</button>
-<button data-id="inventory">المخزون والجرد</button><button data-id="chemicals">المواد الكيميائية</button><button data-id="timetable">استعمال زمن الأساتذة</button>
+<button data-id="inventory">المخزون والجرد</button>
+<button data-id="chemicals">المواد الكيميائية</button>
+<button data-id="timetable">استعمال زمن الأساتذة</button>
 <button data-id="experiments">التجارب والوسائل</button>
 <button data-id="weekly">الخطة الأسبوعية</button>
 <button data-id="reports">الأعمال التطبيقية</button>
@@ -83,7 +75,7 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 <main>
 <section id="home" class="section active">
 <h2>لوحة التحكم</h2>
-<div class="notice">البيانات المعروضة أدناه مدمجة داخل المنصة، ولا تعتمد على وجود بيانات محفوظة مسبقًا في متصفحك.</div>
+<div class="notice">البيانات المعروضة أدناه مدمجة داخل المنصة وتحفظ تلقائياً في المتصفح المحالي.</div>
 <div class="cards">
 <div class="card">وسائل الجرد<div class="num" id="statInv">0</div></div>
 <div class="card">التجارب والأنشطة<div class="num" id="statEx">0</div></div>
@@ -92,17 +84,20 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 <div class="card">تنبيهات الجرد<div class="num" id="statAlert">0</div></div>
 </div>
 <div class="panel" style="margin-top:14px">
-<h3>المستويات</h3><span class="tag">1 متوسط</span><span class="tag">2 متوسط</span><span class="tag">3 متوسط</span><span class="tag">4 متوسط</span>
+<h3>المستويات Target</h3><span class="tag">1 متوسط</span><span class="tag">2 متوسط</span><span class="tag">3 متوسط</span><span class="tag">4 متوسط</span>
 </div>
-</section><a href="timetable.html?v=20260924" style="display:inline-block;margin-top:10px;background:#176b87;color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none">📅 فتح استعمال زمن الأساتذة</a>
+</section>
 
 <section id="inventory" class="section">
 <h2>المخزون والجرد</h2>
 <div class="panel form">
-<input id="invName" placeholder="اسم الوسيلة أو المادة"><select id="invCat"><option>زجاجيات</option><option>أجهزة قياس</option><option>أجهزة كهربائية</option><option>أجهزة بصرية</option><option>ميكانيك</option><option>مواد وكواشف تعليمية</option><option>معدات سلامة</option><option>معدات عامة</option></select>
-<input id="invQty" type="number" min="0" placeholder="الكمية"><input id="invMin" type="number" min="0" placeholder="الحد الأدنى">
+<input id="invName" placeholder="اسم الوسيلة أو المادة">
+<select id="invCat"><option>زجاجيات</option><option>أجهزة قياس</option><option>أجهزة كهربائية</option><option>أجهزة بصرية</option><option>ميكانيك</option><option>مواد وكواشف تعليمية</option><option>معدات سلامة</option><option>معدات عامة</option></select>
+<input id="invQty" type="number" min="0" placeholder="الكمية">
+<input id="invMin" type="number" min="0" placeholder="الحد الأدنى">
 <select id="invState"><option>جيدة</option><option>متوسطة</option><option>تحتاج إصلاح</option><option>تالفة</option></select>
-<input id="invPlace" placeholder="مكان التخزين"><input id="invRef" placeholder="رقم الجرد"><textarea id="invNote" class="full" placeholder="ملاحظات"></textarea>
+<input id="invPlace" placeholder="مكان التخزين"><input id="invRef" placeholder="رقم الجرد">
+<textarea id="invNote" class="full" placeholder="ملاحظات"></textarea>
 <button id="addInvBtn" class="primary">إضافة إلى الجرد</button>
 </div>
 <div class="toolbar no-print"><input id="invSearch" placeholder="بحث في الجرد"><button id="printInv" class="secondary">طباعة الجرد</button></div>
@@ -111,13 +106,13 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 
 <section id="chemicals" class="section">
 <h2>المخزون الكيميائي</h2>
-<div class="notice">لكل مادة كيميائية بطاقة مستقلة. يسجل فيها تاريخ الشراء والجهة المستخرج/المشتراة منها، ثم يسجل كل استعمال باسم الأستاذ وتاريخه وحجم الاستعمال، ويحسب المتبقي تلقائيًا.</div>
+<div class="notice">لكل مادة كيميائية بطاقة مستقلة يتابع فيها المتبقي تلقائياً.</div>
 <div class="panel form">
 <input id="chemName" placeholder="اسم المادة الكيميائية">
 <input id="chemFormula" placeholder="الصيغة / الرمز">
 <input id="chemStock" type="number" min="0" step="0.01" placeholder="المخزون الأولي">
 <select id="chemUnit"><option>mL</option><option>L</option><option>g</option><option>kg</option><option>وحدة</option></select>
-<input id="chemPurchaseDate" type="date" title="تاريخ الشراء">
+<input id="chemPurchaseDate" type="date">
 <input id="chemSource" placeholder="الجهة المستخرج/المشتراة منها">
 <input id="chemStorage" placeholder="مكان التخزين">
 <input id="chemHazard" placeholder="احتياطات/تصنيف السلامة">
@@ -130,15 +125,22 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 
 <section id="timetable" class="section">
 <h2>استعمال زمن الأساتذة</h2>
-<div class="notice">استعمال زمن أسبوعي جاهز: الأيام والحصص ظاهرة دائمًا، وتظهر بيانات الأستاذ والقسم والمادة والتجربة داخل الخانة المناسبة بعد الإضافة.</div>
 <div class="panel form">
 <input id="ttTeacher" placeholder="اسم الأستاذ">
 <select id="ttSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
 <select id="ttLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
 <input id="ttClass" placeholder="القسم — مثال: 1م1">
 <select id="ttDay"><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
-<input id="ttStart" type="time">
-<input id="ttEnd" type="time">
+<select id="ttSlot">
+  <option value="08:00 - 09:00">08:00 - 09:00</option>
+  <option value="09:00 - 10:00">09:00 - 10:00</option>
+  <option value="10:00 - 11:00">10:00 - 11:00</option>
+  <option value="11:00 - 12:00">11:00 - 12:00</option>
+  <option value="13:00 - 14:00">13:00 - 14:00</option>
+  <option value="14:00 - 15:00">14:00 - 15:00</option>
+  <option value="15:00 - 16:00">15:00 - 16:00</option>
+  <option value="16:00 - 17:00">16:00 - 17:00</option>
+</select>
 <input id="ttRoom" placeholder="القاعة/المخبر">
 <input id="ttActivity" placeholder="التجربة / النشاط">
 <textarea id="ttNote" class="full" placeholder="ملاحظات"></textarea>
@@ -169,7 +171,6 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 
 <section id="weekly" class="section">
 <h2>الخطة الأسبوعية</h2>
-<div class="notice">36 أسبوعًا × 4 مستويات × مادتين = 288 بطاقة أسبوعية تنظيمية أولية. راجعها مع التدرج الرسمي المعتمد في مؤسستك.</div>
 <div class="panel form">
 <input id="wWeek" type="number" min="1" max="52" placeholder="الأسبوع"><select id="wLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
 <select id="wSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select><input id="wLesson" placeholder="الدرس/المحور"><input id="wExp" placeholder="التجربة/النشاط">
@@ -210,144 +211,149 @@ th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-alig
 <div id="curriculumOut"></div>
 </section>
 </main>
+
 <div id="chemicalPage" class="overlay" onclick="if(event.target===this)closeChemical()"></div>
 
 <script>
-const inventorySeed=[["بيشر 100 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["بيشر 250 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["بيشر 500 مل","زجاجيات",8,2,"جيدة","خزانة الزجاجيات"],["مخبار مدرج 100 مل","زجاجيات",10,2,"جيدة","خزانة القياس"],["مخبار مدرج 250 مل","زجاجيات",8,2,"جيدة","خزانة القياس"],["أنابيب اختبار","زجاجيات",30,10,"جيدة","خزانة الاختبارات"],["حامل أنابيب اختبار","معدات عامة",6,2,"جيدة","خزانة الاختبارات"],["قطارات","معدات عامة",20,5,"جيدة","خزانة الأدوات"],["قمع زجاجي","زجاجيات",8,2,"جيدة","خزانة الزجاجيات"],["ورق ترشيح","معدات عامة",50,10,"جيدة","رف المواد الاستهلاكية"],["ميزان إلكتروني","أجهزة قياس",2,1,"جيدة","خزانة الأجهزة"],["ميزان ذو كفتين","أجهزة قياس",2,1,"متوسطة","خزانة الأجهزة"],["مخبر حرارة/ترمومتر","أجهزة قياس",6,2,"جيدة","خزانة الأجهزة"],["ساعة إيقاف","أجهزة قياس",4,1,"جيدة","خزانة الأجهزة"],["مغناطيس قضيب","أجهزة قياس",8,2,"جيدة","خزانة الفيزياء"],["بوصلة","أجهزة قياس",8,2,"جيدة","خزانة الفيزياء"],["عدسة مكبرة","أجهزة بصرية",8,2,"جيدة","خزانة SVT"],["مجهر ضوئي","أجهزة بصرية",2,1,"جيدة","خزانة المجاهر"],["شرائح مجهرية","أجهزة بصرية",30,10,"جيدة","خزانة المجاهر"],["أغطية شرائح","أجهزة بصرية",40,10,"جيدة","خزانة المجاهر"],["مرآة مستوية","أجهزة بصرية",8,2,"جيدة","خزانة البصريات"],["عدسة محدبة","أجهزة بصرية",8,2,"جيدة","خزانة البصريات"],["عدسة مقعرة","أجهزة بصرية",6,2,"جيدة","خزانة البصريات"],["مصدر ضوئي","أجهزة بصرية",4,1,"جيدة","خزانة البصريات"],["مولد توتر منخفض","أجهزة كهربائية",4,1,"جيدة","خزانة الكهرباء"],["مصابيح صغيرة","أجهزة كهربائية",20,5,"جيدة","خزانة الكهرباء"],["أسلاك توصيل","أجهزة كهربائية",40,10,"جيدة","خزانة الكهرباء"],["مفاتيح كهربائية","أجهزة كهربائية",12,3,"جيدة","خزانة الكهرباء"],["مقاومات كهربائية","أجهزة كهربائية",30,10,"جيدة","خزانة الكهرباء"],["أمبيرمتر مدرسي","أجهزة قياس",4,1,"جيدة","خزانة الكهرباء"],["فولتمتر مدرسي","أجهزة قياس",4,1,"جيدة","خزانة الكهرباء"],["متعدد القياسات","أجهزة قياس",2,1,"جيدة","خزانة الأجهزة"],["زنبرك","ميكانيك",8,2,"جيدة","خزانة الميكانيك"],["ثقل/كتل معيارية","ميكانيك",12,3,"جيدة","خزانة الميكانيك"],["بكرة","ميكانيك",4,1,"جيدة","خزانة الميكانيك"],["حامل معدني ومشابك","معدات عامة",4,1,"جيدة","خزانة الميكانيك"],["قضيب مدرج","أجهزة قياس",4,1,"جيدة","خزانة القياس"],["نظارات واقية","معدات سلامة",10,4,"جيدة","خزانة السلامة"],["قفازات مخبرية","معدات سلامة",20,5,"جيدة","خزانة السلامة"],["مئزر مخبري","معدات سلامة",10,4,"جيدة","خزانة السلامة"],["ماصة بلاستيكية","معدات عامة",20,5,"جيدة","رف المواد الاستهلاكية"],["ملقط","معدات عامة",10,3,"جيدة","خزانة الأدوات"],["ملعقة مخبرية","معدات عامة",8,2,"جيدة","خزانة الأدوات"],["مقص","معدات عامة",6,2,"جيدة","خزانة الأدوات"],["مسطرة 30 سم","أجهزة قياس",10,3,"جيدة","خزانة القياس"],["ماء مقطر","مواد وكواشف تعليمية",6,2,"جيدة","رف المواد الاستهلاكية"],["محلول اليود/لوغول","مواد وكواشف تعليمية",2,1,"جيدة","خزانة الكواشف"],["كلوريد الصوديوم","مواد وكواشف تعليمية",2,1,"جيدة","خزانة المواد"]];
+const inventorySeed=[["بيشر 100 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["بيشر 250 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["مخبار مدرج 100 مل","زجاجيات",10,2,"جيدة","خزانة القياس"],["ميزان إلكتروني","أجهزة قياس",2,1,"جيدة","خزانة الأجهزة"],["مولد توتر منخفض","أجهزة كهربائية",4,1,"جيدة","خزانة الكهرباء"]];
+const experimentSeed=[["1 متوسط","علوم الطبيعة والحياة","التغذية","الكشف عن النشاء في الأغذية","يود/لوغول؛ عينات غذائية؛ أطباق","الكشف عن النشاء"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة وتحولاتها","قياس الحجم بالمخبار المدرج","مخبار مدرج؛ ماء؛ أجسام مناسبة","قراءة الحجم"]];
+const curriculumSeed=[["1 متوسط","علوم الطبيعة والحياة","التغذية عند الإنسان","مصدر وتركيب الأغذية؛ دور الأغذية في الجسم"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة والتحولات","حالات المادة؛ القياس؛ الظواهر الكهربائية"]];
 
-const experimentSeed=[["1 متوسط","علوم الطبيعة والحياة","التغذية","الكشف عن النشاء في الأغذية","يود/لوغول؛ عينات غذائية؛ أطباق","الكشف عن النشاء"],["1 متوسط","علوم الطبيعة والحياة","النبات الأخضر","ملاحظة أعضاء النبات الأخضر","نبات أخضر؛ عدسة مكبرة؛ أدوات ملاحظة","التعرف على الأعضاء"],["1 متوسط","علوم الطبيعة والحياة","النبات الأخضر","ملاحظة انتقال الماء في النبات","نبات مناسب؛ ماء ملون؛ كأس","متابعة انتقال الماء"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة وتحولاتها","تمييز حالات المادة","ماء؛ ثلج؛ أوعية؛ مخبار مدرج","مقارنة الحالات"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة وتحولاتها","قياس الحجم بالمخبار المدرج","مخبار مدرج؛ ماء؛ أجسام مناسبة","قراءة الحجم"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة وتحولاتها","قياس الكتلة","ميزان؛ أجسام؛ أوعية","تحديد الكتلة"],["1 متوسط","علوم فيزيائية وتكنولوجيا","الظواهر الكهربائية","دارة كهربائية بسيطة","بطارية؛ مصباح؛ أسلاك؛ مفتاح","إضاءة المصباح"],["1 متوسط","علوم فيزيائية وتكنولوجيا","الضوء","انتشار الضوء","مصدر ضوئي؛ شاشة؛ حواجز ذات فتحات","ملاحظة المسار"],["2 متوسط","علوم الطبيعة والحياة","الإنسان والمحيط","مكونات نظام بيئي","صور/نماذج؛ جداول ملاحظة","تمييز الحي واللاحي"],["2 متوسط","علوم الطبيعة والحياة","الأوساط","تكيف النباتات مع الوسط","عينات نباتية؛ صور؛ عدسة","ربط الصفات بالوسط"],["2 متوسط","علوم الطبيعة والحياة","الكائنات الحية","تنفس الحيوانات","نماذج ووسائل مدرسية مناسبة","ربط التنفس بالوسط"],["2 متوسط","علوم الطبيعة والحياة","التكاثر","ملاحظة بنية زهرة","أزهار؛ عدسة مكبرة","التعرف على أعضاء الزهرة"],["2 متوسط","علوم فيزيائية وتكنولوجيا","المادة وتحولاتها","الانصهار والتجمد","ثلج؛ ماء؛ ميزان حرارة؛ أوعية","متابعة تغير الحالة"],["2 متوسط","علوم فيزيائية وتكنولوجيا","المادة وتحولاتها","قياس حجم جسم صلب","مخبار مدرج؛ ماء؛ أجسام صلبة","استعمال الإزاحة"],["2 متوسط","علوم فيزيائية وتكنولوجيا","الكهرباء","ربط مصباحين في دارة","بطارية؛ مصباحان؛ أسلاك؛ مفتاح","مقارنة الإضاءة"],["2 متوسط","علوم فيزيائية وتكنولوجيا","الميكانيك","تأثير القوة على الحركة","عربة/جسم؛ أوزان؛ سطح مناسب","ملاحظة تغير الحركة"],["3 متوسط","علوم الطبيعة والحياة","التربة","مكونات التربة","عينات تربة؛ ماء؛ أوعية","ملاحظة المكونات"],["3 متوسط","علوم الطبيعة والحياة","التربة","مقارنة نفاذية الترب","عينات تربة؛ ماء؛ مرشحات؛ أوعية","مقارنة سرعة المرور"],["3 متوسط","علوم الطبيعة والحياة","البيئة","أثر الإنسان على الوسط","صور/معطيات؛ جداول","تحليل الأثر"],["3 متوسط","علوم الطبيعة والحياة","الديناميكية الداخلية","نمذجة تشكل الزلازل","نموذج/وسائل عرض","ربط الظاهرة بالديناميكية الداخلية"],["3 متوسط","علوم فيزيائية وتكنولوجيا","التحولات الكيميائية","تمييز تحول فيزيائي عن كيميائي","مواد تعليمية وفق البروتوكول","تسجيل مظاهر التحول"],["3 متوسط","علوم فيزيائية وتكنولوجيا","الطاقة","تحول الطاقة في نظام","زنبرك/ثقل/وسيلة مناسبة","تتبع تحول الطاقة"],["3 متوسط","علوم فيزيائية وتكنولوجيا","الكهرباء","قياس شدة التيار","مولد؛ أمبيرمتر؛ مقاومات؛ أسلاك","قراءة شدة التيار"],["3 متوسط","علوم فيزيائية وتكنولوجيا","الكهرباء","قياس فرق الكمون","مولد؛ فولتمتر؛ مقاومات؛ أسلاك","قراءة فرق الكمون"],["4 متوسط","علوم الطبيعة والحياة","التغذية","التحولات الهضمية","مواد ومحاليل تعليمية وفق النشاط","إبراز التحولات"],["4 متوسط","علوم الطبيعة والحياة","التغذية","الامتصاص المعوي","وثائق/نموذج؛ أدوات ملاحظة","ربط البنية بالامتصاص"],["4 متوسط","علوم الطبيعة والحياة","النقل","مسار المغذيات في الجسم","وثائق/نماذج تشريحية","تتبع انتقال المغذيات"],["4 متوسط","علوم الطبيعة والحياة","التنسيق","استجابة عصبية بسيطة","وثائق/نماذج أو نشاط مناسب","تحديد عناصر القوس الانعكاسية"],["4 متوسط","علوم فيزيائية وتكنولوجيا","الكهرباء","قياس التوتر وشدة التيار","مولد؛ فولتمتر؛ أمبيرمتر؛ مقاومات","تنظيم القياسات"],["4 متوسط","علوم فيزيائية وتكنولوجيا","الكهرباء","العلاقة بين التوتر وشدة التيار","مولد؛ مقاومة؛ أجهزة قياس","جمع جدول قياسات"],["4 متوسط","علوم فيزيائية وتكنولوجيا","الميكانيك","دراسة تأثير القوة","نابض/ثقل؛ جسم؛ أدوات قياس","ربط القوة بالحركة/التشوه"],["4 متوسط","علوم فيزيائية وتكنولوجيا","الضوء","الانعكاس الضوئي","مصدر ضوئي؛ مرآة؛ ورقة؛ منقلة","مقارنة الزوايا"],["4 متوسط","علوم فيزيائية وتكنولوجيا","الضوء","الانكسار الضوئي","مصدر ضوئي؛ وسط شفاف؛ شاشة","ملاحظة تغير المسار"]];
-
-const curriculumSeed=[["1 متوسط","علوم الطبيعة والحياة","التغذية عند الإنسان","مصدر وتركيب الأغذية؛ دور الأغذية في الجسم؛ التغذية عند النبات الأخضر؛ انتقال النسغ؛ الصحة والتغذية"],["2 متوسط","علوم الطبيعة والحياة","الإنسان والمحيط","الأنظمة البيئية؛ توزع الكائنات الحية؛ التكيف؛ التكاثر وإعمار الأوساط"],["3 متوسط","علوم الطبيعة والحياة","الأرض والتربة والموارد","الديناميكية الداخلية؛ الزلازل؛ الموارد الطبيعية الباطنية؛ التربة وحمايتها"],["4 متوسط","علوم الطبيعة والحياة","التغذية والاتصال والتنسيق","التحولات الهضمية؛ الامتصاص؛ النقل؛ الاتصال العصبي؛ التنسيق الوظيفي؛ محاور الصحة"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة والتحولات والكهرباء والضوء","حالات المادة؛ القياس؛ الظواهر الكهربائية؛ الدارة البسيطة؛ انتشار الضوء"],["2 متوسط","علوم فيزيائية وتكنولوجيا","المادة والميكانيك والكهرباء","التحولات؛ الظواهر الميكانيكية؛ الظواهر الكهربائية"],["3 متوسط","علوم فيزيائية وتكنولوجيا","المادة والطاقة والكهرباء والضوء","التحولات؛ الطاقة؛ الدارات والقياسات؛ الضوء"],["4 متوسط","علوم فيزيائية وتكنولوجيا","الكهرباء والمادة والميكانيك والضوء","الظواهر الكهربائية؛ التحولات الكيميائية؛ الميكانيك؛ الظواهر الضوئية"]];
-
-const state={inventory:inventorySeed.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:'بيانات أولية — تراجع بالجرد الفعلي'})),
-experiments:experimentSeed.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة تقريبًا',safety:'حسب تعليمات النشاط',steps:'التحضير؛ الإنجاز؛ الملاحظة؛ تسجيل النتائج'})),
-weekly:[],reports:[],maintenance:[],chemicals:[],timetable:[]};
-
-const unitMap={
-'1 متوسط|علوم الطبيعة والحياة':['التغذية عند الإنسان','مصدر وتركيب الأغذية','دور الأغذية في الجسم','التغذية عند النبات الأخضر','انتقال النسغ','الصحة والتغذية'],
-'2 متوسط|علوم الطبيعة والحياة':['الإنسان والمحيط','النظام البيئي','توزع الكائنات الحية','تكيف النباتات والحيوانات','التكاثر وإعمار الأوساط'],
-'3 متوسط|علوم الطبيعة والحياة':['الديناميكية الداخلية للكرة الأرضية','الزلازل','الموارد الطبيعية الباطنية','التربة ثروة طبيعية هشة','حماية التربة والوسط'],
-'4 متوسط|علوم الطبيعة والحياة':['التغذية عند الإنسان','التحولات الهضمية','الامتصاص والنقل','الاتصال والتنسيق الوظيفي','المناعة والصحة'],
-'1 متوسط|علوم فيزيائية وتكنولوجيا':['المادة وتحولاتها','قياس الكتلة والحجم','الظواهر الكهربائية','الدارة الكهربائية','الضوء والظواهر الضوئية'],
-'2 متوسط|علوم فيزيائية وتكنولوجيا':['المادة وتحولاتها','التحولات الفيزيائية والكيميائية','الظواهر الميكانيكية','الظواهر الكهربائية'],
-'3 متوسط|علوم فيزيائية وتكنولوجيا':['المادة وتحولاتها','الطاقة والتحولات','الظواهر الكهربائية','الضوء والظواهر الضوئية'],
-'4 متوسط|علوم فيزيائية وتكنولوجيا':['الظواهر الكهربائية','التحولات الكيميائية','الظواهر الميكانيكية','الضوء والظواهر الضوئية']};
-
-for(const level of ['1 متوسط','2 متوسط','3 متوسط','4 متوسط'])for(const subject of ['علوم الطبيعة والحياة','علوم فيزيائية وتكنولوجيا']){
- const units=unitMap[level+'|'+subject], ex=state.experiments.filter(x=>x.level===level&&x.subject===subject);
- for(let w=1;w<=36;w++){const e=ex[(w-1)%ex.length];state.weekly.push({week:w,level,subject,lesson:units[(w-1)%units.length],exp:e?e.title:'نشاط مخبري',tools:e?e.tools:'تحدد حسب النشاط',status:'مبرمج',note:'خطة تشغيلية أولية — تراجع مع التدرج الرسمي'});}
-}
+const state={
+  inventory:[],
+  experiments:[],
+  weekly:[],
+  reports:[],
+  maintenance:[],
+  chemicals:[],
+  timetable:[]
+};
 
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
 function by(id){return document.getElementById(id)}
-function save(){localStorage.setItem('km_fixed',JSON.stringify(state))}
-function load(){try{const x=JSON.parse(localStorage.getItem('km_fixed')||'null');if(x){if(Array.isArray(x.reports))state.reports=x.reports;if(Array.isArray(x.maintenance))state.maintenance=x.maintenance;if(Array.isArray(x.inventory)&&x.inventory.length>50)state.inventory=x.inventory;if(Array.isArray(x.experiments)&&x.experiments.length>30)state.experiments=x.experiments;if(Array.isArray(x.weekly)&&x.weekly.length>200)state.weekly=x.weekly;if(Array.isArray(x.chemicals))state.chemicals=x.chemicals;if(Array.isArray(x.timetable))state.timetable=x.timetable}}catch(e){}}
-function renderAll(){
- let q=(by('invSearch').value||'').toLowerCase(),a=state.inventory.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
- by('inventoryOut').innerHTML='<div class="tablewrap"><table><tr><th>الوسيلة</th><th>الصنف</th><th>الكمية</th><th>الحد</th><th>الحالة</th><th>المكان</th><th>المرجع</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+esc(x.name)+'</td><td>'+esc(x.cat)+'</td><td>'+x.qty+'</td><td>'+x.min+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.place)+'</td><td>'+esc(x.ref)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>';
 
+function save(){localStorage.setItem('km_fixed_v2',JSON.stringify(state))}
+
+function load(){
+  try{
+    const x=JSON.parse(localStorage.getItem('km_fixed_v2')||'null');
+    if(x){
+      Object.assign(state, x);
+    } else {
+      state.inventory = inventorySeed.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:''}));
+      state.experiments = experimentSeed.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة',safety:'',steps:''}));
+    }
+  }catch(e){console.error(e)}
+}
+
+function deleteItem(arrayName, index) {
+  if(confirm("هل أنت أصلًا متأكد من الحذف؟")) {
+    state[arrayName].splice(index, 1);
+    save();
+    renderAll();
+  }
+}
+
+function renderAll(){
+ // 1. Inventory
+ let q=(by('invSearch').value||'').toLowerCase();
+ let a=state.inventory.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
+ by('inventoryOut').innerHTML='<div class="tablewrap"><table><tr><th>الوسيلة</th><th>الصنف</th><th>الكمية</th><th>الحد</th><th>الحالة</th><th>المكان</th><th>إجراء</th></tr>'+a.map((x,i)=>'<tr><td>'+esc(x.name)+'</td><td>'+esc(x.cat)+'</td><td>'+x.qty+'</td><td>'+x.min+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.place)+'</td><td><button class="danger" onclick="deleteItem(\'inventory\','+i+')">حذف</button></td></tr>').join('')+'</table></div>';
+
+ // 2. Chemicals
  q=(by('chemSearch').value||'').toLowerCase();
  const ca=state.chemicals.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
  by('chemicalsOut').innerHTML=ca.length?'<div class="chem-grid">'+ca.map((x,i)=>{
    const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
    const remaining=Math.max(0,(parseFloat(x.stock)||0)-used);
-   const cls=remaining<=0?'danger-text':'ok-text';
-   return '<div class="chem-card"><h3>'+esc(x.name)+'</h3><div class="chem-meta">الصيغة: '+esc(x.formula||'—')+'<br>تاريخ الشراء: '+esc(x.purchaseDate||'—')+'<br>الجهة: '+esc(x.source||'—')+'<br>المخزون الأولي: '+esc(x.stock)+' '+esc(x.unit)+'<br>المستعمل: '+used.toFixed(2)+' '+esc(x.unit)+'<br><span class="'+cls+'">المتبقي: '+remaining.toFixed(2)+' '+esc(x.unit)+'</span><br>التخزين: '+esc(x.storage||'—')+'</div><div class="toolbar no-print"><button class="primary" onclick="openChemical('+i+')">فتح صفحة المادة</button></div></div>';
- }).join('')+'</div>':'<div class="empty">لا توجد مواد كيميائية مدخلة بعد.</div>';
+   return '<div class="chem-card"><h3>'+esc(x.name)+'</h3><div class="chem-meta">الصيغة: '+esc(x.formula||'—')+'<br>المخزون الأولي: '+esc(x.stock)+' '+esc(x.unit)+'<br><span class="'+(remaining<=0?'danger-text':'ok-text')+'">المتبقي: '+remaining.toFixed(2)+' '+esc(x.unit)+'</span></div><div class="toolbar no-print"><button class="primary" onclick="openChemical('+i+')">فتح</button><button class="danger" onclick="deleteItem(\'chemicals\','+i+')">حذف</button></div></div>';
+ }).join('')+'</div>':'<div class="empty">لا توجد مواد كيميائية مدخلة.</div>';
 
- let ef=by('exFilter').value,eq=(by('exSearch').value||'').toLowerCase();a=state.experiments.filter(x=>(!ef||x.level===ef)&&Object.values(x).join(' ').toLowerCase().includes(eq));
- by('experimentsOut').innerHTML='<div class="tablewrap"><table><tr><th>المستوى</th><th>المادة</th><th>المحور</th><th>التجربة</th><th>الوسائل</th><th>الهدف</th><th>المدة</th><th>السلامة</th></tr>'+a.map(x=>'<tr><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.unit)+'</td><td>'+esc(x.title)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.goal)+'</td><td>'+esc(x.time)+'</td><td>'+esc(x.safety)+'</td></tr>').join('')+'</table></div>';
- let wl=by('wLevelFilter').value,ws=by('wSubjectFilter').value,ww=by('wWeekFilter').value;a=state.weekly.filter(x=>(!wl||x.level===wl)&&(!ws||x.subject===ws)&&(!ww||String(x.week)===ww)).sort((x,y)=>x.week-y.week);
- by('weeklyOut').innerHTML='<div class="tablewrap"><table><tr><th>الأسبوع</th><th>المستوى</th><th>المادة</th><th>الدرس/المحور</th><th>التجربة/النشاط</th><th>الوسائل</th><th>الحالة</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+x.week+'</td><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.lesson)+'</td><td>'+esc(x.exp)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.status)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>';
-const teacherNames=[...new Set(state.timetable.map(x=>x.teacher).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ar'));
+ // 3. Timetable
+ const teacherNames=[...new Set(state.timetable.map(x=>x.teacher).filter(Boolean))];
  const selectedTeacher=by('ttTeacherFilter').value, selectedDay=by('ttDayFilter').value;
  const tq=(by('ttSearch').value||'').toLowerCase();
  let tt=state.timetable.filter(x=>(!selectedTeacher||x.teacher===selectedTeacher)&&(!selectedDay||x.day===selectedDay)&&Object.values(x).join(' ').toLowerCase().includes(tq));
  by('ttTeacherFilter').innerHTML='<option value="">كل الأساتذة</option>'+teacherNames.map(n=>'<option '+(n===selectedTeacher?'selected':'')+'>'+esc(n)+'</option>').join('');
+ 
  const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس'];
  const fixedSlots=['08:00 - 09:00','09:00 - 10:00','10:00 - 11:00','11:00 - 12:00','13:00 - 14:00','14:00 - 15:00','15:00 - 16:00','16:00 - 17:00'];
- if(tt.length||true){
-   by('timetableOut').innerHTML='<div class="tablewrap timetable"><table><tr><th>الساعة</th>'+days.map(d=>'<th>'+d+'</th>').join('')+'</tr>'+
-   fixedSlots.map(slot=>{
-     const parts=slot.split(' - '), start=parts[0], end=parts[1];
-     return '<tr><th>'+esc(slot)+'</th>'+days.map(day=>{
-       const items=tt.filter(x=>x.day===day&&x.start===start&&x.end===end);
-       return '<td class="tt-cell">'+(items.length?items.map(x=>'<div class="lesson-card"><strong>'+esc(x.teacher)+'</strong>'+esc(x.subject)+' — '+esc(x.level)+'<br>القسم: '+esc(x.cls)+'<br>'+esc(x.room||'')+(x.activity?'<br>النشاط: '+esc(x.activity):'')+'</div>').join(''):'<span class="small">فارغة</span>')+'</td>';
-     }).join('')+'</tr>';
-   }).join('')+'</table></div>';
-   if(!tt.length) by('timetableOut').innerHTML+='<div class="notice">الجدول جاهز وفارغ للتعبئة. أضف حصص الأساتذة من النموذج أعلاه، وستظهر تلقائيًا في اليوم والساعة المناسبين.</div>';
- }
- q=(by('rSearch').value||'').toLowerCase();a=state.reports.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
- by('reportsOut').innerHTML=a.length?'<div class="tablewrap"><table><tr><th>التاريخ</th><th>الأستاذ</th><th>القسم</th><th>التوقيت</th><th>المستوى</th><th>المادة</th><th>التجربة</th><th>الوسائل</th><th>النتيجة</th><th>ملاحظات</th></tr>'+a.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.teacher)+'</td><td>'+esc(x.cls)+'</td><td>'+esc(x.time)+'</td><td>'+esc(x.level)+'</td><td>'+esc(x.subject)+'</td><td>'+esc(x.title)+'</td><td>'+esc(x.tools)+'</td><td>'+esc(x.result)+'</td><td>'+esc(x.note)+'</td></tr>').join('')+'</table></div>':'<div class="empty">لا توجد تقارير مدخلة بعد.</div>';
- by('maintenanceOut').innerHTML=state.maintenance.length?'<div class="tablewrap"><table><tr><th>التاريخ</th><th>الوسيلة</th><th>الحالة</th><th>المكلف</th><th>العطل</th><th>الإجراء</th></tr>'+state.maintenance.map(x=>'<tr><td>'+esc(x.date)+'</td><td>'+esc(x.item)+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.by)+'</td><td>'+esc(x.problem)+'</td><td>'+esc(x.action)+'</td></tr>').join('')+'</table></div>':'<div class="empty">لا يوجد سجل صيانة.</div>';
- let cl=by('cLevel').value,cs=by('cSubject').value,cq=(by('cSearch').value||'').toLowerCase();a=curriculumSeed.filter(x=>(!cl||x[0]===cl)&&(!cs||x[1]===cs)&&x.join(' ').toLowerCase().includes(cq));
- by('curriculumOut').innerHTML='<div class="tablewrap"><table><tr><th>المستوى</th><th>المادة</th><th>المجال/المحور</th><th>الموضوعات</th></tr>'+a.map(x=>'<tr><td>'+esc(x[0])+'</td><td>'+esc(x[1])+'</td><td>'+esc(x[2])+'</td><td>'+esc(x[3])+'</td></tr>').join('')+'</table></div>';
- by('statInv').textContent=state.inventory.length;by('statEx').textContent=state.experiments.length;by('statWeek').textContent=state.weekly.length;by('statRep').textContent=state.reports.length;by('statAlert').textContent=state.inventory.filter(x=>(x.min>0&&x.qty<=x.min)||x.state!=='جيدة').length;
+ 
+ by('timetableOut').innerHTML='<div class="tablewrap timetable"><table><tr><th>الساعة</th>'+days.map(d=>'<th>'+d+'</th>').join('')+'</tr>'+
+ fixedSlots.map(slot=>{
+   return '<tr><th>'+esc(slot)+'</th>'+days.map(day=>{
+     const items=tt.filter(x=>x.day===day&&x.slot===slot);
+     return '<td class="tt-cell">'+items.map(x=>'<div class="lesson-card"><strong>'+esc(x.teacher)+'</strong>'+esc(x.subject)+'<br>القسم: '+esc(x.cls)+'</div>').join('')+'</td>';
+   }).join('')+'</tr>';
+ }).join('')+'</table></div>';
+
+ // Stats
+ by('statInv').textContent=state.inventory.length;
+ by('statEx').textContent=state.experiments.length;
+ by('statWeek').textContent=state.weekly.length;
+ by('statRep').textContent=state.reports.length;
+ by('statAlert').textContent=state.inventory.filter(x=>(x.min>0&&x.qty<=x.min)||x.state!=='جيدة').length;
 }
+
 function clearIds(ids){ids.forEach(id=>by(id).value='')}
-function addInventory(){state.inventory.push({name:by('invName').value,cat:by('invCat').value,qty:+by('invQty').value||0,min:+by('invMin').value||0,state:by('invState').value,place:by('invPlace').value,ref:by('invRef').value,note:by('invNote').value});save();clearIds(['invName','invQty','invMin','invPlace','invRef','invNote']);renderAll()}
-function addExperiment(){state.experiments.push({level:by('exLevel').value,subject:by('exSubject').value,unit:by('exUnit').value,title:by('exTitle').value,goal:by('exGoal').value,time:by('exTime').value,tools:by('exTools').value,safety:by('exSafety').value,steps:by('exSteps').value});save();clearIds(['exUnit','exTitle','exGoal','exTime','exTools','exSafety','exSteps']);renderAll()}
-function addWeekly(){state.weekly.push({week:+by('wWeek').value||0,level:by('wLevel').value,subject:by('wSubject').value,lesson:by('wLesson').value,exp:by('wExp').value,tools:by('wTools').value,status:by('wStatus').value,note:by('wNote').value});save();clearIds(['wWeek','wLesson','wExp','wTools','wNote']);renderAll()}
-function addReport(){state.reports.push({date:by('rDate').value,teacher:by('rTeacher').value,cls:by('rClass').value,time:by('rTime').value,level:by('rLevel').value,subject:by('rSubject').value,title:by('rTitle').value,tools:by('rTools').value,result:by('rResult').value,note:by('rNote').value});save();clearIds(['rDate','rTeacher','rClass','rTime','rTitle','rTools','rResult','rNote']);renderAll()}
-function addMaintenance(){state.maintenance.push({date:by('mDate').value,item:by('mItem').value,state:by('mState').value,by:by('mBy').value,problem:by('mProblem').value,action:by('mAction').value});save();clearIds(['mDate','mItem','mBy','mProblem','mAction']);renderAll()}
+
+function addInventory(){
+ if(!by('invName').value) return alert('يرجى أدخال الاسم');
+ state.inventory.push({name:by('invName').value,cat:by('invCat').value,qty:+by('invQty').value||0,min:+by('invMin').value||0,state:by('invState').value,place:by('invPlace').value,ref:by('invRef').value,note:by('invNote').value});
+ save();clearIds(['invName','invQty','invMin','invPlace','invRef','invNote']);renderAll();
+}
 
 function addChemical(){
  const name=by('chemName').value.trim();
- const stock=parseFloat(by('chemStock').value)||0;
- if(!name){alert('أدخل اسم المادة الكيميائية');return}
- state.chemicals.push({name,formula:by('chemFormula').value.trim(),stock,unit:by('chemUnit').value,purchaseDate:by('chemPurchaseDate').value,source:by('chemSource').value.trim(),storage:by('chemStorage').value.trim(),hazard:by('chemHazard').value.trim(),note:by('chemNote').value.trim(),usages:[]});
+ if(!name) return alert('أدخل اسم المادة');
+ state.chemicals.push({name,formula:by('chemFormula').value.trim(),stock:parseFloat(by('chemStock').value)||0,unit:by('chemUnit').value,purchaseDate:by('chemPurchaseDate').value,source:by('chemSource').value.trim(),storage:by('chemStorage').value.trim(),hazard:by('chemHazard').value.trim(),note:by('chemNote').value.trim(),usages:[]});
  save(); clearIds(['chemName','chemFormula','chemStock','chemPurchaseDate','chemSource','chemStorage','chemHazard','chemNote']); renderAll();
 }
+
+function addTimetable(){
+ const teacher=by('ttTeacher').value.trim(), cls=by('ttClass').value.trim(), slot=by('ttSlot').value, day=by('ttDay').value;
+ if(!teacher||!cls) return alert('يرجى كتابة اسم الأستاذ والقسم');
+ state.timetable.push({teacher,subject:by('ttSubject').value,level:by('ttLevel').value,cls,day,slot,room:by('ttRoom').value.trim(),activity:by('ttActivity').value.trim(),note:by('ttNote').value.trim()});
+ save();clearIds(['ttTeacher','ttClass','ttRoom','ttActivity','ttNote']);renderAll();
+}
+
 function openChemical(index){
  const x=state.chemicals[index]; if(!x)return;
  const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
  const remaining=Math.max(0,(parseFloat(x.stock)||0)-used);
  by('chemicalPage').innerHTML=
- '<div class="modal">'+
- '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2>بطاقة المادة: '+esc(x.name)+'</h2><button class="secondary no-print" onclick="closeChemical()">إغلاق</button></div>'+
- '<div class="kpi"><div class="card"><b>المخزون الأولي</b><div class="num">'+esc(x.stock)+' '+esc(x.unit)+'</div></div>'+
- '<div class="card"><b>إجمالي الاستعمال</b><div class="num">'+used.toFixed(2)+' '+esc(x.unit)+'</div></div>'+
- '<div class="card"><b>المتبقي</b><div class="num '+(remaining<=0?'danger-text':'ok-text')+'">'+remaining.toFixed(2)+' '+esc(x.unit)+'</div></div></div>'+
- '<div class="panel"><table style="min-width:0"><tr><th>الصيغة</th><td>'+esc(x.formula||'—')+'</td><th>تاريخ الشراء</th><td>'+esc(x.purchaseDate||'—')+'</td></tr>'+
- '<tr><th>الجهة</th><td>'+esc(x.source||'—')+'</td><th>مكان التخزين</th><td>'+esc(x.storage||'—')+'</td></tr>'+
- '<tr><th>السلامة</th><td>'+esc(x.hazard||'—')+'</td><th>ملاحظات</th><td>'+esc(x.note||'—')+'</td></tr></table></div>'+
- '<h3>تسجيل استعمال جديد</h3>'+
- '<div class="panel form"><input id="useTeacher" placeholder="الأستاذ الذي استعملها"><input id="useDate" type="date"><input id="useVolume" type="number" min="0" step="0.01" placeholder="حجم الاستعمال"><input id="useClass" placeholder="القسم"><input id="useExperiment" placeholder="عنوان التجربة"><textarea id="useNote" class="full" placeholder="ملاحظات الاستعمال"></textarea><button class="primary" onclick="addChemicalUse('+index+')">حفظ الاستعمال</button></div>'+
- '<h3>سجل استعمال المادة</h3>'+
- ((x.usages||[]).length?'<div class="tablewrap"><table><tr><th>التاريخ</th><th>الأستاذ</th><th>القسم</th><th>التجربة</th><th>حجم الاستعمال</th><th>ملاحظات</th></tr>'+
- (x.usages||[]).slice().reverse().map(u=>'<tr><td>'+esc(u.date)+'</td><td>'+esc(u.teacher)+'</td><td>'+esc(u.cls)+'</td><td>'+esc(u.experiment)+'</td><td>'+esc(u.volume)+' '+esc(x.unit)+'</td><td>'+esc(u.note||'')+'</td></tr>').join('')+'</table></div>':'<div class="empty">لم يسجل أي استعمال لهذه المادة بعد.</div>')+
+ '<div class="modal"><div style="display:flex;justify-content:space-between"><h2>بطاقة: '+esc(x.name)+'</h2><button class="secondary" onclick="closeChemical()">إغلاق</button></div>'+
+ '<p>المتبقي: '+remaining.toFixed(2)+' '+esc(x.unit)+'</p>'+
  '</div>';
  by('chemicalPage').classList.add('show');
 }
-function addChemicalUse(index){
- const x=state.chemicals[index]; if(!x)return;
- const volume=parseFloat(by('useVolume').value)||0;
- const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
- const remaining=(parseFloat(x.stock)||0)-used;
- if(!by('useTeacher').value.trim()||!by('useDate').value||volume<=0){alert('أدخل الأستاذ والتاريخ وحجم الاستعمال');return}
- if(volume>remaining){alert('حجم الاستعمال أكبر من المتبقي في المخزون');return}
- x.usages=x.usages||[];
- x.usages.push({teacher:by('useTeacher').value.trim(),date:by('useDate').value,volume,cls:by('useClass').value.trim(),experiment:by('useExperiment').value.trim(),note:by('useNote').value.trim()});
- save(); renderAll(); openChemical(index);
-}
-function closeChemical(){by('chemicalPage').classList.remove('show');by('chemicalPage').innerHTML=''}
+function closeChemical(){by('chemicalPage').classList.remove('show');}
 
-function addTimetable(){
- const teacher=by('ttTeacher').value.trim(), cls=by('ttClass').value.trim(), start=by('ttStart').value, end=by('ttEnd').value;
- if(!teacher||!cls||!start||!end){alert('أدخل الأستاذ والقسم ووقت البداية والنهاية');return}
- if(end<=start){alert('وقت النهاية يجب أن يكون بعد وقت البداية');return}
- const clash=state.timetable.some(x=>x.day===by('ttDay').value&&x.start===start&&x.end===end&&x.room===by('ttRoom').value&&x.cls===cls);
- if(clash){alert('توجد حصة مسجلة للقسم نفسه في نفس التوقيت والقاعة');return}
- state.timetable.push({teacher,subject:by('ttSubject').value,level:by('ttLevel').value,cls,day:by('ttDay').value,start,end,room:by('ttRoom').value.trim(),activity:by('ttActivity').value.trim(),note:by('ttNote').value.trim()});
- save();clearIds(['ttTeacher','ttClass','ttStart','ttEnd','ttRoom','ttActivity','ttNote']);renderAll();
-}
-function printSection(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('printable'));by(id).classList.add('printable');window.print();setTimeout(()=>by(id).classList.remove('printable'),500)}
+function printSection(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('printable'));by(id).classList.add('printable');window.print();}
 
-document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));by(b.dataset.id).classList.add('active')}));
-['invSearch','chemSearch','ttSearch','ttTeacherFilter','ttDayFilter','exFilter','exSearch','wLevelFilter','wSubjectFilter','wWeekFilter','rSearch','cLevel','cSubject','cSearch'].forEach(id=>by(id).addEventListener('input',renderAll));
-by('addInvBtn').addEventListener('click',addInventory);by('addChemBtn').addEventListener('click',addChemical);by('addTTBtn').addEventListener('click',addTimetable);by('addExBtn').addEventListener('click',addExperiment);by('addWBtn').addEventListener('click',addWeekly);by('addRBtn').addEventListener('click',addReport);by('addMBtn').addEventListener('click',addMaintenance);
-by('printInv').addEventListener('click',()=>printSection('inventory'));by('printChem').addEventListener('click',()=>printSection('chemicals'));by('printTT').addEventListener('click',()=>printSection('timetable'));by('printEx').addEventListener('click',()=>printSection('experiments'));by('printW').addEventListener('click',()=>printSection('weekly'));by('printR').addEventListener('click',()=>printSection('reports'));by('printM').addEventListener('click',()=>printSection('maintenance'));
-const weekOpts=['<option value="">كل الأسابيع</option>'].concat(Array.from({length:36},(_,i)=>'<option value="'+(i+1)+'">الأسبوع '+(i+1)+'</option>')).join('');by('wWeekFilter').innerHTML=weekOpts;
+// Listeners Navigation
+document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  by(b.dataset.id).classList.add('active');
+}));
+
+// Action buttons
+by('addInvBtn').addEventListener('click',addInventory);
+by('addChemBtn').addEventListener('click',addChemical);
+by('addTTBtn').addEventListener('click',addTimetable);
+
+// Filtering / Input Listeners
+['invSearch','chemSearch','ttSearch'].forEach(id=>by(id).addEventListener('input',renderAll));
+['ttTeacherFilter','ttDayFilter','exFilter','wLevelFilter','wSubjectFilter','wWeekFilter','cLevel','cSubject'].forEach(id=>{
+  if(by(id)) by(id).addEventListener('change',renderAll);
+});
+
+by('printInv').addEventListener('click',()=>printSection('inventory'));
+by('printChem').addEventListener('click',()=>printSection('chemicals'));
+by('printTT').addEventListener('click',()=>printSection('timetable'));
+
 load();renderAll();
 </script>
 </body>
