@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مخبرية | تسيير الجرد والتقارير</title>
+  <title>مخبرية | تسيير المواد الكيميائية والمخزون</title>
 
   <style>
     :root {
@@ -24,542 +24,121 @@
       --radius: 16px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Tahoma, Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, Arial, system-ui, sans-serif; }
+    body { min-height: 100vh; background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 30%), var(--bg); color: var(--text); padding-bottom: 90px; }
+    header { padding: 1.5rem 1rem 4.7rem; background: linear-gradient(135deg, #172554 0%, #1d4ed8 58%, #0f766e 100%); color: #fff; }
+    .header-content { width: min(1180px, calc(100% - 2rem)); margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand { display: flex; align-items: center; gap: 0.85rem; }
+    .brand-icon { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 15px; background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.24); font-size: 1.65rem; }
+    .brand h1 { font-size: clamp(1.05rem, 3vw, 1.4rem); margin-bottom: 0.25rem; }
+    .brand p { color: rgba(255, 255, 255, 0.78); font-size: 0.86rem; }
+    .today { padding: 0.65rem 0.85rem; border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 12px; background: rgba(255, 255, 255, 0.12); font-size: 0.85rem; white-space: nowrap; }
+
+    /* شاشة كود التفعيل */
+    #activationOverlay {
+      position: fixed; top:0; left:0; right:0; bottom:0;
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px);
+      z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;
     }
-
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 30%),
-        var(--bg);
-      color: var(--text);
-      padding-bottom: 90px;
+    .activation-card {
+      background: #fff; border-radius: var(--radius); padding: 2.5rem; text-align: center;
+      max-width: 420px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
-
-    header {
-      padding: 1.5rem 1rem 4.7rem;
-      background: linear-gradient(135deg, #172554 0%, #1d4ed8 58%, #0f766e 100%);
-      color: #fff;
-    }
-
-    .header-content {
-      width: min(1180px, calc(100% - 2rem));
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-    }
-
-    .brand-icon {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 15px;
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      font-size: 1.65rem;
-    }
-
-    .brand h1 {
-      font-size: clamp(1.05rem, 3vw, 1.4rem);
-      margin-bottom: 0.25rem;
-    }
-
-    .brand p {
-      color: rgba(255, 255, 255, 0.78);
-      font-size: 0.86rem;
-    }
-
-    .today {
-      padding: 0.65rem 0.85rem;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.12);
-      font-size: 0.85rem;
-      white-space: nowrap;
-    }
-
-    main {
-      width: min(1180px, calc(100% - 2rem));
-      margin: -2.8rem auto 0;
-      position: relative;
-    }
-
-    .section {
-      display: none;
-      animation: fade 0.25s ease;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(7px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .stat-card {
-      background: rgba(255, 255, 255, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: var(--shadow);
-      padding: 1rem;
-      border-radius: var(--radius);
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .stat-icon {
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      font-size: 1.2rem;
-      background: var(--primary-soft);
-    }
-
-    .stat-card.success .stat-icon { background: #ecfdf5; }
-    .stat-card.warning .stat-icon { background: #fffbeb; }
-    .stat-card.danger .stat-icon { background: #fef2f2; }
-
-    .stat-card small {
-      display: block;
-      color: var(--muted);
-      margin-bottom: 0.2rem;
-      font-size: 0.78rem;
-    }
-
-    .stat-card strong {
-      font-size: 1.25rem;
-    }
-
-    .panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    .panel-title h2 {
-      color: var(--primary-dark);
-      font-size: 1.06rem;
-      margin-bottom: 0.22rem;
-    }
-
-    .panel-title p {
-      color: var(--muted);
-      font-size: 0.83rem;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 0.85rem;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.38rem;
-    }
-
-    .field label {
-      color: #334155;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 0.72rem 0.8rem;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      background: #fff;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 88px;
-      line-height: 1.7;
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-
-    button {
-      font-family: inherit;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 10px;
-      padding: 0.7rem 1rem;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.86rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 5px 12px rgba(29, 78, 216, 0.22);
-    }
-
-    .btn-success {
-      background: var(--success);
-      color: #fff;
-    }
-
-    .btn-danger {
-      background: var(--danger-soft);
-      color: var(--danger);
-    }
-
-    .btn-secondary {
-      background: #f1f5f9;
-      color: #334155;
-    }
-
-    .search-input {
-      max-width: 320px;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 760px;
-      font-size: 0.86rem;
-    }
-
-    th, td {
-      padding: 0.82rem 0.7rem;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
-
-    th {
-      color: #334155;
-      background: #f8fafc;
-      font-size: 0.8rem;
-      white-space: nowrap;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    tbody tr:hover {
-      background: #f8fbff;
-    }
-
-    .empty-cell {
-      padding: 2rem !important;
-      color: var(--muted);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.32rem 0.6rem;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .badge-good {
-      color: #047857;
-      background: #d1fae5;
-    }
-
-    .badge-medium {
-      color: #92400e;
-      background: #fef3c7;
-    }
-
-    .badge-repair {
-      color: #9a3412;
-      background: #ffedd5;
-    }
-
-    .badge-damaged {
-      color: #b91c1c;
-      background: #fee2e2;
-    }
-
-    .official-report {
-      max-width: 1000px;
-      margin: auto;
-      background: #fff;
-      color: #111827;
-      padding: 2.5rem;
-      border: 1px solid #94a3b8;
-      border-radius: 10px;
-    }
-
-    .official-header {
-      text-align: center;
-      line-height: 1.85;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .official-title {
-      text-align: center;
-      margin: 1.6rem 0;
-      font-size: 1.45rem;
-      font-weight: 900;
-      text-decoration: underline;
-    }
-
-    .meta-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      padding: 0.75rem 0;
-      border-top: 1px solid #cbd5e1;
-      border-bottom: 1px solid #cbd5e1;
-      font-weight: 700;
-    }
-
-    .report-section-title {
-      margin: 1.4rem 0 0.55rem;
-      font-weight: 800;
-      text-decoration: underline;
-    }
-
-    .signatures {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 4rem;
-      text-align: center;
-      font-weight: 800;
-    }
-
-    .signature-line {
-      margin-top: 2.7rem;
-      border-top: 1px dotted #475569;
-      padding-top: 0.35rem;
-      font-weight: 400;
-      color: #475569;
-    }
-
-    nav {
-      position: fixed;
-      z-index: 1000;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1rem;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border);
-    }
-
-    nav button {
-      border: none;
-      padding: 0.7rem 1rem;
-      border-radius: 10px;
-      background: transparent;
-      color: var(--muted);
-      font-size: 0.86rem;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    nav button.active {
-      background: var(--primary-soft);
-      color: var(--primary);
-    }
-
-    #toast {
-      position: fixed;
-      z-index: 2000;
-      top: 1rem;
-      left: 50%;
-      transform: translate(-50%, -150%);
-      min-width: min(360px, calc(100% - 2rem));
-      padding: 0.85rem 1rem;
-      border-radius: 12px;
-      background: #0f172a;
-      color: #fff;
-      text-align: center;
-      box-shadow: var(--shadow);
-      transition: transform 0.25s ease;
-      font-size: 0.9rem;
-    }
-
-    #toast.show {
-      transform: translate(-50%, 0);
-    }
-
-    @media (max-width: 780px) {
-      .header-content {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .official-report {
-        padding: 1rem;
-        font-size: 0.88rem;
-      }
-
-      .signatures {
-        font-size: 0.78rem;
-      }
-
-      .today {
-        display: none;
-      }
-    }
+    .activation-card h2 { color: var(--primary-dark); margin-bottom: 0.5rem; }
+    .activation-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+    main { width: min(1180px, calc(100% - 2rem)); margin: -2.8rem auto 0; position: relative; }
+    .section { display: none; animation: fade 0.25s ease; }
+    .section.active { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04); }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .panel-title h2 { color: var(--primary-dark); font-size: 1.06rem; margin-bottom: 0.22rem; }
+    .panel-title p { color: var(--muted); font-size: 0.83rem; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem; }
+    .field { display: flex; flex-direction: column; gap: 0.38rem; }
+    .field label { color: #334155; font-size: 0.82rem; font-weight: 700; }
+    input, select, textarea { width: 100%; padding: 0.72rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; color: var(--text); background: #fff; font-size: 0.9rem; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12); }
+    textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+
+    .actions { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-top: 1rem; }
+    .btn { border: none; border-radius: 10px; padding: 0.7rem 1rem; cursor: pointer; font-weight: 700; font-size: 0.86rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); }
+    .btn-secondary { background: #f1f5f9; color: #334155; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 0.86rem; }
+    th, td { padding: 0.82rem 0.7rem; text-align: center; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    th { color: #334155; background: #f8fafc; font-size: 0.8rem; white-space: nowrap; }
+    tbody tr:hover { background: #f8fbff; }
+
+    .badge { display: inline-flex; align-items: center; justify-content: center; padding: 0.32rem 0.6rem; border-radius: 999px; font-size: 0.76rem; font-weight: 800; white-space: nowrap; }
+    .badge-good { color: #047857; background: #d1fae5; }
+    .badge-danger { color: #b91c1c; background: #fee2e2; }
+    .badge-warning { color: #92400e; background: #fef3c7; }
+
+    /* شبكة بطاقات المواد الكيميائية */
+    .chem-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .chem-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; box-shadow: var(--shadow); position: relative; }
+    .chem-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.5rem; }
+    .chem-card-title { font-size: 1.1rem; color: var(--primary-dark); font-weight: bold; }
+    .chem-card-formula { background: #e2e8f0; padding: 0.2rem 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.85rem; }
+    .chem-info-list { font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; color: #475569; }
+    .chem-qty-box { background: var(--primary-soft); padding: 0.6rem; border-radius: 8px; text-align: center; margin: 0.8rem 0; font-weight: bold; color: var(--primary-dark); }
+    .chem-qty-box.low { background: #fee2e2; color: #b91c1c; }
+
+    /* جدول استعمال الزمن */
+    .timetable { min-width: 600px; }
+    .timetable th { background: var(--primary-dark); color: white; }
+    .timetable td input { border: none; text-align: center; background: transparent; }
+
+    nav { position: fixed; z-index: 1000; bottom: 0; right: 0; left: 0; display: flex; justify-content: center; gap: 0.5rem; padding: 0.7rem 1rem; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--border); overflow-x: auto; }
+    nav button { border: none; padding: 0.7rem 1rem; border-radius: 10px; background: transparent; color: var(--muted); font-size: 0.86rem; font-weight: 800; cursor: pointer; white-space: nowrap; }
+    nav button.active { background: var(--primary-soft); color: var(--primary); }
+
+    #toast { position: fixed; z-index: 2000; top: 1rem; left: 50%; transform: translate(-50%, -150%); min-width: min(360px, calc(100% - 2rem)); padding: 0.85rem 1rem; border-radius: 12px; background: #0f172a; color: #fff; text-align: center; transition: transform 0.25s ease; font-size: 0.9rem; }
+    #toast.show { transform: translate(-50%, 0); }
 
     @media print {
-      @page {
-        size: A4;
-        margin: 12mm;
-      }
-
-      body {
-        background: #fff;
-        padding: 0;
-      }
-
-      header, nav, .no-print, .stats-grid {
-        display: none !important;
-      }
-
-      main {
-        width: 100%;
-        margin: 0;
-      }
-
-      .section {
-        display: none !important;
-      }
-
-      .section.active {
-        display: block !important;
-      }
-
-      .panel {
-        padding: 0;
-        margin: 0;
-        border: none;
-        box-shadow: none;
-      }
-
-      .official-report {
-        width: 100%;
-        max-width: none;
-        padding: 0;
-        border: none;
-        border-radius: 0;
-      }
-
-      .table-wrap {
-        border: none;
-      }
-
-      table {
-        min-width: 0;
-        font-size: 0.72rem;
-      }
-
-      th, td {
-        border: 1px solid #000 !important;
-        padding: 0.38rem;
-      }
-
-      textarea {
-        border: 1px solid #000;
-        border-radius: 0;
-        min-height: 60px;
-      }
+      body { background: #fff; padding: 0; }
+      header, nav, .no-print { display: none !important; }
+      main { width: 100%; margin: 0; }
+      .section { display: none !important; }
+      .section.active { display: block !important; }
+      .panel { padding: 0; margin: 0; border: none; box-shadow: none; }
+      table { min-width: 0; font-size: 0.75rem; }
+      th, td { border: 1px solid #000 !important; padding: 0.4rem; }
     }
   </style>
 </head>
-
 <body>
+
+  <!-- شاشة كود التفعيل -->
+  <div id="activationOverlay">
+    <div class="activation-card">
+      <div style="font-size:3rem; margin-bottom:1rem;">🔐</div>
+      <h2>تفعيل منصة مخبرية</h2>
+      <p>أدخل كود التفعيل للوصول إلى كافة سجلات المخبر</p>
+      <div class="field" style="margin-bottom: 1.2rem;">
+        <input type="password" id="activationCodeInput" placeholder="كود التفعيل (الافتراضي: 2026)" style="text-align:center; font-size:1.1rem;">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="checkActivation()">دخول المنصة</button>
+      <p id="activationError" style="color:var(--danger); margin-top:0.8rem; font-size:0.82rem; display:none;">كود التفعيل غير صحيح!</p>
+    </div>
+  </div>
 
   <header class="no-print">
     <div class="header-content">
       <div class="brand">
-        <div class="brand-icon">🔬</div>
+        <div class="brand-icon">🧪</div>
         <div>
-          <h1>منصة تسيير المخبر المتوسط</h1>
-          <p>إدارة الجرد والتقرير اليومي بطريقة منظمة وسهلة</p>
+          <h1>منصة تسيير مخبر العلوم الفيزيائية والتكنولوجيا</h1>
+          <p>بطاقات مراقبة المخزون الكيميائي، استهلاك الأساتذة، والجرد العام</p>
         </div>
       </div>
       <div class="today" id="todayLabel"></div>
@@ -568,74 +147,122 @@
 
   <main>
 
-    <!-- قسم الجرد -->
-    <section id="inventory" class="section active">
-
-      <div class="stats-grid no-print">
-        <div class="stat-card">
-          <div class="stat-icon">📦</div>
-          <div>
-            <small>عدد المواد</small>
-            <strong id="statItems">0</strong>
-          </div>
-        </div>
-
-        <div class="stat-card success">
-          <div class="stat-icon">🔢</div>
-          <div>
-            <small>إجمالي الكمية</small>
-            <strong id="statQuantity">0</strong>
-          </div>
-        </div>
-
-        <div class="stat-card warning">
-          <div class="stat-icon">🛠️</div>
-          <div>
-            <small>تحتاج إصلاح</small>
-            <strong id="statRepair">0</strong>
-          </div>
-        </div>
-
-        <div class="stat-card danger">
-          <div class="stat-icon">⚠️</div>
-          <div>
-            <small>مواد تالفة</small>
-            <strong id="statDamaged">0</strong>
-          </div>
-        </div>
-      </div>
-
+    <!-- 1. بطاقات وسجلات المواد الكيميائية (محدث بالكامل) -->
+    <section id="chemicals" class="section active">
+      
+      <!-- إدراج أداة كيميائية جديدة -->
       <div class="panel no-print">
         <div class="panel-header">
           <div class="panel-title">
-            <h2>إضافة مادة أو وسيلة للجرد</h2>
-            <p>سجّل المعدات والمواد المخبرية مع حالتها الحالية.</p>
+            <h2>🧪 إضافة مادة كيميائية جديدة (بطاقة مخزون)</h2>
+            <p>سجّل بيانات المادة، المصدر، والكمية الابتدائية بالجرام أو اللتر</p>
           </div>
         </div>
+        <div class="form-grid">
+          <div class="field"><label>اسم المادة الكيميائية</label><input id="chemName" placeholder="مثال: حمض كلور الماء"></div>
+          <div class="field"><label>الصيغة الكيميائية</label><input id="chemFormula" placeholder="مثال: HCl"></div>
+          <div class="field"><label>المصدر / المورد</label><input id="chemSource" placeholder="مثال: ميزانية المؤسسة / مديرية التربية"></div>
+          <div class="field"><label>الكمية الابتدائية (الكلية)</label><input id="chemTotalQty" type="number" step="0.01" placeholder="مثال: 1000 (مل/غ)"></div>
+          <div class="field"><label>وحدة القياس</label>
+            <select id="chemUnit">
+              <option value="مل (ml)">مليلتر (ml)</option>
+              <option value="لتر (L)">لتر (L)</option>
+              <option value="غرام (g)">غرام (g)</option>
+              <option value="كغ (kg)">كيلوغرام (kg)</option>
+            </select>
+          </div>
+          <div class="field"><label>درجة الخطورة</label>
+            <select id="chemHazard">
+              <option value="عادية 🟢">عادية 🟢</option>
+              <option value="تآكلية ⚠️">تآكلية ⚠️</option>
+              <option value="سامة ☠️">سامة ☠️</option>
+              <option value="سريعة الاشتعال 🔥">سريعة الاشتعال 🔥</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-success" onclick="addChemical()">＋ إنشاء بطاقة مادة كيميائية</button>
+        </div>
+      </div>
 
+      <!-- تسجيل استهلاك مادة من طرف أستاذ -->
+      <div class="panel no-print" style="border-right: 4px solid var(--warning);">
+        <div class="panel-header">
+          <div class="panel-title">
+            <h2>📋 تسجيل خروج / استهلاك مادة كيميائية للأستاذ</h2>
+            <p>تخفيض تلقائي للكمية المتبقية وتسجيل اسم الأستاذ المستعمل</p>
+          </div>
+        </div>
         <div class="form-grid">
           <div class="field">
-            <label for="invNo">رقم الجرد</label>
-            <input id="invNo" placeholder="مثال: G-2026/01">
+            <label>اختر المادة الكيميائية</label>
+            <select id="useChemSelect"></select>
           </div>
-
           <div class="field">
-            <label for="invName">اسم المادة أو الوسيلة</label>
-            <input id="invName" placeholder="مثال: مجهر ضوئي">
+            <label>اسم الأستاذ المستعمل</label>
+            <input id="useTeacherName" placeholder="اسم الأستاذ والحصة">
           </div>
-
           <div class="field">
-            <label for="invQty">الكمية</label>
-            <input id="invQty" type="number" min="0" placeholder="0">
+            <label>الكمية المستهلكة</label>
+            <input id="useQty" type="number" step="0.01" placeholder="مثال: 50">
           </div>
-
           <div class="field">
-            <label for="invDate">تاريخ الدخول</label>
-            <input id="invDate" type="date">
+            <label>تاريخ الاستعمال</label>
+            <input id="useDate" type="date">
           </div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="recordUsage()">📉 خصم الكمية وتسجيل الاستهلاك</button>
+        </div>
+      </div>
 
+      <!-- بطاقات المواد الكيميائية المخزنة -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>بطاقات مراقبة المخزون الكيميائي والكميات المتبقية</h2>
+          <button class="btn btn-primary no-print" onclick="window.print()">🖨️ طباعة بطاقات الكيمياء</button>
+        </div>
+        
+        <div id="chemCardsContainer" class="chem-cards-grid">
+          <!-- تظهر بطاقات المواد الكيميائية هنا -->
+        </div>
+      </div>
+
+      <!-- سجل الاستهلاك التفصيلي -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>سجل متابعة الاستهلاك واستعمالات الأساتذة</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>تاريخ الاستعمال</th><th>اسم المادة</th><th>الأستاذ المستعمل</th><th>الكمية المستهلكة</th><th class="no-print">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="usageHistoryTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 2. سجل الجرد العام -->
+    <section id="inventory" class="section">
+      <div class="panel no-print">
+        <div class="panel-header">
+          <div class="panel-title">
+            <h2>إضافة أداة / وسيلة للجرد العام</h2>
+            <p>تسجيل الأجهزة والأدوات الزجاجية والمعدات المخبرية</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>رقم الجرد</label><input id="invNo" placeholder="مثال: G-2026/01"></div>
+          <div class="field"><label>اسم الوسيلة</label><input id="invName" placeholder="مثال: مجهر ضوئي"></div>
+          <div class="field"><label>الكمية</label><input id="invQty" type="number" min="0" value="1"></div>
+          <div class="field"><label>تاريخ الدخول</label><input id="invDate" type="date"></div>
           <div class="field">
-            <label for="invState">الحالة</label>
+            <label>الحالة</label>
             <select id="invState">
               <option value="جيدة">جيدة</option>
               <option value="متوسطة">متوسطة</option>
@@ -644,38 +271,21 @@
             </select>
           </div>
         </div>
-
         <div class="actions">
-          <button class="btn btn-primary" onclick="addInventory()">＋ إضافة إلى الجرد</button>
-          <button class="btn btn-secondary" onclick="clearInventoryForm()">↺ مسح الحقول</button>
+          <button class="btn btn-primary" onclick="addInventory()">＋ إضافة للجرد</button>
         </div>
       </div>
 
       <div class="panel">
         <div class="panel-header no-print">
-          <div class="panel-title">
-            <h2>سجل الجرد العام</h2>
-            <p>يمكنك البحث، الطباعة، أو تصدير البيانات إلى ملف CSV.</p>
-          </div>
-
-          <div class="actions" style="margin-top:0">
-            <input class="search-input" id="inventorySearch" oninput="renderInventory()" placeholder="🔎 ابحث باسم المادة أو رقم الجرد">
-            <button class="btn btn-secondary" onclick="exportInventoryCSV()">⬇ تصدير CSV</button>
-            <button class="btn btn-primary" onclick="printInventory()">🖨️ طباعة الجرد</button>
-          </div>
+          <h2>سجل الجرد العام للأجهزة والوسائل</h2>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة السجل</button>
         </div>
-
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>#</th>
-                <th>اسم المادة</th>
-                <th>الكمية</th>
-                <th>رقم الجرد</th>
-                <th>تاريخ الدخول</th>
-                <th>الحالة</th>
-                <th class="no-print">إجراءات</th>
+                <th>#</th><th>اسم الوسيلة</th><th>الكمية</th><th>رقم الجرد</th><th>التاريخ</th><th>الحالة</th><th class="no-print">إجراءات</th>
               </tr>
             </thead>
             <tbody id="inventoryTable"></tbody>
@@ -684,592 +294,381 @@
       </div>
     </section>
 
-    <!-- قسم التقرير اليومي -->
-    <section id="dailyReport" class="section">
-
+    <!-- 3. طلبات الأساتذة -->
+    <section id="teacherRequests" class="section">
       <div class="panel no-print">
         <div class="panel-header">
           <div class="panel-title">
-            <h2>إعداد التقرير اليومي</h2>
-            <p>أدخل بيانات المؤسسة والحصص المنجزة في المخبر.</p>
+            <h2>تسجيل طلب الأستاذ للوسائل المخبرية</h2>
+            <p>إيداع الطلبات المسبقة لإعداد التجارب</p>
           </div>
         </div>
-
         <div class="form-grid">
-          <div class="field">
-            <label for="schoolName">اسم المتوسطة</label>
-            <input id="schoolName" placeholder="مثال: متوسطة الشهيد ..." oninput="updateReportMeta()">
-          </div>
-
-          <div class="field">
-            <label for="educationDirectorate">مديرية التربية</label>
-            <input id="educationDirectorate" placeholder="مثال: مديرية التربية لولاية الأغواط" oninput="updateReportMeta()">
-          </div>
-
-          <div class="field">
-            <label for="reportNo">رقم التقرير</label>
-            <input id="reportNo" placeholder="مثال: 05/2026" oninput="updateReportMeta()">
-          </div>
-
-          <div class="field">
-            <label for="reportDate">تاريخ التقرير</label>
-            <input id="reportDate" type="date" onchange="updateReportMeta()">
+          <div class="field"><label>اسم الأستاذ</label><input id="reqTeacher" placeholder="الاسم واللقب"></div>
+          <div class="field"><label>المستوى/القسم</label><input id="reqClass" placeholder="مثال: 4 متوسط"></div>
+          <div class="field"><label>تاريخ الحصة</label><input id="reqDate" type="date"></div>
+          <div class="field"><label>التوقيت</label><input id="reqTime" placeholder="مثال: 08:00 - 09:00"></div>
+          <div class="field" style="grid-column: 1 / -1;">
+            <label>الأدوات والمواد الكيميائية المطلوبة</label>
+            <textarea id="reqItems" placeholder="اكتب قائمة الأدوات والمحلول المطلوب بالتفصيل..."></textarea>
           </div>
         </div>
-
-        <hr style="border:none; border-top:1px solid var(--border); margin:1.25rem 0;">
-
-        <div class="panel-title">
-          <h2 style="font-size:1rem;">إضافة حصة أو أستاذ</h2>
-          <p>تظهر البيانات تلقائيًا في الورقة الرسمية للتقرير.</p>
-        </div>
-
-        <div class="form-grid" style="margin-top:0.8rem;">
-          <div class="field">
-            <label for="teacherName">اسم الأستاذ</label>
-            <input id="teacherName" placeholder="الاسم واللقب">
-          </div>
-
-          <div class="field">
-            <label for="lessonTime">التوقيت</label>
-            <input id="lessonTime" placeholder="08:00 - 09:00">
-          </div>
-
-          <div class="field">
-            <label for="className">القسم</label>
-            <input id="className" placeholder="مثال: 4م1">
-          </div>
-
-          <div class="field">
-            <label for="roomNo">رقم القاعة</label>
-            <input id="roomNo" placeholder="مثال: 03">
-          </div>
-
-          <div class="field">
-            <label for="appTitle">عنوان التطبيق أو التجربة</label>
-            <input id="appTitle" placeholder="عنوان النشاط">
-          </div>
-
-          <div class="field">
-            <label for="toolsUsed">الأدوات المستعملة</label>
-            <input id="toolsUsed" placeholder="مثال: مجهر، شرائح زجاجية">
-          </div>
-
-          <div class="field">
-            <label for="teacherNote">ملاحظة</label>
-            <input id="teacherNote" placeholder="اختياري">
-          </div>
-        </div>
-
         <div class="actions">
-          <button class="btn btn-success" onclick="addTeacherRow()">＋ إضافة إلى التقرير</button>
-          <button class="btn btn-secondary" onclick="clearTeacherForm()">↺ مسح الحقول</button>
+          <button class="btn btn-primary" onclick="addTeacherRequest()">＋ تسجيل الطلب</button>
         </div>
       </div>
 
       <div class="panel">
         <div class="panel-header no-print">
-          <div class="panel-title">
-            <h2>المعاينة الرسمية</h2>
-            <p>تحقق من المعلومات قبل طباعة التقرير.</p>
-          </div>
-          <button class="btn btn-primary" onclick="printReport()">🖨️ طباعة التقرير اليومي</button>
+          <h2>سجل الطلبات المسبقة للأساتذة</h2>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة الطلبات</button>
         </div>
-
-        <div class="official-report">
-          <div class="official-header">
-            الجمهورية الجزائرية الديمقراطية الشعبية<br>
-            وزارة التربية الوطنية<br>
-            <span id="lblDirectorate">مديرية التربية لولاية: ............................</span><br>
-            المتوسطة: <span id="lblSchool">....................................</span>
-          </div>
-
-          <div class="meta-info">
-            <span>التقرير رقم: <span id="lblReportNo">......</span></span>
-            <span>التاريخ: <span id="lblDate">.. / .. / ....</span></span>
-          </div>
-
-          <div class="official-title">التقرير اليومي للمخبر</div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>اسم الأستاذ</th>
-                  <th>التوقيت</th>
-                  <th>القسم</th>
-                  <th>رقم القاعة</th>
-                  <th>عنوان التطبيق</th>
-                  <th>الأدوات المستعملة</th>
-                  <th>ملاحظة</th>
-                  <th class="no-print">إجراء</th>
-                </tr>
-              </thead>
-              <tbody id="reportTableBody"></tbody>
-            </table>
-          </div>
-
-          <div class="report-section-title">1. حالة الأدوات المستعملة:</div>
-          <textarea id="repToolsStatus" rows="3" placeholder="اكتب حالة الأدوات بعد الاستعمال..." oninput="saveReportNotes()"></textarea>
-
-          <div class="report-section-title">2. الأدوات المحتاجة وغير المتوفرة:</div>
-
-          <div class="form-grid no-print" style="margin-bottom:0.7rem;">
-            <div class="field">
-              <label for="missingToolName">اسم الأداة غير المتوفرة</label>
-              <input id="missingToolName" placeholder="مثال: أنابيب اختبار">
-            </div>
-
-            <div class="field">
-              <label for="missingToolDate">تاريخ الاحتياج</label>
-              <input id="missingToolDate" type="date">
-            </div>
-
-            <div class="field" style="justify-content:end;">
-              <label>&nbsp;</label>
-              <button class="btn btn-secondary" onclick="addMissingTool()">＋ إضافة الأداة</button>
-            </div>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>الأداة غير المتوفرة</th>
-                  <th>تاريخ الاحتياج</th>
-                  <th class="no-print">إجراء</th>
-                </tr>
-              </thead>
-              <tbody id="missingToolsBody"></tbody>
-            </table>
-          </div>
-
-          <div class="report-section-title">3. ملاحظات مختلفة:</div>
-          <textarea id="repOtherNotes" rows="3" placeholder="أي ملاحظات إضافية تخص سير العمل بالمخبر..." oninput="saveReportNotes()"></textarea>
-
-          <div class="signatures">
-            <div>
-              المحضّر المخبري
-              <div class="signature-line">الإمضاء والختم</div>
-            </div>
-            <div>
-              مستشار التربية
-              <div class="signature-line">الإمضاء والختم</div>
-            </div>
-            <div>
-              المدير
-              <div class="signature-line">الإمضاء والختم</div>
-            </div>
-          </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الأستاذ</th><th>القسم</th><th>التاريخ</th><th>التوقيت</th><th>الوسائل والمواد المطلوبة</th><th class="no-print">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="requestsTable"></tbody>
+          </table>
         </div>
       </div>
     </section>
+
+    <!-- 4. استعمال زمن المخبر -->
+    <section id="timetable" class="section">
+      <div class="panel">
+        <div class="panel-header no-print">
+          <div class="panel-title">
+            <h2>جدول استعمال زمن المخبر للأعمال التطبيقية</h2>
+          </div>
+          <button class="btn btn-success" onclick="saveTimetable()">💾 حفظ الجدول</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="timetable">
+            <thead>
+              <tr>
+                <th>اليوم / الفترة</th>
+                <th>08:00 - 09:00</th>
+                <th>09:00 - 10:00</th>
+                <th>10:00 - 11:00</th>
+                <th>11:00 - 12:00</th>
+                <th>13:00 - 14:00</th>
+                <th>14:00 - 15:00</th>
+                <th>15:00 - 16:00</th>
+              </tr>
+            </thead>
+            <tbody id="timetableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <nav class="no-print">
-    <button class="active" onclick="showSection('inventory', this)">📦 سجل الجرد</button>
-    <button onclick="showSection('dailyReport', this)">📑 التقرير اليومي</button>
+    <button class="active" onclick="showSection('chemicals', this)">🧪 المواد الكيميائية والمخزون</button>
+    <button onclick="showSection('inventory', this)">📦 الجرد العام</button>
+    <button onclick="showSection('teacherRequests', this)">📝 طلبات الأساتذة</button>
+    <button onclick="showSection('timetable', this)">📅 استعمال الزمن</button>
   </nav>
 
   <div id="toast"></div>
 
   <script>
+    const SECRET_CODE = "2026";
+
     const storageKeys = {
-      inventory: "lab_inventory_v3",
-      reportRows: "lab_report_rows_v3",
-      missingTools: "lab_missing_tools_v3",
-      meta: "lab_report_meta_v3",
-      notes: "lab_report_notes_v3"
+      activated: "lab_activated_v5",
+      inventory: "lab_inventory_v5",
+      chemicals: "lab_chemicals_v5",
+      chemUsage: "lab_chem_usage_v5",
+      requests: "lab_requests_v5",
+      timetable: "lab_timetable_v5"
     };
 
     const store = {
       inventory: JSON.parse(localStorage.getItem(storageKeys.inventory) || "[]"),
-      reportRows: JSON.parse(localStorage.getItem(storageKeys.reportRows) || "[]"),
-      missingTools: JSON.parse(localStorage.getItem(storageKeys.missingTools) || "[]"),
-      meta: JSON.parse(localStorage.getItem(storageKeys.meta) || '{"school":"","directorate":"","no":"","date":""}'),
-      notes: JSON.parse(localStorage.getItem(storageKeys.notes) || '{"toolsStatus":"","otherNotes":""}')
+      chemicals: JSON.parse(localStorage.getItem(storageKeys.chemicals) || "[]"),
+      chemUsage: JSON.parse(localStorage.getItem(storageKeys.chemUsage) || "[]"),
+      requests: JSON.parse(localStorage.getItem(storageKeys.requests) || "[]"),
+      timetable: JSON.parse(localStorage.getItem(storageKeys.timetable) || "{}")
     };
 
-    function uid() {
-      return window.crypto && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    function uid() { return `${Date.now()}-${Math.random().toString(16).slice(2, 6)}`; }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2500);
     }
 
-    function escapeHtml(value) {
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById("toast");
-      toast.textContent = message;
-      toast.classList.add("show");
-
-      clearTimeout(window.toastTimer);
-      window.toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2500);
-    }
-
-    function formatArabicDate(dateString) {
-      if (!dateString) return ".. / .. / ....";
-
-      const date = new Date(`${dateString}T12:00:00`);
-      return new Intl.DateTimeFormat("ar-DZ", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      }).format(date);
-    }
-
-    function saveData(showMessage = false) {
-      localStorage.setItem(storageKeys.inventory, JSON.stringify(store.inventory));
-      localStorage.setItem(storageKeys.reportRows, JSON.stringify(store.reportRows));
-      localStorage.setItem(storageKeys.missingTools, JSON.stringify(store.missingTools));
-      localStorage.setItem(storageKeys.meta, JSON.stringify(store.meta));
-      localStorage.setItem(storageKeys.notes, JSON.stringify(store.notes));
-
-      renderAll();
-
-      if (showMessage) {
-        showToast("تم حفظ البيانات بنجاح");
+    function checkActivation() {
+      const code = document.getElementById("activationCodeInput").value;
+      if (code === SECRET_CODE) {
+        localStorage.setItem(storageKeys.activated, "true");
+        document.getElementById("activationOverlay").style.display = "none";
+        showToast("تم التفعيل بنجاح!");
+      } else {
+        document.getElementById("activationError").style.display = "block";
       }
     }
 
-    function showSection(id, button) {
-      document.querySelectorAll(".section").forEach(section => {
-        section.classList.remove("active");
-      });
+    function initActivation() {
+      if (localStorage.getItem(storageKeys.activated) === "true") {
+        document.getElementById("activationOverlay").style.display = "none";
+      }
+    }
 
-      document.querySelectorAll("nav button").forEach(btn => {
-        btn.classList.remove("active");
-      });
-
+    function showSection(id, btn) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
       document.getElementById(id).classList.add("active");
-      button.classList.add("active");
+      btn.classList.add("active");
     }
 
-    function clearInventoryForm() {
-      ["invNo", "invName", "invQty", "invDate"].forEach(id => {
-        document.getElementById(id).value = "";
+    /* إدارة المواد الكيميائية والمخزون */
+    function addChemical() {
+      const name = document.getElementById("chemName").value.trim();
+      const totalQty = parseFloat(document.getElementById("chemTotalQty").value || 0);
+
+      if (!name) return showToast("يرجى كتابة اسم المادة الكيميائية");
+      if (totalQty <= 0) return showToast("يرجى أدخال كمية ابتدائية صحيحة");
+
+      store.chemicals.unshift({
+        id: uid(),
+        name,
+        formula: document.getElementById("chemFormula").value.trim() || "—",
+        source: document.getElementById("chemSource").value.trim() || "غير محدد",
+        totalQty: totalQty,
+        remainingQty: totalQty,
+        unit: document.getElementById("chemUnit").value,
+        hazard: document.getElementById("chemHazard").value
       });
 
-      document.getElementById("invState").value = "جيدة";
-      document.getElementById("invName").focus();
+      localStorage.setItem(storageKeys.chemicals, JSON.stringify(store.chemicals));
+      renderChemicals();
+      showToast("تم إنشاء بطاقة المادة الكيميائية بنجاح");
+      
+      document.getElementById("chemName").value = "";
+      document.getElementById("chemTotalQty").value = "";
     }
 
+    function recordUsage() {
+      const chemId = document.getElementById("useChemSelect").value;
+      const teacher = document.getElementById("useTeacherName").value.trim();
+      const qtyUsed = parseFloat(document.getElementById("useQty").value || 0);
+      const date = document.getElementById("useDate").value || new Date().toISOString().slice(0,10);
+
+      if (!chemId) return showToast("يرجى اختيار مادة كيميائية");
+      if (!teacher) return showToast("يرجى تحديد اسم الأستاذ");
+      if (qtyUsed <= 0) return showToast("يرجى تحديد كمية مستهلكة صحيحة");
+
+      const chem = store.chemicals.find(c => c.id === chemId);
+      if (!chem) return;
+
+      if (qtyUsed > chem.remainingQty) {
+        return showToast(`الكمية المتبقية غير كافية! المتبقي حالياً: ${chem.remainingQty} ${chem.unit}`);
+      }
+
+      chem.remainingQty = parseFloat((chem.remainingQty - qtyUsed).toFixed(2));
+
+      store.chemUsage.unshift({
+        id: uid(),
+        chemName: chem.name,
+        teacher,
+        qtyUsed,
+        unit: chem.unit,
+        date
+      });
+
+      localStorage.setItem(storageKeys.chemicals, JSON.stringify(store.chemicals));
+      localStorage.setItem(storageKeys.chemUsage, JSON.stringify(store.chemUsage));
+
+      renderChemicals();
+      showToast("تم خصم الكمية وتسجيل الاستهلاك بالأستاذ");
+      
+      document.getElementById("useTeacherName").value = "";
+      document.getElementById("useQty").value = "";
+    }
+
+    function renderChemicals() {
+      const container = document.getElementById("chemCardsContainer");
+      const select = document.getElementById("useChemSelect");
+
+      select.innerHTML = "<option value=''>-- اختر المادة الكيميائية --</option>";
+      
+      container.innerHTML = store.chemicals.map(chem => {
+        select.innerHTML += `<option value="${chem.id}">${chem.name} (المتبقي: ${chem.remainingQty} ${chem.unit})</option>`;
+        
+        const isLow = chem.remainingQty <= (chem.totalQty * 0.2);
+
+        return `
+          <div class="chem-card">
+            <div class="chem-card-header">
+              <span class="chem-card-title">${chem.name}</span>
+              <span class="chem-card-formula">${chem.formula}</span>
+            </div>
+            <div class="chem-info-list">
+              <div><strong>المصدر:</strong> ${chem.source}</div>
+              <div><strong>الدرجة / الخطورة:</strong> ${chem.hazard}</div>
+              <div><strong>الكمية الكلية الأصلية:</strong> ${chem.totalQty} ${chem.unit}</div>
+            </div>
+            <div class="chem-qty-box ${isLow ? 'low' : ''}">
+              الكمية المتبقية: ${chem.remainingQty} ${chem.unit} ${isLow ? '⚠️ (مخزون منخفض)' : ''}
+            </div>
+            <div style="text-align:left;" class="no-print">
+              <button class="btn btn-danger" onclick="deleteChem('${chem.id}')">🗑️ حذف البطاقة</button>
+            </div>
+          </div>
+        `;
+      }).join("") || "<p style='grid-column:1/-1; text-align:center;'>لا توجد بطاقات مواد كيميائية مسجلة بعد.</p>";
+
+      // جدول تاريخ الاستعمال
+      const usageTbody = document.getElementById("usageHistoryTable");
+      usageTbody.innerHTML = store.chemUsage.map((use, i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td>${use.date}</td>
+          <td><strong>${use.chemName}</strong></td>
+          <td>${use.teacher}</td>
+          <td><span class="badge badge-warning">-${use.qtyUsed} ${use.unit}</span></td>
+          <td class="no-print"><button class="btn btn-danger" onclick="deleteUsage('${use.id}')">🗑️</button></td>
+        </tr>
+      `).join("") || "<tr><td colspan='6'>لا يوجد سجل استهلاك بعد</td></tr>";
+    }
+
+    function deleteChem(id) {
+      if(!confirm("هل أنت تأكد من حذف بطاقة هذه المادة الكيميائية؟")) return;
+      store.chemicals = store.chemicals.filter(x => x.id !== id);
+      localStorage.setItem(storageKeys.chemicals, JSON.stringify(store.chemicals));
+      renderChemicals();
+    }
+
+    function deleteUsage(id) {
+      store.chemUsage = store.chemUsage.filter(x => x.id !== id);
+      localStorage.setItem(storageKeys.chemUsage, JSON.stringify(store.chemUsage));
+      renderChemicals();
+    }
+
+    /* 2. الجرد العام */
     function addInventory() {
       const name = document.getElementById("invName").value.trim();
-      const quantity = Number(document.getElementById("invQty").value || 0);
-
-      if (!name) {
-        showToast("يرجى كتابة اسم المادة أو الوسيلة");
-        document.getElementById("invName").focus();
-        return;
-      }
-
-      if (quantity < 0) {
-        showToast("لا يمكن أن تكون الكمية سالبة");
-        return;
-      }
+      if (!name) return showToast("يرجى إدخال اسم الوسيلة");
 
       store.inventory.unshift({
         id: uid(),
         no: document.getElementById("invNo").value.trim() || "—",
         name,
-        qty: quantity,
+        qty: document.getElementById("invQty").value || 1,
         date: document.getElementById("invDate").value || "—",
         state: document.getElementById("invState").value
       });
 
-      clearInventoryForm();
-      saveData();
-      showToast("تمت إضافة المادة إلى سجل الجرد");
-    }
-
-    function deleteInventory(id) {
-      if (!confirm("هل تريد حذف هذا العنصر من سجل الجرد؟")) return;
-
-      store.inventory = store.inventory.filter(item => item.id !== id);
-      saveData();
-      showToast("تم حذف العنصر من الجرد");
-    }
-
-    function getStateBadge(state) {
-      const classes = {
-        "جيدة": "badge-good",
-        "متوسطة": "badge-medium",
-        "تحتاج إصلاح": "badge-repair",
-        "تالفة": "badge-damaged"
-      };
-
-      return `<span class="badge ${classes[state] || "badge-medium"}">${escapeHtml(state)}</span>`;
+      localStorage.setItem(storageKeys.inventory, JSON.stringify(store.inventory));
+      renderInventory();
+      showToast("تمت الإضافة للعموم بنجاح");
     }
 
     function renderInventory() {
       const tbody = document.getElementById("inventoryTable");
-      const searchValue = document.getElementById("inventorySearch")?.value.trim().toLowerCase() || "";
-
-      const items = store.inventory.filter(item => {
-        const text = `${item.name} ${item.no} ${item.state}`.toLowerCase();
-        return text.includes(searchValue);
-      });
-
-      if (!items.length) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" class="empty-cell">
-              ${searchValue ? "لا توجد نتائج مطابقة للبحث." : "لا توجد عناصر مسجلة في الجرد بعد."}
-            </td>
-          </tr>
-        `;
-      } else {
-        tbody.innerHTML = items.map((item, index) => `
-          <tr>
-            <td>${index + 1}</td>
-            <td><strong>${escapeHtml(item.name)}</strong></td>
-            <td>${escapeHtml(item.qty)}</td>
-            <td>${escapeHtml(item.no)}</td>
-            <td>${item.date === "—" ? "—" : formatArabicDate(item.date)}</td>
-            <td>${getStateBadge(item.state)}</td>
-            <td class="no-print">
-              <button class="btn btn-danger" onclick="deleteInventory('${item.id}')">🗑️ حذف</button>
-            </td>
-          </tr>
-        `).join("");
-      }
-
-      document.getElementById("statItems").textContent = store.inventory.length;
-      document.getElementById("statQuantity").textContent = store.inventory.reduce((sum, item) => sum + Number(item.qty || 0), 0);
-      document.getElementById("statRepair").textContent = store.inventory.filter(item => item.state === "تحتاج إصلاح").length;
-      document.getElementById("statDamaged").textContent = store.inventory.filter(item => item.state === "تالفة").length;
+      tbody.innerHTML = store.inventory.map((item, i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td><strong>${item.name}</strong></td>
+          <td>${item.qty}</td>
+          <td>${item.no}</td>
+          <td>${item.date}</td>
+          <td><span class="badge ${item.state==='جيدة'?'badge-good':'badge-warning'}">${item.state}</span></td>
+          <td class="no-print"><button class="btn btn-danger" onclick="deleteInv('${item.id}')">🗑️</button></td>
+        </tr>
+      `).join("") || "<tr><td colspan='7'>لا توجد مواد مسجلة</td></tr>";
     }
 
-    function updateReportMeta() {
-      store.meta.school = document.getElementById("schoolName").value.trim();
-      store.meta.directorate = document.getElementById("educationDirectorate").value.trim();
-      store.meta.no = document.getElementById("reportNo").value.trim();
-      store.meta.date = document.getElementById("reportDate").value;
-
-      saveData();
+    function deleteInv(id) {
+      store.inventory = store.inventory.filter(x => x.id !== id);
+      localStorage.setItem(storageKeys.inventory, JSON.stringify(store.inventory));
+      renderInventory();
     }
 
-    function clearTeacherForm() {
-      ["teacherName", "lessonTime", "className", "roomNo", "appTitle", "toolsUsed", "teacherNote"].forEach(id => {
-        document.getElementById(id).value = "";
-      });
+    /* 3. طلبات الأساتذة */
+    function addTeacherRequest() {
+      const teacher = document.getElementById("reqTeacher").value.trim();
+      if (!teacher) return showToast("يرجى إدخال اسم الأستاذ");
 
-      document.getElementById("teacherName").focus();
-    }
-
-    function addTeacherRow() {
-      const teacher = document.getElementById("teacherName").value.trim();
-
-      if (!teacher) {
-        showToast("يرجى كتابة اسم الأستاذ");
-        document.getElementById("teacherName").focus();
-        return;
-      }
-
-      store.reportRows.push({
+      store.requests.unshift({
         id: uid(),
         teacher,
-        time: document.getElementById("lessonTime").value.trim() || "—",
-        cls: document.getElementById("className").value.trim() || "—",
-        room: document.getElementById("roomNo").value.trim() || "—",
-        title: document.getElementById("appTitle").value.trim() || "—",
-        tools: document.getElementById("toolsUsed").value.trim() || "—",
-        note: document.getElementById("teacherNote").value.trim() || "—"
+        cls: document.getElementById("reqClass").value.trim() || "—",
+        date: document.getElementById("reqDate").value || "—",
+        time: document.getElementById("reqTime").value.trim() || "—",
+        items: document.getElementById("reqItems").value.trim() || "—"
       });
 
-      clearTeacherForm();
-      saveData();
-      showToast("تمت إضافة الحصة إلى التقرير اليومي");
+      localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
+      renderRequests();
+      showToast("تم إيداع طلب الأستاذ");
     }
 
-    function deleteTeacherRow(id) {
-      if (!confirm("هل تريد حذف هذه الحصة من التقرير؟")) return;
-
-      store.reportRows = store.reportRows.filter(row => row.id !== id);
-      saveData();
-      showToast("تم حذف الحصة من التقرير");
+    function renderRequests() {
+      const tbody = document.getElementById("requestsTable");
+      tbody.innerHTML = store.requests.map(req => `
+        <tr>
+          <td><strong>${req.teacher}</strong></td>
+          <td>${req.cls}</td>
+          <td>${req.date}</td>
+          <td>${req.time}</td>
+          <td style="text-align:right;">${req.items}</td>
+          <td class="no-print"><button class="btn btn-danger" onclick="deleteReq('${req.id}')">🗑️</button></td>
+        </tr>
+      `).join("") || "<tr><td colspan='6'>لا توجد طلبات أستاذ حالية</td></tr>";
     }
 
-    function addMissingTool() {
-      const name = document.getElementById("missingToolName").value.trim();
+    function deleteReq(id) {
+      store.requests = store.requests.filter(x => x.id !== id);
+      localStorage.setItem(storageKeys.requests, JSON.stringify(store.requests));
+      renderRequests();
+    }
 
-      if (!name) {
-        showToast("يرجى كتابة اسم الأداة غير المتوفرة");
-        document.getElementById("missingToolName").focus();
-        return;
-      }
+    /* 4. استعمال الزمن */
+    const days = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس"];
+    const hours = ["08-09", "09-10", "10-11", "11-12", "13-14", "14-15", "15-16"];
 
-      store.missingTools.push({
-        id: uid(),
-        name,
-        date: document.getElementById("missingToolDate").value || "—"
+    function renderTimetable() {
+      const tbody = document.getElementById("timetableBody");
+      tbody.innerHTML = days.map(day => `
+        <tr>
+          <td><strong>${day}</strong></td>
+          ${hours.map(h => {
+            const key = `${day}_${h}`;
+            const val = store.timetable[key] || "";
+            return `<td><input type="text" data-key="${key}" value="${val}" placeholder="..."></td>`;
+          }).join("")}
+        </tr>
+      `).join("");
+    }
+
+    function saveTimetable() {
+      const inputs = document.querySelectorAll("#timetableBody input");
+      inputs.forEach(input => {
+        const key = input.getAttribute("data-key");
+        store.timetable[key] = input.value;
       });
 
-      document.getElementById("missingToolName").value = "";
-      document.getElementById("missingToolDate").value = "";
-
-      saveData();
-      showToast("تمت إضافة الأداة إلى القائمة");
-    }
-
-    function deleteMissingTool(id) {
-      if (!confirm("هل تريد حذف هذه الأداة من القائمة؟")) return;
-
-      store.missingTools = store.missingTools.filter(tool => tool.id !== id);
-      saveData();
-      showToast("تم حذف الأداة من القائمة");
-    }
-
-    function saveReportNotes() {
-      store.notes.toolsStatus = document.getElementById("repToolsStatus").value;
-      store.notes.otherNotes = document.getElementById("repOtherNotes").value;
-
-      localStorage.setItem(storageKeys.notes, JSON.stringify(store.notes));
-    }
-
-    function renderReport() {
-      document.getElementById("lblSchool").textContent =
-        store.meta.school || "....................................";
-
-      document.getElementById("lblDirectorate").textContent =
-        store.meta.directorate || "مديرية التربية لولاية: ............................";
-
-      document.getElementById("lblReportNo").textContent =
-        store.meta.no || "......";
-
-      document.getElementById("lblDate").textContent =
-        formatArabicDate(store.meta.date);
-
-      document.getElementById("schoolName").value = store.meta.school || "";
-      document.getElementById("educationDirectorate").value = store.meta.directorate || "";
-      document.getElementById("reportNo").value = store.meta.no || "";
-      document.getElementById("reportDate").value = store.meta.date || "";
-
-      document.getElementById("repToolsStatus").value = store.notes.toolsStatus || "";
-      document.getElementById("repOtherNotes").value = store.notes.otherNotes || "";
-
-      const reportBody = document.getElementById("reportTableBody");
-
-      if (!store.reportRows.length) {
-        reportBody.innerHTML = `
-          <tr>
-            <td colspan="8" class="empty-cell">لم تتم إضافة أي حصة لهذا اليوم بعد.</td>
-          </tr>
-        `;
-      } else {
-        reportBody.innerHTML = store.reportRows.map(row => `
-          <tr>
-            <td><strong>${escapeHtml(row.teacher)}</strong></td>
-            <td>${escapeHtml(row.time)}</td>
-            <td>${escapeHtml(row.cls)}</td>
-            <td>${escapeHtml(row.room)}</td>
-            <td>${escapeHtml(row.title)}</td>
-            <td>${escapeHtml(row.tools)}</td>
-            <td>${escapeHtml(row.note)}</td>
-            <td class="no-print">
-              <button class="btn btn-danger" onclick="deleteTeacherRow('${row.id}')">🗑️ حذف</button>
-            </td>
-          </tr>
-        `).join("");
-      }
-
-      const missingBody = document.getElementById("missingToolsBody");
-
-      if (!store.missingTools.length) {
-        missingBody.innerHTML = `
-          <tr>
-            <td colspan="3" class="empty-cell">لا توجد أدوات ناقصة مسجلة.</td>
-          </tr>
-        `;
-      } else {
-        missingBody.innerHTML = store.missingTools.map(tool => `
-          <tr>
-            <td>${escapeHtml(tool.name)}</td>
-            <td>${tool.date === "—" ? "—" : formatArabicDate(tool.date)}</td>
-            <td class="no-print">
-              <button class="btn btn-danger" onclick="deleteMissingTool('${tool.id}')">🗑️ حذف</button>
-            </td>
-          </tr>
-        `).join("");
-      }
-    }
-
-    function renderAll() {
-      renderInventory();
-      renderReport();
-    }
-
-    function printInventory() {
-      showSection("inventory", document.querySelector("nav button:first-child"));
-      setTimeout(() => window.print(), 150);
-    }
-
-    function printReport() {
-      showSection("dailyReport", document.querySelector("nav button:nth-child(2)"));
-      setTimeout(() => window.print(), 150);
-    }
-
-    function exportInventoryCSV() {
-      if (!store.inventory.length) {
-        showToast("لا توجد بيانات في الجرد لتصديرها");
-        return;
-      }
-
-      const headers = ["الرقم", "اسم المادة", "الكمية", "رقم الجرد", "تاريخ الدخول", "الحالة"];
-      const rows = store.inventory.map((item, index) => [
-        index + 1,
-        item.name,
-        item.qty,
-        item.no,
-        item.date === "—" ? "" : item.date,
-        item.state
-      ]);
-
-      const csv = [
-        headers,
-        ...rows
-      ].map(row =>
-        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
-      ).join("
-");
-
-      const blob = new Blob(["﻿" + csv], {
-        type: "text/csv;charset=utf-8;"
-      });
-
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `سجل_الجرد_${new Date().toISOString().slice(0, 10)}.csv`;
-      link.click();
-
-      URL.revokeObjectURL(link.href);
-      showToast("تم تصدير سجل الجرد بنجاح");
+      localStorage.setItem(storageKeys.timetable, JSON.stringify(store.timetable));
+      showToast("تم حفظ استعمال الزمن بنجاح!");
     }
 
     function initialize() {
-      if (!store.meta.date) {
-        store.meta.date = new Date().toISOString().slice(0, 10);
-      }
-
-      document.getElementById("todayLabel").textContent =
-        new Intl.DateTimeFormat("ar-DZ", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }).format(new Date());
-
-      renderAll();
+      initActivation();
+      document.getElementById("todayLabel").textContent = new Intl.DateTimeFormat("ar-DZ", { weekday: "long", year: "numeric", month: "long", day: "numeric" }).format(new Date());
+      document.getElementById("useDate").value = new Date().toISOString().slice(0,10);
+      renderChemicals();
+      renderInventory();
+      renderRequests();
+      renderTimetable();
     }
 
     initialize();
