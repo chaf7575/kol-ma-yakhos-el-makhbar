@@ -3,205 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة مخبري المتكاملة</title>
+<title>التقرير اليومي والجرد المخبري</title>
 <style>
 :root {
   --primary: #1e3a8a;
-  --primary-light: #3b82f6;
   --bg: #f8fafc;
   --surface: #ffffff;
   --text: #0f172a;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
+  --border: #cbd5e1;
   --danger: #ef4444;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --radius: 12px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-body { background: var(--bg); color: var(--text); padding-bottom: 70px; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
 
 header {
-  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  background: var(--primary);
   color: white;
-  padding: 1.25rem 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
 }
-header h1 { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
-header .badge { background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
 
-/* Navigation - Mobile Friendly Nav */
+/* Nav Bar for Mobile */
 nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--surface);
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
   display: flex;
-  justify-content: space-around;
   border-top: 1px solid var(--border);
   z-index: 1000;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
 }
 nav button {
-  flex: 1;
-  background: none;
-  border: none;
-  padding: 0.6rem 0.2rem;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  cursor: pointer;
+  flex: 1; padding: 0.8rem 0.2rem;
+  border: none; background: none;
+  font-size: 0.85rem; font-weight: bold;
+  color: #64748b; cursor: pointer;
 }
-nav button.active { color: var(--primary-light); font-weight: bold; }
-nav button svg { width: 20px; height: 20px; fill: currentColor; }
+nav button.active { color: var(--primary); border-top: 3px solid var(--primary); }
 
-main { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
+main { max-width: 1100px; margin: 1rem auto; padding: 0 0.8rem; }
 .section { display: none; }
-.section.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+.section.active { display: block; }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; margin-bottom: 1.5rem; }
+.panel h2 { font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem; border-bottom: 2px solid var(--bg); padding-bottom: 0.5rem; }
 
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
-.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
-.kpi-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-top: 0.25rem; }
-
-.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-.panel h2 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-
-.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; }
 .full-width { grid-column: 1 / -1; }
 
 input, select, textarea {
-  width: 100%;
-  padding: 0.65rem 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.9rem;
-  background: #fafafa;
-  outline: none;
-  transition: border 0.2s;
+  width: 100%; padding: 0.6rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 0.9rem; background: #fff;
 }
-input:focus, select:focus, textarea:focus { border-color: var(--primary-light); background: #fff; }
-textarea { resize: vertical; min-height: 80px; }
 
-.btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
 button.btn {
-  padding: 0.65rem 1.25rem;
-  border-radius: 8px;
-  border: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: opacity 0.2s;
+  padding: 0.6rem 1.2rem; border-radius: 6px; border: none;
+  font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;
 }
-button.btn:active { opacity: 0.8; }
 .btn-primary { background: var(--primary); color: white; }
-.btn-secondary { background: #e2e8f0; color: var(--text); }
-.btn-danger { background: #fee2e2; color: var(--danger); }
+.btn-success { background: #10b981; color: white; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-secondary { background: #e2e8f0; color: #1e293b; }
 
-.table-container { overflow-x: auto; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.88rem; min-width: 600px; }
-th, td { padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--border); }
-th { background: #f1f5f9; color: var(--text-muted); font-weight: 600; }
+table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.88rem; }
+th, td { border: 1px solid var(--border); padding: 0.6rem; text-align: center; }
+th { background: #f1f5f9; font-weight: bold; }
 
-.badge-status { padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-.status-good { background: #d1fae5; color: #065f46; }
-.status-warning { background: #fef3c7; color: #92400e; }
-.status-danger { background: #fee2e2; color: #991b1b; }
-
-.modal {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
-  display: none; align-items: center; justify-content: center; padding: 1rem;
+/* Styling Official Daily Report Paper */
+.official-report {
+  background: #fff;
+  padding: 2rem;
+  border: 1px solid #000;
+  margin-top: 1rem;
 }
-.modal.show { display: flex; }
-.modal-content { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 1.5rem; }
+.official-header { text-align: center; font-weight: bold; line-height: 1.6; margin-bottom: 1.5rem; }
+.official-title { text-align: center; font-size: 1.6rem; font-weight: 900; text-decoration: underline; margin: 1.5rem 0; }
+.meta-info { display: flex; justify-content: space-between; margin-bottom: 1rem; font-weight: bold; }
+
+.report-section-title { font-weight: bold; margin-top: 1.2rem; margin-bottom: 0.4rem; text-decoration: underline; }
+.signatures { display: flex; justify-content: space-between; margin-top: 3.5rem; text-align: center; font-weight: bold; }
+.signatures div { width: 30%; }
 
 @media print {
-  nav, .no-print, button, .form-grid { display: none !important; }
-  body { padding-bottom: 0; background: white; }
+  nav, .no-print, button, input, select { display: none !important; }
+  body { background: white; padding: 0; }
+  main { max-width: 100%; margin: 0; padding: 0; }
   .panel { border: none; padding: 0; }
-  .table-container { border: none; }
-  table { min-width: 100%; font-size: 10pt; }
+  .official-report { border: none; padding: 0; }
+  table { border: 1px solid #000; }
+  th, td { border: 1px solid #000 !important; }
 }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>🔬 مخبري — إدارة المختبر المتوسط</h1>
-  <span class="badge">2026/2027</span>
+<header class="no-print">
+  <h1>🔬 المنصة المتقدمة لتسيير المخبر المتوسط</h1>
 </header>
 
 <main>
-  <!-- 1. لوحة التحكم -->
-  <section id="dashboard" class="section active">
-    <div class="card-grid">
-      <div class="kpi-card"><span>وسائل الجرد</span><div class="num" id="kpiInv">0</div></div>
-      <div class="kpi-card"><span>المواد الكيميائية</span><div class="num" id="kpiChem">0</div></div>
-      <div class="kpi-card"><span>التجارب</span><div class="num" id="kpiEx">0</div></div>
-      <div class="kpi-card"><span>التنبيهات</span><div class="num" id="kpiAlerts" style="color:var(--danger)">0</div></div>
-    </div>
 
-    <div class="panel">
-      <h2>📌 ملخص حالة المخبر</h2>
-      <p style="color:var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
-        مرحباً بك في منصة مخبري. تم تصميم الصفحة لتتيح لك التحكم الكامل في العتاد والمواد الكيميائية، إعداد استعمال الزمن، وتتبع الأنشطة والتجارب اليومية بكل سهولة.
-      </p>
-    </div>
-  </section>
-
-  <!-- 2. الجرد والمخزون -->
-  <section id="inventory" class="section">
+  <!-- 1. قسم الجرد -->
+  <section id="inventory" class="section active">
     <div class="panel no-print">
-      <h2>📦 إضافة وسيلة / عتاد للجرد</h2>
+      <h2>📦 إضافة مادة / وسيلة للجرد</h2>
       <div class="form-grid">
-        <input id="invName" placeholder="اسم الوسيلة/العتاد">
-        <select id="invCat">
-          <option>زجاجيات</option><option>أجهزة قياس</option><option>أجهزة كهربائية</option>
-          <option>أجهزة بصرية</option><option>ميكانيك</option><option>أدوات عامة</option>
-        </select>
-        <input id="invQty" type="number" placeholder="الكمية المتوفرة">
-        <input id="invMin" type="number" placeholder="الحد الأدنى للتنبيه">
+        <input id="invNo" placeholder="رقم الجرد (مثال: G-2026/01)">
+        <input id="invName" placeholder="اسم المادة / الوسيلة">
+        <input id="invQty" type="number" placeholder="العدد (الكمية)">
+        <input id="invDate" type="date" placeholder="تاريخ الدخول">
         <select id="invState">
           <option value="جيدة">جيدة</option>
           <option value="متوسطة">متوسطة</option>
           <option value="تحتاج إصلاح">تحتاج إصلاح</option>
           <option value="تالفة">تالفة</option>
         </select>
-        <input id="invPlace" placeholder="مكان التخزين (الخزانة/الرف)">
-        <textarea id="invNote" class="full-width" placeholder="ملاحظات إضافية..."></textarea>
       </div>
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="addInventory()">إضافة للجرد</button>
+      <div style="margin-top:1rem;">
+        <button class="btn btn-primary" onclick="addInventory()">إضافة إلى الجرد</button>
       </div>
     </div>
 
     <div class="panel">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;" class="no-print">
+      <div style="display:flex; justify-content:space-between; align-items:center;" class="no-print">
         <h2>📋 سجل الجرد العام</h2>
-        <button class="btn btn-secondary" onclick="window.print()">🖨️ طباعة السجل</button>
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ طباعة الجرد</button>
       </div>
-      <input id="invSearch" class="no-print" placeholder="🔍 بحث في الجرد..." oninput="renderInventory()" style="margin-bottom: 1rem;">
-      <div class="table-container">
+      <div style="overflow-x:auto;">
         <table>
           <thead>
             <tr>
-              <th>الوسيلة</th>
-              <th>الصنف</th>
-              <th>الكمية</th>
+              <th>الرقم</th>
+              <th>اسم المادة</th>
+              <th>العدد</th>
+              <th>رقم الجرد</th>
+              <th>تاريخ الدخول</th>
               <th>الحالة</th>
-              <th>المكان</th>
               <th class="no-print">إجراءات</th>
             </tr>
           </thead>
@@ -211,106 +149,124 @@ th { background: #f1f5f9; color: var(--text-muted); font-weight: 600; }
     </div>
   </section>
 
-  <!-- 3. المواد الكيميائية -->
-  <section id="chemicals" class="section">
+  <!-- 2. قسم التقرير اليومي -->
+  <section id="dailyReport" class="section">
     <div class="panel no-print">
-      <h2>🧪 إضافة مادة كيميائية</h2>
+      <h2>⚙️ إعداد بيانات التقرير اليومي</h2>
       <div class="form-grid">
-        <input id="chemName" placeholder="اسم المادة الكيميائية">
-        <input id="chemFormula" placeholder="الصيغة الكيميائية (إن وجدت)">
-        <input id="chemStock" type="number" step="0.01" placeholder="الكمية الإجمالية">
-        <select id="chemUnit"><option>g</option><option>kg</option><option>mL</option><option>L</option><option>وحدة</option></select>
-        <input id="chemStorage" placeholder="مكان الحفظ">
-        <input id="chemHazard" placeholder="محاذير السلامة (مثال: أكال، سريع الاشتعال)">
+        <input id="schoolName" placeholder="اسم المتوسطة" oninput="updateReportMeta()">
+        <input id="reportNo" placeholder="رقم التقرير (مثال: 05/2026)" oninput="updateReportMeta()">
+        <input id="reportDate" type="date" onchange="updateReportMeta()">
       </div>
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="addChemical()">إضافة المادة</button>
+
+      <h3 style="margin-top:1rem; font-size:1rem; color:var(--primary);">➕ إضافة أستاذ وحصة للجدول اليومي:</h3>
+      <div class="form-grid" style="margin-top:0.5rem;">
+        <input id="teacherName" placeholder="اسم الأستاذ">
+        <input id="lessonTime" placeholder="التوقيت (مثال: 08:00 - 09:00)">
+        <input id="className" placeholder="القسم (مثال: 4م1)">
+        <input id="roomNo" placeholder="رقم القاعة">
+        <input id="appTitle" placeholder="عنوان التطبيق / التجربة">
+        <input id="toolsUsed" placeholder="الأدوات المستعملة">
+        <input id="teacherNote" placeholder="ملاحظة">
+      </div>
+      <div style="margin-top:0.8rem;">
+        <button class="btn btn-success" onclick="addTeacherRow()">إضافة الأستاذ إلى التقرير</button>
       </div>
     </div>
 
+    <!-- المعاينة والورقة الرسمية للتقرير اليومي -->
     <div class="panel">
-      <h2>🧪 قائمة المواد الكيميائية المخزنة</h2>
-      <div class="table-container">
+      <div style="text-align: left; margin-bottom: 1rem;" class="no-print">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة التقرير اليومي</button>
+      </div>
+
+      <div class="official-report">
+        <div class="official-header">
+          الجمهورية الجزائرية الديمقراطية الشعبية<br>
+          وزارة التربية الوطنية<br>
+          مديرية التربية لولاية: ..................<br>
+          المتوسطة: <span id="lblSchool">....................................</span>
+        </div>
+
+        <div class="meta-info">
+          <span>التقرير رقم: <span id="lblReportNo">......</span></span>
+          <span>التاريخ: <span id="lblDate">..../../..</span></span>
+        </div>
+
+        <div class="official-title">التقرير اليومي للمخبر</div>
+
+        <!-- جدول الحصص والأساتذة -->
         <table>
           <thead>
             <tr>
-              <th>المادة</th>
-              <th>الصيغة</th>
-              <th>المخزون الحالي</th>
-              <th>مكان الحفظ</th>
-              <th class="no-print">إجراءات</th>
+              <th>اسم الأستاذ</th>
+              <th>التوقيت</th>
+              <th>القسم</th>
+              <th>رقم القاعة</th>
+              <th>عنوان التطبيق</th>
+              <th>الأدوات المستعملة</th>
+              <th>ملاحظة</th>
+              <th class="no-print">إجراء</th>
             </tr>
           </thead>
-          <tbody id="chemicalTable"></tbody>
+          <tbody id="reportTableBody">
+          </tbody>
         </table>
-      </div>
-    </div>
-  </section>
 
-  <!-- 4. استعمال الزمن -->
-  <section id="timetable" class="section">
-    <div class="panel no-print">
-      <h2>📅 إضافة حصة في جدول الأوقات</h2>
-      <div class="form-grid">
-        <input id="ttTeacher" placeholder="اسم الأستاذ">
-        <select id="ttSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
-        <select id="ttLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
-        <input id="ttClass" placeholder="القسم (مثال: 1م2)">
-        <select id="ttDay"><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
-        <select id="ttSlot">
-          <option>08:00 - 09:00</option><option>09:00 - 10:00</option><option>10:00 - 11:00</option><option>11:00 - 12:00</option>
-          <option>13:00 - 14:00</option><option>14:00 - 15:00</option><option>15:00 - 16:00</option>
-        </select>
-      </div>
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="addTimetable()">حفظ الحصة</button>
-      </div>
-    </div>
+        <!-- قسم حالة الأدوات والملاحظات -->
+        <div class="report-section-title">1. حالة الأدوات المستعملة:</div>
+        <textarea id="repToolsStatus" rows="2" placeholder="اكتب هنا حالة الأدوات بعد الاستعمال..."></textarea>
 
-    <div class="panel">
-      <h2>🗓️ جدول استعمال زمن المخبر</h2>
-      <div class="table-container">
+        <div class="report-section-title">2. الأدوات المحتاجة غير المتوفرة:</div>
+        <div class="form-grid no-print" style="margin-bottom:0.5rem;">
+          <input id="missingToolName" placeholder="اسم الاداة غير المتوفرة">
+          <input id="missingToolDate" type="date">
+          <button class="btn btn-secondary" onclick="addMissingTool()">إضافة</button>
+        </div>
         <table>
           <thead>
             <tr>
-              <th>التوقيت</th><th>الأحد</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th>
+              <th>الأداة غير المتوفرة</th>
+              <th>تاريخ الاحتياج</th>
+              <th class="no-print">إجراء</th>
             </tr>
           </thead>
-          <tbody id="timetableBody"></tbody>
+          <tbody id="missingToolsBody"></tbody>
         </table>
+
+        <div class="report-section-title">3. ملاحظات مختلفة:</div>
+        <textarea id="repOtherNotes" rows="2" placeholder="أي ملاحظات إضافية تخص سير العمل بالسياسة المخبرية..."></textarea>
+
+        <!-- التوقيعات الرسمية -->
+        <div class="signatures">
+          <div>المحضّر المخبري<br><br>........................</div>
+          <div>مستشار التربية<br><br>........................</div>
+          <div>المدير<br><br>........................</div>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
-<!-- Bottom Navigation Bar for Mobile -->
 <nav class="no-print">
-  <button class="active" onclick="showSection('dashboard', this)">
-    <span>🏠</span>الرئيسية
-  </button>
-  <button onclick="showSection('inventory', this)">
-    <span>📦</span>الجرد
-  </button>
-  <button onclick="showSection('chemicals', this)">
-    <span>🧪</span>الكيمياء
-  </button>
-  <button onclick="showSection('timetable', this)">
-    <span>📅</span>البرنامج
-  </button>
+  <button class="active" onclick="showSection('inventory', this)">📦 سجل الجرد</button>
+  <button onclick="showSection('dailyReport', this)">📑 التقرير اليومي</button>
 </nav>
 
 <script>
-// State Management with LocalStorage
+// State Management
 const store = {
-  inventory: JSON.parse(localStorage.getItem('mb_inventory') || '[]'),
-  chemicals: JSON.parse(localStorage.getItem('mb_chemicals') || '[]'),
-  timetable: JSON.parse(localStorage.getItem('mb_timetable') || '[]')
+  inventory: JSON.parse(localStorage.getItem('mb_inv_v2') || '[]'),
+  reportRows: JSON.parse(localStorage.getItem('mb_rep_rows') || '[]'),
+  missingTools: JSON.parse(localStorage.getItem('mb_rep_missing') || '[]'),
+  meta: JSON.parse(localStorage.getItem('mb_rep_meta') || '{"school":"","no":"","date":""}')
 };
 
 function saveData() {
-  localStorage.setItem('mb_inventory', JSON.stringify(store.inventory));
-  localStorage.setItem('mb_chemicals', JSON.stringify(store.chemicals));
-  localStorage.setItem('mb_timetable', JSON.stringify(store.timetable));
+  localStorage.setItem('mb_inv_v2', JSON.stringify(store.inventory));
+  localStorage.setItem('mb_rep_rows', JSON.stringify(store.reportRows));
+  localStorage.setItem('mb_rep_missing', JSON.stringify(store.missingTools));
+  localStorage.setItem('mb_rep_meta', JSON.stringify(store.meta));
   renderAll();
 }
 
@@ -321,151 +277,143 @@ function showSection(id, btn) {
   btn.classList.add('active');
 }
 
-// 1. Inventory Functions
+// 1. Inventory Logic
 function addInventory() {
   const name = document.getElementById('invName').value.trim();
-  const qty = parseInt(document.getElementById('invQty').value) || 0;
-  if(!name) return alert('يرجى أدخال اسم الوسيلة');
-  
+  if(!name) return alert('يرجى كتابة اسم المادة');
+
   store.inventory.push({
     id: Date.now(),
-    name,
-    cat: document.getElementById('invCat').value,
-    qty,
-    min: parseInt(document.getElementById('invMin').value) || 0,
-    state: document.getElementById('invState').value,
-    place: document.getElementById('invPlace').value || 'غير محدد',
-    note: document.getElementById('invNote').value
+    no: document.getElementById('invNo').value || '—',
+    name: name,
+    qty: document.getElementById('invQty').value || 0,
+    date: document.getElementById('invDate').value || '—',
+    state: document.getElementById('invState').value
   });
-  
-  clearFields(['invName', 'invQty', 'invMin', 'invPlace', 'invNote']);
+
+  ['invNo','invName','invQty','invDate'].forEach(id => document.getElementById(id).value = '');
   saveData();
 }
 
 function deleteInventory(id) {
-  if(confirm('هل انت متأكد من حذف هذه الوسيلة؟')) {
-    store.inventory = store.inventory.filter(item => item.id !== id);
+  if(confirm('حذف هذا العنصر من الجرد؟')) {
+    store.inventory = store.inventory.filter(i => i.id !== id);
     saveData();
   }
 }
 
 function renderInventory() {
-  const query = (document.getElementById('invSearch')?.value || '').toLowerCase();
   const tbody = document.getElementById('inventoryTable');
-  const items = store.inventory.filter(i => i.name.toLowerCase().includes(query));
-
-  tbody.innerHTML = items.map(item => {
-    let badgeClass = 'status-good';
-    if(item.state === 'تالفة' || item.qty <= item.min) badgeClass = 'status-danger';
-    else if(item.state === 'تحتاج إصلاح') badgeClass = 'status-warning';
-
-    return `<tr>
+  tbody.innerHTML = store.inventory.map((item, index) => `
+    <tr>
+      <td>${index + 1}</td>
       <td><b>${item.name}</b></td>
-      <td>${item.cat}</td>
       <td>${item.qty}</td>
-      <td><span class="badge-status ${badgeClass}">${item.state}</span></td>
-      <td>${item.place}</td>
-      <td class="no-print">
-        <button class="btn btn-danger" onclick="deleteInventory(${item.id})">حذف</button>
-      </td>
-    </tr>`;
-  }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--text-muted)">لا توجد عناصر مسجلة</td></tr>';
+      <td>${item.no}</td>
+      <td>${item.date}</td>
+      <td>${item.state}</td>
+      <td class="no-print"><button class="btn btn-danger" onclick="deleteInventory(${item.id})">مسح</button></td>
+    </tr>
+  `).join('') || '<tr><td colspan="7">لا توجد عناصر مسجلة في الجرد</td></tr>';
 }
 
-// 2. Chemical Functions
-function addChemical() {
-  const name = document.getElementById('chemName').value.trim();
-  const stock = parseFloat(document.getElementById('chemStock').value) || 0;
-  if(!name) return alert('يرجى إدخال اسم المادة');
-
-  store.chemicals.push({
-    id: Date.now(),
-    name,
-    formula: document.getElementById('chemFormula').value,
-    stock,
-    unit: document.getElementById('chemUnit').value,
-    storage: document.getElementById('chemStorage').value || 'غير محدد',
-    hazard: document.getElementById('chemHazard').value
-  });
-
-  clearFields(['chemName', 'chemFormula', 'chemStock', 'chemStorage', 'chemHazard']);
+// 2. Daily Report Logic
+function updateReportMeta() {
+  store.meta.school = document.getElementById('schoolName').value;
+  store.meta.no = document.getElementById('reportNo').value;
+  store.meta.date = document.getElementById('reportDate').value;
   saveData();
 }
 
-function deleteChemical(id) {
-  if(confirm('هل تريد مسح المادة الكيميائية؟')) {
-    store.chemicals = store.chemicals.filter(c => c.id !== id);
-    saveData();
-  }
-}
+function addTeacherRow() {
+  const teacher = document.getElementById('teacherName').value.trim();
+  if(!teacher) return alert('يرجى كتابة اسم الأستاذ');
 
-function renderChemicals() {
-  const tbody = document.getElementById('chemicalTable');
-  tbody.innerHTML = store.chemicals.map(c => `
-    <tr>
-      <td><b>${c.name}</b></td>
-      <td>${c.formula || '—'}</td>
-      <td>${c.stock} ${c.unit}</td>
-      <td>${c.storage}</td>
-      <td class="no-print">
-        <button class="btn btn-danger" onclick="deleteChemical(${c.id})">حذف</button>
-      </td>
-    </tr>
-  `).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">لا توجد مواد كيميائية</td></tr>';
-}
-
-// 3. Timetable Functions
-function addTimetable() {
-  const teacher = document.getElementById('ttTeacher').value.trim();
-  const cls = document.getElementById('ttClass').value.trim();
-  if(!teacher || !cls) return alert('يرجى إدخال اسم الأستاذ والقسم');
-
-  store.timetable.push({
+  store.reportRows.push({
     id: Date.now(),
     teacher,
-    subject: document.getElementById('ttSubject').value,
-    level: document.getElementById('ttLevel').value,
-    cls,
-    day: document.getElementById('ttDay').value,
-    slot: document.getElementById('ttSlot').value
+    time: document.getElementById('lessonTime').value,
+    cls: document.getElementById('className').value,
+    room: document.getElementById('roomNo').value,
+    title: document.getElementById('appTitle').value,
+    tools: document.getElementById('toolsUsed').value,
+    note: document.getElementById('teacherNote').value
   });
 
-  clearFields(['ttTeacher', 'ttClass']);
+  ['teacherName','lessonTime','className','roomNo','appTitle','toolsUsed','teacherNote'].forEach(id => document.getElementById(id).value = '');
   saveData();
 }
 
-function renderTimetable() {
-  const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
-  const slots = ['08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00'];
-  const tbody = document.getElementById('timetableBody');
-
-  tbody.innerHTML = slots.map(slot => `
-    <tr>
-      <th>${slot}</th>
-      ${days.map(day => {
-        const match = store.timetable.find(t => t.day === day && t.slot === slot);
-        return `<td>${match ? `<b>${match.teacher}</b><br><small>${match.cls} (${match.level})</small>` : '—'}</td>`;
-      }).join('')}
-    </tr>
-  `).join('');
+function deleteTeacherRow(id) {
+  store.reportRows = store.reportRows.filter(r => r.id !== id);
+  saveData();
 }
 
-// Helper Functions
-function clearFields(ids) { ids.forEach(id => document.getElementById(id).value = ''); }
+function addMissingTool() {
+  const name = document.getElementById('missingToolName').value.trim();
+  if(!name) return;
+
+  store.missingTools.push({
+    id: Date.now(),
+    name,
+    date: document.getElementById('missingToolDate').value || '—'
+  });
+
+  document.getElementById('missingToolName').value = '';
+  document.getElementById('missingToolDate').value = '';
+  saveData();
+}
+
+function deleteMissingTool(id) {
+  store.missingTools = store.missingTools.filter(t => t.id !== id);
+  saveData();
+}
+
+function renderReport() {
+  // Update Header Elements
+  document.getElementById('lblSchool').textContent = store.meta.school || '....................................';
+  document.getElementById('lblReportNo').textContent = store.meta.no || '......';
+  document.getElementById('lblDate').textContent = store.meta.date || '..../../..';
+
+  document.getElementById('schoolName').value = store.meta.school || '';
+  document.getElementById('reportNo').value = store.meta.no || '';
+  document.getElementById('reportDate').value = store.meta.date || '';
+
+  // Render Teachers Table
+  const tbody = document.getElementById('reportTableBody');
+  tbody.innerHTML = store.reportRows.map(r => `
+    <tr>
+      <td><b>${r.teacher}</b></td>
+      <td>${r.time}</td>
+      <td>${r.cls}</td>
+      <td>${r.room}</td>
+      <td>${r.title}</td>
+      <td>${r.tools}</td>
+      <td>${r.note}</td>
+      <td class="no-print"><button class="btn btn-danger" onclick="deleteTeacherRow(${r.id})">مسح</button></td>
+    </tr>
+  `).join('') || '<tr><td colspan="8">لم يتم إضافة أي أستاذ بعد لهذا اليوم</td></tr>';
+
+  // Render Missing Tools
+  const mBody = document.getElementById('missingToolsBody');
+  mBody.innerHTML = store.missingTools.map(m => `
+    <tr>
+      <td>${m.name}</td>
+      <td>${m.date}</td>
+      <td class="no-print"><button class="btn btn-danger" onclick="deleteMissingTool(${m.id})">مسح</button></td>
+    </tr>
+  `).join('') || '<tr><td colspan="3">لا توجد أدوات ناقصة مسجلة</td></tr>';
+}
 
 function renderAll() {
   renderInventory();
-  renderChemicals();
-  renderTimetable();
-  
-  // Update KPI Stats
-  document.getElementById('kpiInv').textContent = store.inventory.length;
-  document.getElementById('kpiChem').textContent = store.chemicals.length;
-  document.getElementById('kpiEx').textContent = store.timetable.length;
-  document.getElementById('kpiAlerts').textContent = store.inventory.filter(i => i.qty <= i.min || i.state === 'تالفة').length;
+  renderReport();
 }
 
 // Initial Load
+if(!store.meta.date) {
+  store.meta.date = new Date().toISOString().split('T')[0];
+}
 renderAll();
 </script>
 </body>
