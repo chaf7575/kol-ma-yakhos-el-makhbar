@@ -507,7 +507,7 @@ footer{
   .home-card{padding:14px 7px}
   .home-card .icon{font-size:30px}
 }
-</style>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -1117,8 +1117,33 @@ footer{
 </div>
 
 <script>
-
 const KEYS={
+ requests:"l_reqs_v4",
+ chemicals:"l_chems_v4",
+ chemUses:"lab_chem_uses_v2",
+ inventories:"l_invs_v4",
+ progress:"lab_progress_v2",
+ experiments:"lab_experiments_v2",
+ preparation:"lab_preparation_v2",
+ movements:"lab_movements_v2",
+ dailyReports:"lab_daily_reports_v2",
+ reports:"lab_reports_v2",
+ invoices:"lab_invoices_v2",
+ settings:"lab_settings_v2"
+};const SUPABASE_URL = "https://niedzlyvricaofqasohe.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_iDvPZL5m8A_bfItO0Q9muA_VHJU5-V_";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+const KEYS={const SUPABASE_URL = "https://niedzlyvricaofqasohe.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "ضع_المفتاح_الذي_نسخته_هنا";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
  requests:"l_reqs_v4",
  chemicals:"l_chems_v4",
  chemUses:"lab_chem_uses_v2",
