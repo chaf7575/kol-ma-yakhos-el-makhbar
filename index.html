@@ -1,285 +1,2871 @@
-قصدك ربما أنك لم تستطع **حذف الملف القديم** أو التخلص من الكود القديم العالق في المتصفح أو على حاسوبك.
-دعنا نحل هذه المشكلة بطريقة أبسط وأسهل بكثير وبدون الحاجة لإنشاء ملفات يدوياً أو الحيرة مع الملفات القديمة:
-### الحل الجذري (خطوتان فقط):
-#### الخطوة الأولى: إنشاء ملف جديد نظيف تماماً
- 1. اضغط على زر **نسخ (Copy)** الموجود أعلى صندوق الكود الجديد في الأسفل مباشرة.
- 2. على سطح المكتب في حاسوبك، انقر بزر الماوس الأيمن واختر **جديد (New)** ثم **مستند نصي (Text Document)**.
- 3. افتح هذا المستند النصي، والصق الكود بداخله.
- 4. اضغط من لوحة المفاتيح على **Ctrl + Shift + S** (أو اختر من القائمة ملف > حفظ باسم - Save As).
- 5. في خانة اسم الملف، اكتب حرفياً:
-   ```text
-   lab.html
-   
-   ```
-   وفي خانة "حفظ كنوع" (Save as type) اختر **جميع الملفات (*.*)** ثم اضغط **حفظ (Save)**.
- 6. الآن سيظهر لك ملف جديد باسم lab على شكل أيقونة متصفح، **افتحه وسيعمل معك فوراً**.
-#### الخطوة الثانية: في حال كان الكود القديم يظهر بسبب ذاكرة المتصفح (Cache)
-إذا فتحت التطبيق الجديد ووجدت أن البيانات القديمة ما زالت تظهر، فهذا بسبب حفظ النظام القديم في ذاكرة المتصفح. لتنظيفها تماماً:
- 1. داخل الصفحة المفتوحة، اضغط على زر **F12** في لوحة المفاتيح (أو انقر بزر الماوس الأيمن واختر **فحص / Inspect**).
- 2. اذهب إلى تبويب **Application** (أو **التطبيق**).
- 3. من القائمة الجانبية، اختر **Local Storage** ثم اضغط على الرابط الموجود تحتها.
- 4. انقر بزر الماوس الأيمن على السجلات واختر **Clear** (أو احذفها يدوياً)، ثم قم بتحديث الصفحة (F5).
-إليك الكود النهائي الصافي 100% (جاهز للنسخ المباشر):
-```html
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مخبر العلوم الفيزيائية</title>
-  <style>
-    :root {
-      --primary: #2563eb;
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --text: #0f172a;
-      --border: #e2e8f0;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
-    body { background: var(--bg); color: var(--text); direction: rtl; text-align: right; padding-bottom: 90px; }
-    header { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; padding: 1.5rem 1rem 3.5rem; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
-    .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    main { max-width: 1100px; margin: -2rem auto 0; padding: 0 1rem; }
-    .view { display: none; }
-    .view.active { display: block; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-    .card h2 { color: #1e40af; font-size: 1.1rem; margin-bottom: 1rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-    .field { display: flex; flex-direction: column; gap: 0.4rem; }
-    .field label { font-size: 0.85rem; font-weight: bold; color: #334155; }
-    input, select, textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; outline: none; }
-    textarea { resize: vertical; min-height: 80px; }
-    .btn { background: var(--primary); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
-    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; margin-top: 0.5rem; }
-    table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.9rem; min-width: 600px; }
-    th, td { padding: 0.75rem; border-bottom: 1px solid var(--border); }
-    th { background: #f1f5f9; color: #334155; }
-    tr:hover { background: #f8fafc; }
-    .badge { padding: 0.3rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer; display: inline-block; }
-    .badge-p { background: #fef3c7; color: #d97706; }
-    .badge-d { background: #d1fae5; color: #059669; }
-    .btn-del { background: #fee2e2; color: #dc2626; border: none; padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer; }
-    nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; display: flex; justify-content: center; gap: 0.5rem; padding: 0.6rem; border-top: 1px solid var(--border); z-index: 1000; }
-    nav button { background: #f8fafc; border: 1px solid var(--border); color: #64748b; padding: 0.6rem 1rem; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
-    nav button.active { background: #eff6ff; color: var(--primary); border-color: var(--primary); }
-    #toast { position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%) translateY(-100px); background: #0f172a; color: white; padding: 0.7rem 1.5rem; border-radius: 8px; transition: transform 0.3s; z-index: 2000; }
-    #toast.show { transform: translateX(-50%) translateY(0); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>منصة المخبري</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Tahoma,Arial,sans-serif;
+  background:#f4f7fb;
+  color:#172033;
+}
+
+header{
+  background:#123b5d;
+  color:white;
+  padding:18px 15px;
+  position:sticky;
+  top:0;
+  z-index:50;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:0 12px;
+}
+
+.header-flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+header h1{
+  margin:0;
+  font-size:1.35rem;
+}
+
+#dateBox{
+  background:rgba(255,255,255,.15);
+  padding:7px 10px;
+  border-radius:8px;
+  font-size:.82rem;
+  white-space:nowrap;
+}
+
+main{
+  padding:18px 0 90px;
+}
+
+.view{
+  display:none;
+}
+
+.view.active{
+  display:block;
+}
+
+.card{
+  background:white;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:15px;
+  box-shadow:0 2px 8px rgba(15,23,42,.07);
+  border:1px solid #e2e8f0;
+}
+
+.card h2{
+  margin:0 0 15px;
+  color:#123b5d;
+  font-size:1.15rem;
+}
+
+.card h3{
+  color:#123b5d;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.stat{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+  padding:15px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:1.5rem;
+  color:#123b5d;
+  margin-top:6px;
+}
+
+label{
+  display:block;
+  margin:8px 0 5px;
+  font-weight:bold;
+  font-size:.9rem;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  background:white;
+  font-family:inherit;
+  font-size:.9rem;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+button{
+  border:0;
+  border-radius:7px;
+  padding:9px 13px;
+  cursor:pointer;
+  font-family:inherit;
+  font-weight:bold;
+}
+
+.btn{
+  background:#123b5d;
+  color:white;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+.btn-green{
+  background:#16805c;
+  color:white;
+}
+
+.btn-red{
+  background:#c0392b;
+  color:white;
+}
+
+.btn-orange{
+  background:#c77700;
+  color:white;
+}
+
+.btn-gray{
+  background:#64748b;
+  color:white;
+}
+
+.btn-small{
+  padding:6px 9px;
+  font-size:.78rem;
+  margin:2px;
+}
+
+.form-actions{
+  margin-top:13px;
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:700px;
+}
+
+th,
+td{
+  border:1px solid #dbe2ea;
+  padding:8px;
+  text-align:right;
+  font-size:.83rem;
+}
+
+th{
+  background:#123b5d;
+  color:white;
+}
+
+tr:nth-child(even){
+  background:#f8fafc;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  font-size:.75rem;
+  font-weight:bold;
+}
+
+.badge-pending{
+  background:#fff3cd;
+  color:#856404;
+}
+
+.badge-done{
+  background:#d1fae5;
+  color:#065f46;
+}
+
+.badge-out{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.badge-in{
+  background:#dbeafe;
+  color:#1e40af;
+}
+
+.empty{
+  padding:25px;
+  text-align:center;
+  color:#64748b;
+}
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  right:0;
+  left:0;
+  background:white;
+  border-top:1px solid #dbe2ea;
+  box-shadow:0 -2px 10px rgba(0,0,0,.08);
+  z-index:100;
+  overflow-x:auto;
+}
+
+.nav-inner{
+  display:flex;
+  min-width:max-content;
+  justify-content:center;
+}
+
+.nav-btn{
+  background:white;
+  color:#475569;
+  border-radius:0;
+  min-width:85px;
+  padding:9px 7px;
+  font-size:.72rem;
+  border-top:3px solid transparent;
+}
+
+.nav-btn.active{
+  color:#123b5d;
+  border-top-color:#123b5d;
+  background:#f8fafc;
+}
+
+.nav-icon{
+  display:block;
+  font-size:1.25rem;
+  margin-bottom:3px;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.section-title h2{
+  margin:0;
+}
+
+.search{
+  max-width:300px;
+}
+
+.notice{
+  background:#eff6ff;
+  border-right:4px solid #2563eb;
+  padding:10px;
+  margin-bottom:12px;
+  border-radius:6px;
+  font-size:.85rem;
+}
+
+.toast{
+  position:fixed;
+  top:75px;
+  left:15px;
+  background:#172033;
+  color:white;
+  padding:11px 15px;
+  border-radius:8px;
+  display:none;
+  z-index:200;
+  box-shadow:0 4px 12px rgba(0,0,0,.2);
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:150;
+  padding:15px;
+}
+
+.modal-box{
+  background:white;
+  width:100%;
+  max-width:600px;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:12px;
+  padding:18px;
+}
+
+.close{
+  float:left;
+  background:#eee;
+  color:#333;
+}
+
+.print-only{
+  display:none;
+}
+
+@media(max-width:700px){
+
+  header h1{
+    font-size:1.05rem;
+  }
+
+  #dateBox{
+    font-size:.7rem;
+  }
+
+  .grid,
+  .grid3{
+    grid-template-columns:1fr;
+  }
+
+  .card{
+    padding:12px;
+  }
+
+  .form-actions button{
+    flex:1;
+  }
+
+  .section-title{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .search{
+    max-width:none;
+  }
+
+  .nav-btn{
+    min-width:76px;
+  }
+}
+
+@media print{
+
+  header,
+  .bottom-nav,
+  .no-print,
+  button{
+    display:none!important;
+  }
+
+  body{
+    background:white;
+  }
+
+  .view{
+    display:none!important;
+  }
+
+  #v-daily-report-print{
+    display:block!important;
+  }
+
+  .print-only{
+    display:block;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    <div class="container header-flex">
-      <div>
-        <h1>مخبر العلوم الفيزيائية والتكنولوجيا</h1>
-        <p style="opacity: 0.85; font-size: 0.85rem; margin-top: 0.2rem;">نظام تسيير الطلبات، الكيمياء والجرد العام</p>
-      </div>
-      <div id="dateBox" style="background: rgba(255,255,255,0.15); padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.85rem;"></div>
+<header>
+  <div class="container header-flex">
+    <div>
+      <h1 id="platformTitle">منصة المخبري</h1>
     </div>
-  </header>
+    <div id="dateBox"></div>
+  </div>
+</header>
 
-  <main>
-    <!-- واجهة الطلبات -->
-    <section id="v-home" class="view active">
-      <div class="card" style="background:linear-gradient(135deg, #0f766e, #0d9488); color:white;">
-        <h2 style="color:white;" id="bannerT">النظام الرقمي للمخبر</h2>
-        <p id="bannerD" style="font-size: 0.9rem; opacity: 0.9;">إدارة تسيير الأعمال التطبيقية وطلبات الأساتذة بكل سهولة ومرونة.</p>
+<main class="container">
+
+<!-- ================= الرئيسية ================= -->
+
+<section id="v-home" class="view active">
+
+  <div class="card">
+    <h2>الرئيسية</h2>
+
+    <div class="grid3">
+
+      <div class="stat">
+        الطلبات
+        <strong id="statReq">0</strong>
       </div>
 
-      <div class="card">
-        <h2>📝 استمارة طلب الوسائل (خاصة بالأستاذ)</h2>
-        <form onsubmit="saveReq(event)">
-          <div class="grid">
-            <div class="field"><label>اسم الأستاذ(ة)</label><input id="rName" required placeholder="الاسم واللقب"></div>
-            <div class="field"><label>القسم / المستوى</label><input id="rClass" required placeholder="مثال: 4 متوسط 1"></div>
-            <div class="field"><label>تاريخ الحصة</label><input id="rDate" type="date" required></div>
-            <div class="field"><label>التوقيت</label><input id="rTime" required placeholder="08:00 - 09:00"></div>
-            <div class="field" style="grid-column: 1/-1;"><label>الوسائل والمواد المطلوبة</label><textarea id="rItems" required placeholder="اكتب الأدوات والمحاليل الكيميائية..."></textarea></div>
-          </div>
-          <button type="submit" class="btn">إرسال الطلب للمخبر</button>
-        </form>
+      <div class="stat">
+        المواد الكيميائية
+        <strong id="statChem">0</strong>
       </div>
 
-      <div class="card">
-        <h2>📊 سجل متابعة طلبات الأساتذة</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>#</th><th>الأستاذ</th><th>القسم</th><th>التاريخ</th><th>التوقيت</th><th>الوسائل</th><th>الحالة</th><th>حذف</th></tr></thead>
-            <tbody id="reqTable"></tbody>
-          </table>
-        </div>
+      <div class="stat">
+        مواد الجرد
+        <strong id="statInv">0</strong>
       </div>
-    </section>
 
-    <!-- واجهة الكيمياء -->
-    <section id="v-chem" class="view">
-      <div class="card">
-        <h2>🧪 إضافة مادة كيميائية</h2>
-        <div class="grid">
-          <div class="field"><label>اسم المادة</label><input id="cName" placeholder="حمض كلور الماء"></div>
-          <div class="field"><label>الصيغة</label><input id="cForm" placeholder="HCl"></div>
-          <div class="field"><label>الكمية</label><input id="cQty" type="number" placeholder="1000"></div>
-          <div class="field"><label>الوحدة</label><select id="cUnit"><option>مللتر (ml)</option><option>غرام (g)</option></select></div>
-        </div>
-        <button class="btn" onclick="addChem()">إضافة المادة للمخزون</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>اختصارات</h2>
+
+    <div class="grid">
+
+      <button class="btn" onclick="goTab('requests')">
+        📝 طلبات الأساتذة
+      </button>
+
+      <button class="btn" onclick="goTab('progress')">
+        📅 التدرج السنوي
+      </button>
+
+      <button class="btn" onclick="goTab('experiments')">
+        🧪 التجارب
+      </button>
+
+      <button class="btn" onclick="goTab('inventory')">
+        📦 الجرد
+      </button>
+
+      <button class="btn" onclick="goTab('daily')">
+        📋 التقرير اليومي
+      </button>
+
+      <button class="btn" onclick="goTab('reports')">
+        📊 التقارير
+      </button>
+
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= طلبات الأساتذة ================= -->
+
+<section id="v-requests" class="view">
+
+  <div class="card">
+
+    <div class="section-title">
+      <h2>📝 طلبات الأساتذة</h2>
+    </div>
+
+    <div class="grid">
+
+      <div>
+        <label>اسم الأستاذ</label>
+        <input id="reqTeacher" placeholder="اسم الأستاذ">
       </div>
-      <div class="card">
-        <h2>قائمة المواد الكيميائية</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>المادة</th><th>الصيغة</th><th>الكمية</th><th>الوحدة</th><th>حذف</th></tr></thead>
-            <tbody id="chemTable"></tbody>
-          </table>
-        </div>
+
+      <div>
+        <label>المادة</label>
+        <select id="reqSubject">
+          <option>العلوم الفيزيائية</option>
+          <option>علوم الطبيعة والحياة</option>
+          <option>التكنولوجيا</option>
+          <option>أخرى</option>
+        </select>
       </div>
-    </section>
 
-    <!-- واجهة الجرد -->
-    <section id="v-inv" class="view">
-      <div class="card">
-        <h2>📦 إضافة أداة للجرد العام</h2>
-        <div class="grid">
-          <div class="field"><label>اسم الأداة</label><input id="iName" placeholder="مجهر ضوئي"></div>
-          <div class="field"><label>رقم الجرد</label><input id="iNo" placeholder="G-01"></div>
-          <div class="field"><label>الكمية</label><input id="iQty" type="number" value="1"></div>
-        </div>
-        <button class="btn" onclick="addInv()">تسجيل في الجرد</button>
+      <div>
+        <label>القسم</label>
+        <input id="reqClass" placeholder="مثال: 2 متوسط 3">
       </div>
-      <div class="card">
-        <h2>سجل الجرد العام</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>الأداة</th><th>رقم الجرد</th><th>الكمية</th><th>حذف</th></tr></thead>
-            <tbody id="invTable"></tbody>
-          </table>
-        </div>
+
+      <div>
+        <label>التاريخ</label>
+        <input id="reqDate" type="date">
       </div>
-    </section>
-  </main>
 
-  <nav>
-    <button id="b-home" class="active" onclick="goTab('v-home', this)">🏠 الرئيسية والطلبات</button>
-    <button id="b-chem" onclick="goTab('v-chem', this)">🧪 الكيمياء</button>
-    <button id="b-inv" onclick="goTab('v-inv', this)">📦 الجرد</button>
-  </nav>
+    </div>
 
-  <div id="toast">تم بنجاح</div>
+    <label>الطلب</label>
+    <textarea id="reqText" placeholder="اكتب طلب الأستاذ والوسائل المطلوبة..."></textarea>
 
-  <script>
-    let reqs = JSON.parse(localStorage.getItem('l_reqs_v3') || '[]');
-    let chems = JSON.parse(localStorage.getItem('l_chems_v3') || '[]');
-    let invs = JSON.parse(localStorage.getItem('l_invs_v3') || '[]');
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveReq()">حفظ الطلب</button>
+    </div>
 
-    function toast(m) {
-      let t = document.getElementById('toast');
-      t.textContent = m; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
+  </div>
+
+  <div class="card">
+
+    <div class="section-title">
+      <h2>سجل الطلبات</h2>
+      <input class="search" id="reqSearch" oninput="renderReqs()" placeholder="بحث...">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>الأستاذ</th>
+            <th>المادة</th>
+            <th>القسم</th>
+            <th>الطلب</th>
+            <th>الحالة</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+        <tbody id="reqTable"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= التدرج ================= -->
+
+<section id="v-progress" class="view">
+
+  <div class="card">
+
+    <h2>📅 التدرج السنوي والأسبوعي</h2>
+
+    <div class="notice">
+      يمكن تسجيل التدرج حسب المستوى والأسبوع، مع الدرس والتجربة والوسائل المطلوبة.
+    </div>
+
+    <div class="grid">
+
+      <div>
+        <label>السنة الدراسية</label>
+        <input id="progYear" placeholder="2026/2027">
+      </div>
+
+      <div>
+        <label>المستوى</label>
+        <select id="progLevel">
+          <option>1 متوسط</option>
+          <option>2 متوسط</option>
+          <option>3 متوسط</option>
+          <option>4 متوسط</option>
+        </select>
+      </div>
+
+      <div>
+        <label>الأسبوع</label>
+        <input id="progWeek" type="number" min="1" max="52">
+      </div>
+
+      <div>
+        <label>الفصل</label>
+        <select id="progTerm">
+          <option>الفصل الأول</option>
+          <option>الفصل الثاني</option>
+          <option>الفصل الثالث</option>
+        </select>
+      </div>
+
+    </div>
+
+    <label>الدرس</label>
+    <input id="progLesson" placeholder="عنوان الدرس">
+
+    <label>التجربة / العمل التطبيقي</label>
+    <input id="progExperiment" placeholder="عنوان التجربة">
+
+    <label>الوسائل المطلوبة</label>
+    <textarea id="progMaterials" placeholder="الأجهزة والمواد المطلوبة"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveProgress()">حفظ التدرج</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="section-title">
+      <h2>جدول التدرج</h2>
+
+      <select id="progFilter" class="search" onchange="renderProgress()">
+        <option value="">كل المستويات</option>
+        <option>1 متوسط</option>
+        <option>2 متوسط</option>
+        <option>3 متوسط</option>
+        <option>4 متوسط</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>السنة</th>
+            <th>المستوى</th>
+            <th>الفصل</th>
+            <th>الأسبوع</th>
+            <th>الدرس</th>
+            <th>التجربة</th>
+            <th>الوسائل</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="progTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= التجارب ================= -->
+
+<section id="v-experiments" class="view">
+
+  <div class="card">
+
+    <h2>🧪 التجارب والأعمال التطبيقية</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>المستوى</label>
+        <select id="expLevel">
+          <option>1 متوسط</option>
+          <option>2 متوسط</option>
+          <option>3 متوسط</option>
+          <option>4 متوسط</option>
+        </select>
+      </div>
+
+      <div>
+        <label>عنوان التجربة</label>
+        <input id="expTitle">
+      </div>
+
+    </div>
+
+    <label>الهدف من التجربة</label>
+    <textarea id="expGoal"></textarea>
+
+    <label>الأجهزة</label>
+    <textarea id="expEquipment"></textarea>
+
+    <label>المواد</label>
+    <textarea id="expMaterials"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveExperiment()">حفظ التجربة</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>سجل التجارب</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>المستوى</th>
+            <th>التجربة</th>
+            <th>الهدف</th>
+            <th>الأجهزة</th>
+            <th>المواد</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="expTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= تحضير الوسائل ================= -->
+
+<section id="v-preparation" class="view">
+
+  <div class="card">
+
+    <h2>🔧 تحضير الوسائل للأعمال التطبيقية</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>التاريخ</label>
+        <input id="prepDate" type="date">
+      </div>
+
+      <div>
+        <label>الأستاذ</label>
+        <input id="prepTeacher">
+      </div>
+
+      <div>
+        <label>القسم</label>
+        <input id="prepClass">
+      </div>
+
+      <div>
+        <label>الحصة</label>
+        <input id="prepTime" placeholder="مثال: 08:00 - 09:00">
+      </div>
+
+    </div>
+
+    <label>التجربة</label>
+    <input id="prepExperiment">
+
+    <label>الوسائل التي تم تحضيرها</label>
+    <textarea id="prepMaterials"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="savePreparation()">حفظ التحضير</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>سجل التحضير</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>الأستاذ</th>
+            <th>القسم</th>
+            <th>الحصة</th>
+            <th>التجربة</th>
+            <th>الوسائل</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+        <tbody id="prepTable"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= الجرد ================= -->
+
+<section id="v-inventory" class="view">
+
+  <div class="card">
+
+    <h2>📦 الجرد العام</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>رقم الجرد</label>
+        <input id="invNumber">
+      </div>
+
+      <div>
+        <label>نوع المادة</label>
+        <select id="invType">
+          <option>أجهزة</option>
+          <option>أدوات</option>
+          <option>مواد زجاجية</option>
+          <option>مواد استهلاكية</option>
+          <option>أخرى</option>
+        </select>
+      </div>
+
+      <div>
+        <label>اسم المادة</label>
+        <input id="invName">
+      </div>
+
+      <div>
+        <label>الكمية</label>
+        <input id="invQty" type="number" min="0">
+      </div>
+
+      <div>
+        <label>الحالة</label>
+        <select id="invCondition">
+          <option>جيدة</option>
+          <option>متوسطة</option>
+          <option>تحتاج إصلاح</option>
+          <option>غير صالحة</option>
+        </select>
+      </div>
+
+      <div>
+        <label>المكان</label>
+        <input id="invPlace" placeholder="المخبر / الخزانة...">
+      </div>
+
+    </div>
+
+    <label>ملاحظات</label>
+    <textarea id="invNotes"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveInventory()">إضافة إلى الجرد</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <div class="section-title">
+      <h2>سجل الجرد</h2>
+      <input class="search" id="invSearch" oninput="renderInventory()" placeholder="بحث في الجرد...">
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>رقم الجرد</th>
+            <th>النوع</th>
+            <th>المادة</th>
+            <th>الكمية</th>
+            <th>الحالة</th>
+            <th>المكان</th>
+            <th>ملاحظات</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="invTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= الكيمياء ================= -->
+
+<section id="v-chem" class="view">
+
+  <div class="card">
+
+    <h2>🧪 المخزون الكيميائي</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>اسم المادة الكيميائية</label>
+        <input id="chemName">
+      </div>
+
+      <div>
+        <label>الكمية الموجودة</label>
+        <input id="chemQty" type="number" min="0">
+      </div>
+
+      <div>
+        <label>الوحدة</label>
+        <select id="chemUnit">
+          <option>غرام</option>
+          <option>كيلوغرام</option>
+          <option>مل</option>
+          <option>لتر</option>
+          <option>قارورة</option>
+          <option>علبة</option>
+        </select>
+      </div>
+
+      <div>
+        <label>مكان التخزين</label>
+        <input id="chemPlace">
+      </div>
+
+    </div>
+
+    <label>ملاحظات</label>
+    <textarea id="chemNotes"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveChem()">إضافة مادة كيميائية</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>بطاقات المخزون الكيميائي</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>المادة</th>
+            <th>الكمية</th>
+            <th>الوحدة</th>
+            <th>المكان</th>
+            <th>ملاحظات</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="chemTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= حركة الأدوات ================= -->
+
+<section id="v-movement" class="view">
+
+  <div class="card">
+
+    <h2>🔄 سجل دخول وخروج الأدوات</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>التاريخ</label>
+        <input id="movDate" type="date">
+      </div>
+
+      <div>
+        <label>الساعة</label>
+        <input id="movTime" type="time">
+      </div>
+
+      <div>
+        <label>الأداة / الجهاز</label>
+        <input id="movTool">
+      </div>
+
+      <div>
+        <label>رقم الجرد</label>
+        <input id="movNumber">
+      </div>
+
+      <div>
+        <label>الأستاذ</label>
+        <input id="movTeacher">
+      </div>
+
+      <div>
+        <label>القسم</label>
+        <input id="movClass">
+      </div>
+
+      <div>
+        <label>الحركة</label>
+        <select id="movType">
+          <option>خروج</option>
+          <option>دخول</option>
+        </select>
+      </div>
+
+    </div>
+
+    <label>ملاحظات</label>
+    <textarea id="movNotes"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveMovement()">تسجيل الحركة</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>سجل الحركات</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>الساعة</th>
+            <th>الأداة</th>
+            <th>رقم الجرد</th>
+            <th>الأستاذ</th>
+            <th>القسم</th>
+            <th>الحركة</th>
+            <th>ملاحظات</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="movTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= التقرير اليومي ================= -->
+
+<section id="v-daily" class="view">
+
+  <div class="card">
+
+    <h2>📋 التقرير اليومي للأستاذ</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>التاريخ</label>
+        <input id="dailyDate" type="date">
+      </div>
+
+      <div>
+        <label>الساعة</label>
+        <input id="dailyTime" type="time">
+      </div>
+
+      <div>
+        <label>الأستاذ</label>
+        <input id="dailyTeacher">
+      </div>
+
+      <div>
+        <label>القسم</label>
+        <input id="dailyClass">
+      </div>
+
+    </div>
+
+    <label>عنوان الدرس / التجربة</label>
+    <input id="dailyLesson">
+
+    <label>الأجهزة والوسائل المستعملة</label>
+    <textarea id="dailyEquipment"></textarea>
+
+    <label>سير العمل والملاحظات</label>
+    <textarea id="dailyNotes"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveDailyReport()">حفظ التقرير</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>التقارير اليومية المحفوظة</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>التاريخ</th>
+            <th>الساعة</th>
+            <th>الأستاذ</th>
+            <th>القسم</th>
+            <th>الدرس / التجربة</th>
+            <th>الوسائل</th>
+            <th>الملاحظات</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="dailyTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= التقارير الفصلية والسنوية ================= -->
+
+<section id="v-reports" class="view">
+
+  <div class="card">
+
+    <h2>📊 التقارير الفصلية والسنوية</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>نوع التقرير</label>
+        <select id="reportType">
+          <option>تقرير فصلي</option>
+          <option>تقرير سنوي</option>
+        </select>
+      </div>
+
+      <div>
+        <label>الفترة</label>
+        <select id="reportTerm">
+          <option>الفصل الأول</option>
+          <option>الفصل الثاني</option>
+          <option>الفصل الثالث</option>
+          <option>السنة الدراسية</option>
+        </select>
+      </div>
+
+      <div>
+        <label>السنة الدراسية</label>
+        <input id="reportYear" placeholder="2026/2027">
+      </div>
+
+    </div>
+
+    <label>موضوع التقرير</label>
+    <input id="reportTitle" placeholder="مثال: حصيلة نشاط المخبر">
+
+    <label>محتوى التقرير</label>
+    <textarea id="reportContent" style="min-height:180px"
+      placeholder="اكتب الحصيلة، الأعمال المنجزة، الوسائل، النقائص والاقتراحات..."></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveReport()">حفظ التقرير</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>التقارير المحفوظة</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>النوع</th>
+            <th>الفترة</th>
+            <th>السنة</th>
+            <th>العنوان</th>
+            <th>التاريخ</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="reportTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= الفواتير ================= -->
+
+<section id="v-invoices" class="view">
+
+  <div class="card">
+
+    <h2>🧾 الفواتير والاقتناءات</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>رقم الفاتورة</label>
+        <input id="invoiceNumber">
+      </div>
+
+      <div>
+        <label>التاريخ</label>
+        <input id="invoiceDate" type="date">
+      </div>
+
+      <div>
+        <label>المورد</label>
+        <input id="invoiceSupplier">
+      </div>
+
+      <div>
+        <label>المبلغ</label>
+        <input id="invoiceAmount" type="number" min="0">
+      </div>
+
+    </div>
+
+    <label>موضوع الفاتورة / المواد المقتناة</label>
+    <textarea id="invoiceItems"></textarea>
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveInvoice()">حفظ الفاتورة</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>سجل الفواتير</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>رقم الفاتورة</th>
+            <th>التاريخ</th>
+            <th>المورد</th>
+            <th>المبلغ</th>
+            <th>المواد</th>
+            <th>إجراء</th>
+          </tr>
+        </thead>
+
+        <tbody id="invoiceTable"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= الإعدادات ================= -->
+
+<section id="v-settings" class="view">
+
+  <div class="card">
+
+    <h2>⚙️ إعدادات المنصة</h2>
+
+    <label>اسم المؤسسة</label>
+    <input id="schoolName" placeholder="اسم المتوسطة">
+
+    <label>اسم المخبري</label>
+    <input id="labWorker" placeholder="اسم المخبري">
+
+    <label>اسم المنصة</label>
+    <input id="customTitle" value="منصة المخبري">
+
+    <div class="form-actions">
+      <button class="btn-green" onclick="saveSettings()">حفظ الإعدادات</button>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>إدارة البيانات</h2>
+
+    <p>
+      يمكنك الاحتفاظ بالبيانات الموجودة على هذا الجهاز أو مسح جميع البيانات.
+    </p>
+
+    <div class="form-actions">
+      <button class="btn-orange" onclick="exportData()">نسخ احتياطي للبيانات</button>
+      <button class="btn-red" onclick="clearAllData()">مسح جميع البيانات</button>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= نسخة طباعة التقرير ================= -->
+
+<section id="v-daily-report-print" class="view">
+
+  <div class="card">
+
+    <h2>التقرير اليومي للأعمال التطبيقية</h2>
+
+    <div id="printContent"></div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- ================= القائمة السفلية ================= -->
+
+<nav class="bottom-nav">
+
+<div class="nav-inner">
+
+<button class="nav-btn active" onclick="goTab('home',this)">
+  <span class="nav-icon">🏠</span>
+  الرئيسية
+</button>
+
+<button class="nav-btn" onclick="goTab('requests',this)">
+  <span class="nav-icon">📝</span>
+  الطلبات
+</button>
+
+<button class="nav-btn" onclick="goTab('progress',this)">
+  <span class="nav-icon">📅</span>
+  التدرج
+</button>
+
+<button class="nav-btn" onclick="goTab('experiments',this)">
+  <span class="nav-icon">🧪</span>
+  التجارب
+</button>
+
+<button class="nav-btn" onclick="goTab('preparation',this)">
+  <span class="nav-icon">🔧</span>
+  التحضير
+</button>
+
+<button class="nav-btn" onclick="goTab('inventory',this)">
+  <span class="nav-icon">📦</span>
+  الجرد
+</button>
+
+<button class="nav-btn" onclick="goTab('chem',this)">
+  <span class="nav-icon">⚗️</span>
+  الكيمياء
+</button>
+
+<button class="nav-btn" onclick="goTab('movement',this)">
+  <span class="nav-icon">🔄</span>
+  الحركة
+</button>
+
+<button class="nav-btn" onclick="goTab('daily',this)">
+  <span class="nav-icon">📋</span>
+  التقارير اليومية
+</button>
+
+<button class="nav-btn" onclick="goTab('reports',this)">
+  <span class="nav-icon">📊</span>
+  التقارير
+</button>
+
+<button class="nav-btn" onclick="goTab('invoices',this)">
+  <span class="nav-icon">🧾</span>
+  الفواتير
+</button>
+
+<button class="nav-btn" onclick="goTab('settings',this)">
+  <span class="nav-icon">⚙️</span>
+  الإعدادات
+</button>
+
+</div>
+
+</nav>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* =====================================================
+   البيانات
+===================================================== */
+
+const KEYS = {
+  requests: "l_reqs_v3",
+  chemicals: "l_chems_v3",
+  inventory: "l_invs_v3",
+  progress: "lab_progress_v1",
+  experiments: "lab_experiments_v1",
+  preparation: "lab_preparation_v1",
+  movements: "lab_movements_v1",
+  daily: "lab_daily_reports_v1",
+  reports: "lab_reports_v1",
+  invoices: "lab_invoices_v1",
+  settings: "lab_settings_v1"
+};
+
+let state = {
+  requests: load(KEYS.requests, []),
+  chemicals: load(KEYS.chemicals, []),
+  inventory: load(KEYS.inventory, []),
+  progress: load(KEYS.progress, []),
+  experiments: load(KEYS.experiments, []),
+  preparation: load(KEYS.preparation, []),
+  movements: load(KEYS.movements, []),
+  daily: load(KEYS.daily, []),
+  reports: load(KEYS.reports, []),
+  invoices: load(KEYS.invoices, []),
+  settings: load(KEYS.settings, {})
+};
+
+
+/* =====================================================
+   أدوات عامة
+===================================================== */
+
+function load(key, fallback){
+
+  try{
+    const value = localStorage.getItem(key);
+
+    if(value === null){
+      return fallback;
     }
 
-    function goTab(id, btn) {
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      btn.classList.add('active');
-    }
+    return JSON.parse(value);
 
-    const tips = [
-      {t: "النظام الرقمي للمخبر", d: "إدارة تسيير الأعمال التطبيقية وطلبات الأساتذة بكل سهولة ومرونة."},
-      {t: "مراقبة المخزون الكيميائي", d: "متابعة المواد والمحاليل والمستهلكات المخبرية بدقة عالية."},
-      {t: "تنظيم الجرد العام", d: "حفظ وتتبع الأجهزة والأدوات العلمية بطريقة منظمة وآمنة."}
-    ];
-    let tIdx = 0;
-    setInterval(() => {
-      tIdx = (tIdx + 1) % tips.length;
-      document.getElementById('bannerT').textContent = tips[tIdx].t;
-      document.getElementById('bannerD').textContent = tips[tIdx].d;
-    }, 5000);
+  }catch(e){
+    return fallback;
+  }
+}
 
-    function saveReq(e) {
-      e.preventDefault();
-      reqs.unshift({
-        id: Date.now(),
-        name: document.getElementById('rName').value,
-        cls: document.getElementById('rClass').value,
-        date: document.getElementById('rDate').value,
-        time: document.getElementById('rTime').value,
-        items: document.getElementById('rItems').value,
-        status: "قيد التحضير ⏳"
-      });
-      localStorage.setItem('l_reqs_v3', JSON.stringify(reqs));
-      renderReqs();
-      toast('تم إرسال الطلب بنجاح');
-      e.target.reset();
-      document.getElementById('rDate').valueAsDate = new Date();
-    }
 
-    function toggleStatus(id) {
-      let r = reqs.find(x => x.id === id);
-      if(r) {
-        r.status = r.status.includes('قيد') ? "جاهز 🟢" : "قيد التحضير ⏳";
-        localStorage.setItem('l_reqs_v3', JSON.stringify(reqs));
-        renderReqs();
+function save(key, value){
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+
+function uid(){
+  return Date.now().toString(36) + Math.random().toString(36).substring(2,8);
+}
+
+
+function esc(value){
+
+  if(value === undefined || value === null){
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function toast(message){
+
+  const el = document.getElementById("toast");
+
+  el.textContent = message;
+  el.style.display = "block";
+
+  setTimeout(()=>{
+    el.style.display = "none";
+  },2200);
+}
+
+
+function today(){
+
+  const d = new Date();
+
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+
+
+function currentTime(){
+
+  const d = new Date();
+
+  return String(d.getHours()).padStart(2,"0") + ":" +
+         String(d.getMinutes()).padStart(2,"0");
+}
+
+
+/* =====================================================
+   التنقل
+===================================================== */
+
+function goTab(name, button){
+
+  document.querySelectorAll(".view").forEach(v=>{
+    v.classList.remove("active");
+  });
+
+  const view = document.getElementById("v-" + name);
+
+  if(view){
+    view.classList.add("active");
+  }
+
+  document.querySelectorAll(".nav-btn").forEach(b=>{
+    b.classList.remove("active");
+  });
+
+  if(button){
+    button.classList.add("active");
+  }else{
+
+    document.querySelectorAll(".nav-btn").forEach(b=>{
+
+      if(b.getAttribute("onclick") &&
+         b.getAttribute("onclick").includes("'" + name + "'")){
+
+        b.classList.add("active");
       }
+
+    });
+
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+
+/* =====================================================
+   التاريخ
+===================================================== */
+
+function updateDate(){
+
+  const now = new Date();
+
+  document.getElementById("dateBox").textContent =
+    now.toLocaleDateString("ar-DZ",{
+      weekday:"long",
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    });
+}
+
+
+/* =====================================================
+   الإحصائيات
+===================================================== */
+
+function updateStats(){
+
+  document.getElementById("statReq").textContent =
+    state.requests.length;
+
+  document.getElementById("statChem").textContent =
+    state.chemicals.length;
+
+  document.getElementById("statInv").textContent =
+    state.inventory.length;
+}
+
+
+/* =====================================================
+   الطلبات
+===================================================== */
+
+function saveReq(){
+
+  const teacher = document.getElementById("reqTeacher").value.trim();
+  const subject = document.getElementById("reqSubject").value;
+  const cls = document.getElementById("reqClass").value.trim();
+  const date = document.getElementById("reqDate").value || today();
+  const text = document.getElementById("reqText").value.trim();
+
+  if(!teacher || !cls || !text){
+    toast("أكمل معلومات الطلب");
+    return;
+  }
+
+  state.requests.unshift({
+    id:uid(),
+    teacher,
+    subject,
+    cls,
+    date,
+    text,
+    status:"قيد المعالجة"
+  });
+
+  save(KEYS.requests,state.requests);
+
+  document.getElementById("reqTeacher").value="";
+  document.getElementById("reqClass").value="";
+  document.getElementById("reqText").value="";
+
+  renderReqs();
+  updateStats();
+
+  toast("تم حفظ الطلب");
+}
+
+
+function toggleStatus(id){
+
+  const item = state.requests.find(x=>x.id===id);
+
+  if(!item) return;
+
+  item.status =
+    item.status === "منجز"
+    ? "قيد المعالجة"
+    : "منجز";
+
+  save(KEYS.requests,state.requests);
+
+  renderReqs();
+}
+
+
+function deleteReq(id){
+
+  if(!confirm("حذف هذا الطلب؟")) return;
+
+  state.requests =
+    state.requests.filter(x=>x.id!==id);
+
+  save(KEYS.requests,state.requests);
+
+  renderReqs();
+  updateStats();
+}
+
+
+function renderReqs(){
+
+  const tbody = document.getElementById("reqTable");
+
+  const search =
+    (document.getElementById("reqSearch")?.value || "")
+    .toLowerCase();
+
+  const rows = state.requests.filter(x=>{
+
+    return (
+      x.teacher.toLowerCase().includes(search) ||
+      x.cls.toLowerCase().includes(search) ||
+      x.text.toLowerCase().includes(search)
+    );
+
+  });
+
+  if(!rows.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="7" class="empty">لا توجد طلبات</td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML = rows.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.date)}</td>
+
+      <td>${esc(x.teacher)}</td>
+
+      <td>${esc(x.subject)}</td>
+
+      <td>${esc(x.cls)}</td>
+
+      <td>${esc(x.text)}</td>
+
+      <td>
+        <span class="badge ${
+          x.status==="منجز"
+          ? "badge-done"
+          : "badge-pending"
+        }">
+          ${esc(x.status)}
+        </span>
+      </td>
+
+      <td>
+
+        <button class="btn-green btn-small"
+          onclick="toggleStatus('${x.id}')">
+          ${x.status==="منجز" ? "إرجاع" : "إنجاز"}
+        </button>
+
+        <button class="btn-red btn-small"
+          onclick="deleteReq('${x.id}')">
+          حذف
+        </button>
+
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   التدرج
+===================================================== */
+
+function saveProgress(){
+
+  const item = {
+    id:uid(),
+    year:document.getElementById("progYear").value.trim(),
+    level:document.getElementById("progLevel").value,
+    week:document.getElementById("progWeek").value,
+    term:document.getElementById("progTerm").value,
+    lesson:document.getElementById("progLesson").value.trim(),
+    experiment:document.getElementById("progExperiment").value.trim(),
+    materials:document.getElementById("progMaterials").value.trim()
+  };
+
+  if(!item.year || !item.week || !item.lesson){
+    toast("أكمل السنة والأسبوع والدرس");
+    return;
+  }
+
+  state.progress.unshift(item);
+
+  save(KEYS.progress,state.progress);
+
+  document.getElementById("progLesson").value="";
+  document.getElementById("progExperiment").value="";
+  document.getElementById("progMaterials").value="";
+
+  renderProgress();
+
+  toast("تم حفظ التدرج");
+}
+
+
+function deleteProgress(id){
+
+  if(!confirm("حذف هذا السطر من التدرج؟")) return;
+
+  state.progress =
+    state.progress.filter(x=>x.id!==id);
+
+  save(KEYS.progress,state.progress);
+
+  renderProgress();
+}
+
+
+function renderProgress(){
+
+  const filter =
+    document.getElementById("progFilter").value;
+
+  const rows =
+    state.progress.filter(x=>
+      !filter || x.level===filter
+    );
+
+  const tbody =
+    document.getElementById("progTable");
+
+  if(!rows.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="8" class="empty">
+        لا توجد بيانات في التدرج
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML = rows.map(x=>`
+
+    <tr>
+      <td>${esc(x.year)}</td>
+      <td>${esc(x.level)}</td>
+      <td>${esc(x.term)}</td>
+      <td>${esc(x.week)}</td>
+      <td>${esc(x.lesson)}</td>
+      <td>${esc(x.experiment)}</td>
+      <td>${esc(x.materials)}</td>
+
+      <td>
+        <button class="btn-red btn-small"
+          onclick="deleteProgress('${x.id}')">
+          حذف
+        </button>
+      </td>
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   التجارب
+===================================================== */
+
+function saveExperiment(){
+
+  const item = {
+    id:uid(),
+    level:document.getElementById("expLevel").value,
+    title:document.getElementById("expTitle").value.trim(),
+    goal:document.getElementById("expGoal").value.trim(),
+    equipment:document.getElementById("expEquipment").value.trim(),
+    materials:document.getElementById("expMaterials").value.trim()
+  };
+
+  if(!item.title){
+    toast("اكتب عنوان التجربة");
+    return;
+  }
+
+  state.experiments.unshift(item);
+
+  save(KEYS.experiments,state.experiments);
+
+  document.getElementById("expTitle").value="";
+  document.getElementById("expGoal").value="";
+  document.getElementById("expEquipment").value="";
+  document.getElementById("expMaterials").value="";
+
+  renderExperiments();
+
+  toast("تم حفظ التجربة");
+}
+
+
+function deleteExperiment(id){
+
+  if(!confirm("حذف التجربة؟")) return;
+
+  state.experiments =
+    state.experiments.filter(x=>x.id!==id);
+
+  save(KEYS.experiments,state.experiments);
+
+  renderExperiments();
+}
+
+
+function renderExperiments(){
+
+  const tbody =
+    document.getElementById("expTable");
+
+  if(!state.experiments.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="6" class="empty">
+        لا توجد تجارب محفوظة
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    state.experiments.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.level)}</td>
+      <td>${esc(x.title)}</td>
+      <td>${esc(x.goal)}</td>
+      <td>${esc(x.equipment)}</td>
+      <td>${esc(x.materials)}</td>
+
+      <td>
+        <button class="btn-red btn-small"
+          onclick="deleteExperiment('${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   التحضير
+===================================================== */
+
+function savePreparation(){
+
+  const item = {
+    id:uid(),
+    date:document.getElementById("prepDate").value || today(),
+    teacher:document.getElementById("prepTeacher").value.trim(),
+    cls:document.getElementById("prepClass").value.trim(),
+    time:document.getElementById("prepTime").value.trim(),
+    experiment:document.getElementById("prepExperiment").value.trim(),
+    materials:document.getElementById("prepMaterials").value.trim()
+  };
+
+  if(!item.teacher || !item.experiment){
+    toast("أكمل اسم الأستاذ والتجربة");
+    return;
+  }
+
+  state.preparation.unshift(item);
+
+  save(KEYS.preparation,state.preparation);
+
+  renderPreparation();
+
+  toast("تم حفظ التحضير");
+}
+
+
+function deletePreparation(id){
+
+  if(!confirm("حذف سجل التحضير؟")) return;
+
+  state.preparation =
+    state.preparation.filter(x=>x.id!==id);
+
+  save(KEYS.preparation,state.preparation);
+
+  renderPreparation();
+}
+
+
+function renderPreparation(){
+
+  const tbody =
+    document.getElementById("prepTable");
+
+  if(!state.preparation.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="7" class="empty">
+        لا توجد سجلات
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    state.preparation.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.teacher)}</td>
+      <td>${esc(x.cls)}</td>
+      <td>${esc(x.time)}</td>
+      <td>${esc(x.experiment)}</td>
+      <td>${esc(x.materials)}</td>
+
+      <td>
+        <button class="btn-red btn-small"
+          onclick="deletePreparation('${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   الجرد
+===================================================== */
+
+function saveInventory(){
+
+  const item = {
+    id:uid(),
+    number:document.getElementById("invNumber").value.trim(),
+    type:document.getElementById("invType").value,
+    name:document.getElementById("invName").value.trim(),
+    qty:document.getElementById("invQty").value,
+    condition:document.getElementById("invCondition").value,
+    place:document.getElementById("invPlace").value.trim(),
+    notes:document.getElementById("invNotes").value.trim()
+  };
+
+  if(!item.number || !item.name){
+    toast("أدخل رقم الجرد واسم المادة");
+    return;
+  }
+
+  state.inventory.unshift(item);
+
+  save(KEYS.inventory,state.inventory);
+
+  [
+    "invNumber",
+    "invName",
+    "invQty",
+    "invPlace",
+    "invNotes"
+  ].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+
+  renderInventory();
+  updateStats();
+
+  toast("تمت إضافة المادة إلى الجرد");
+}
+
+
+function editInventory(id){
+
+  const x =
+    state.inventory.find(i=>i.id===id);
+
+  if(!x) return;
+
+  document.getElementById("invNumber").value=x.number;
+  document.getElementById("invType").value=x.type;
+  document.getElementById("invName").value=x.name;
+  document.getElementById("invQty").value=x.qty;
+  document.getElementById("invCondition").value=x.condition;
+  document.getElementById("invPlace").value=x.place;
+  document.getElementById("invNotes").value=x.notes;
+
+  state.inventory =
+    state.inventory.filter(i=>i.id!==id);
+
+  save(KEYS.inventory,state.inventory);
+
+  renderInventory();
+
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  toast("تم تحميل المادة للتعديل");
+}
+
+
+function deleteInventory(id){
+
+  if(!confirm("حذف مادة الجرد؟")) return;
+
+  state.inventory =
+    state.inventory.filter(x=>x.id!==id);
+
+  save(KEYS.inventory,state.inventory);
+
+  renderInventory();
+  updateStats();
+}
+
+
+function renderInventory(){
+
+  const search =
+    (document.getElementById("invSearch")?.value || "")
+    .toLowerCase();
+
+  const rows =
+    state.inventory.filter(x=>
+      x.name.toLowerCase().includes(search) ||
+      x.number.toLowerCase().includes(search) ||
+      x.type.toLowerCase().includes(search)
+    );
+
+  const tbody =
+    document.getElementById("invTable");
+
+  if(!rows.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="8" class="empty">
+        لا توجد مواد في الجرد
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    rows.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.number)}</td>
+      <td>${esc(x.type)}</td>
+      <td>${esc(x.name)}</td>
+      <td>${esc(x.qty)}</td>
+      <td>${esc(x.condition)}</td>
+      <td>${esc(x.place)}</td>
+      <td>${esc(x.notes)}</td>
+
+      <td>
+
+        <button class="btn-orange btn-small"
+          onclick="editInventory('${x.id}')">
+          تعديل
+        </button>
+
+        <button class="btn-red btn-small"
+          onclick="deleteInventory('${x.id}')">
+          حذف
+        </button>
+
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   الكيمياء
+===================================================== */
+
+function saveChem(){
+
+  const item = {
+    id:uid(),
+    name:document.getElementById("chemName").value.trim(),
+    qty:document.getElementById("chemQty").value,
+    unit:document.getElementById("chemUnit").value,
+    place:document.getElementById("chemPlace").value.trim(),
+    notes:document.getElementById("chemNotes").value.trim()
+  };
+
+  if(!item.name){
+    toast("أدخل اسم المادة الكيميائية");
+    return;
+  }
+
+  state.chemicals.unshift(item);
+
+  save(KEYS.chemicals,state.chemicals);
+
+  document.getElementById("chemName").value="";
+  document.getElementById("chemQty").value="";
+  document.getElementById("chemPlace").value="";
+  document.getElementById("chemNotes").value="";
+
+  renderChem();
+  updateStats();
+
+  toast("تم حفظ المادة الكيميائية");
+}
+
+
+function deleteChem(id){
+
+  if(!confirm("حذف المادة الكيميائية؟")) return;
+
+  state.chemicals =
+    state.chemicals.filter(x=>x.id!==id);
+
+  save(KEYS.chemicals,state.chemicals);
+
+  renderChem();
+  updateStats();
+}
+
+
+function renderChem(){
+
+  const tbody =
+    document.getElementById("chemTable");
+
+  if(!state.chemicals.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="6" class="empty">
+        لا توجد مواد كيميائية
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    state.chemicals.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.name)}</td>
+      <td>${esc(x.qty)}</td>
+      <td>${esc(x.unit)}</td>
+      <td>${esc(x.place)}</td>
+      <td>${esc(x.notes)}</td>
+
+      <td>
+        <button class="btn-red btn-small"
+          onclick="deleteChem('${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   حركة الأدوات
+===================================================== */
+
+function saveMovement(){
+
+  const item = {
+    id:uid(),
+    date:document.getElementById("movDate").value || today(),
+    time:document.getElementById("movTime").value || currentTime(),
+    tool:document.getElementById("movTool").value.trim(),
+    number:document.getElementById("movNumber").value.trim(),
+    teacher:document.getElementById("movTeacher").value.trim(),
+    cls:document.getElementById("movClass").value.trim(),
+    type:document.getElementById("movType").value,
+    notes:document.getElementById("movNotes").value.trim()
+  };
+
+  if(!item.tool || !item.teacher){
+    toast("أدخل الأداة واسم الأستاذ");
+    return;
+  }
+
+  state.movements.unshift(item);
+
+  save(KEYS.movements,state.movements);
+
+  renderMovements();
+
+  toast("تم تسجيل الحركة");
+}
+
+
+function deleteMovement(id){
+
+  if(!confirm("حذف حركة الأداة؟")) return;
+
+  state.movements =
+    state.movements.filter(x=>x.id!==id);
+
+  save(KEYS.movements,state.movements);
+
+  renderMovements();
+}
+
+
+function renderMovements(){
+
+  const tbody =
+    document.getElementById("movTable");
+
+  if(!state.movements.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="9" class="empty">
+        لا توجد حركات
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    state.movements.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.time)}</td>
+      <td>${esc(x.tool)}</td>
+      <td>${esc(x.number)}</td>
+      <td>${esc(x.teacher)}</td>
+      <td>${esc(x.cls)}</td>
+
+      <td>
+        <span class="badge ${
+          x.type==="دخول"
+          ? "badge-in"
+          : "badge-out"
+        }">
+          ${esc(x.type)}
+        </span>
+      </td>
+
+      <td>${esc(x.notes)}</td>
+
+      <td>
+        <button class="btn-red btn-small"
+          onclick="deleteMovement('${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   التقرير اليومي
+===================================================== */
+
+function saveDailyReport(){
+
+  const item = {
+    id:uid(),
+    date:document.getElementById("dailyDate").value || today(),
+    time:document.getElementById("dailyTime").value || currentTime(),
+    teacher:document.getElementById("dailyTeacher").value.trim(),
+    cls:document.getElementById("dailyClass").value.trim(),
+    lesson:document.getElementById("dailyLesson").value.trim(),
+    equipment:document.getElementById("dailyEquipment").value.trim(),
+    notes:document.getElementById("dailyNotes").value.trim()
+  };
+
+  if(!item.teacher || !item.lesson){
+    toast("أدخل الأستاذ والدرس");
+    return;
+  }
+
+  state.daily.unshift(item);
+
+  save(KEYS.daily,state.daily);
+
+  renderDaily();
+
+  toast("تم حفظ التقرير اليومي");
+}
+
+
+function deleteDaily(id){
+
+  if(!confirm("حذف التقرير اليومي؟")) return;
+
+  state.daily =
+    state.daily.filter(x=>x.id!==id);
+
+  save(KEYS.daily,state.daily);
+
+  renderDaily();
+}
+
+
+function printDaily(id){
+
+  const x =
+    state.daily.find(i=>i.id===id);
+
+  if(!x) return;
+
+  document.getElementById("printContent").innerHTML = `
+
+    <h3>${esc(x.lesson)}</h3>
+
+    <p><strong>التاريخ:</strong> ${esc(x.date)}</p>
+    <p><strong>الساعة:</strong> ${esc(x.time)}</p>
+    <p><strong>الأستاذ:</strong> ${esc(x.teacher)}</p>
+    <p><strong>القسم:</strong> ${esc(x.cls)}</p>
+
+    <h3>الأجهزة والوسائل المستعملة</h3>
+
+    <p>${esc(x.equipment)}</p>
+
+    <h3>سير العمل والملاحظات</h3>
+
+    <p>${esc(x.notes)}</p>
+
+    <br><br>
+
+    <p>إمضاء المخبري: __________________</p>
+    <p>إمضاء الأستاذ: __________________</p>
+
+  `;
+
+  document.querySelectorAll(".view").forEach(v=>{
+    v.classList.remove("active");
+  });
+
+  document.getElementById("v-daily-report-print")
+    .classList.add("active");
+
+  window.print();
+
+  setTimeout(()=>{
+    goTab("daily");
+  },500);
+}
+
+
+function renderDaily(){
+
+  const tbody =
+    document.getElementById("dailyTable");
+
+  if(!state.daily.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="8" class="empty">
+        لا توجد تقارير يومية
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    state.daily.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.time)}</td>
+      <td>${esc(x.teacher)}</td>
+      <td>${esc(x.cls)}</td>
+      <td>${esc(x.lesson)}</td>
+      <td>${esc(x.equipment)}</td>
+      <td>${esc(x.notes)}</td>
+
+      <td>
+
+        <button class="btn btn-small"
+          onclick="printDaily('${x.id}')">
+          طباعة
+        </button>
+
+        <button class="btn-red btn-small"
+          onclick="deleteDaily('${x.id}')">
+          حذف
+        </button>
+
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   التقارير الفصلية والسنوية
+===================================================== */
+
+function saveReport(){
+
+  const item = {
+    id:uid(),
+    type:document.getElementById("reportType").value,
+    term:document.getElementById("reportTerm").value,
+    year:document.getElementById("reportYear").value.trim(),
+    title:document.getElementById("reportTitle").value.trim(),
+    content:document.getElementById("reportContent").value.trim(),
+    date:today()
+  };
+
+  if(!item.title || !item.content){
+    toast("أدخل عنوان ومحتوى التقرير");
+    return;
+  }
+
+  state.reports.unshift(item);
+
+  save(KEYS.reports,state.reports);
+
+  document.getElementById("reportTitle").value="";
+  document.getElementById("reportContent").value="";
+
+  renderReports();
+
+  toast("تم حفظ التقرير");
+}
+
+
+function deleteReport(id){
+
+  if(!confirm("حذف التقرير؟")) return;
+
+  state.reports =
+    state.reports.filter(x=>x.id!==id);
+
+  save(KEYS.reports,state.reports);
+
+  renderReports();
+}
+
+
+function viewReport(id){
+
+  const x =
+    state.reports.find(i=>i.id===id);
+
+  if(!x) return;
+
+  alert(
+    x.title +
+    "\n\n" +
+    x.content
+  );
+}
+
+
+function renderReports(){
+
+  const tbody =
+    document.getElementById("reportTable");
+
+  if(!state.reports.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="6" class="empty">
+        لا توجد تقارير
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    state.reports.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.type)}</td>
+      <td>${esc(x.term)}</td>
+      <td>${esc(x.year)}</td>
+      <td>${esc(x.title)}</td>
+      <td>${esc(x.date)}</td>
+
+      <td>
+
+        <button class="btn btn-small"
+          onclick="viewReport('${x.id}')">
+          عرض
+        </button>
+
+        <button class="btn-red btn-small"
+          onclick="deleteReport('${x.id}')">
+          حذف
+        </button>
+
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   الفواتير
+===================================================== */
+
+function saveInvoice(){
+
+  const item = {
+    id:uid(),
+    number:document.getElementById("invoiceNumber").value.trim(),
+    date:document.getElementById("invoiceDate").value || today(),
+    supplier:document.getElementById("invoiceSupplier").value.trim(),
+    amount:document.getElementById("invoiceAmount").value,
+    items:document.getElementById("invoiceItems").value.trim()
+  };
+
+  if(!item.number || !item.supplier){
+    toast("أدخل رقم الفاتورة والمورد");
+    return;
+  }
+
+  state.invoices.unshift(item);
+
+  save(KEYS.invoices,state.invoices);
+
+  renderInvoices();
+
+  toast("تم حفظ الفاتورة");
+}
+
+
+function deleteInvoice(id){
+
+  if(!confirm("حذف الفاتورة؟")) return;
+
+  state.invoices =
+    state.invoices.filter(x=>x.id!==id);
+
+  save(KEYS.invoices,state.invoices);
+
+  renderInvoices();
+}
+
+
+function renderInvoices(){
+
+  const tbody =
+    document.getElementById("invoiceTable");
+
+  if(!state.invoices.length){
+
+    tbody.innerHTML =
+      `<tr><td colspan="6" class="empty">
+        لا توجد فواتير
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    state.invoices.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.number)}</td>
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.supplier)}</td>
+      <td>${esc(x.amount)}</td>
+      <td>${esc(x.items)}</td>
+
+      <td>
+
+        <button class="btn-red btn-small"
+          onclick="deleteInvoice('${x.id}')">
+          حذف
+        </button>
+
+      </td>
+
+    </tr>
+
+  `).join("");
+}
+
+
+/* =====================================================
+   الإعدادات
+===================================================== */
+
+function saveSettings(){
+
+  state.settings = {
+    schoolName:
+      document.getElementById("schoolName").value.trim(),
+
+    labWorker:
+      document.getElementById("labWorker").value.trim(),
+
+    title:
+      document.getElementById("customTitle").value.trim()
+  };
+
+  save(KEYS.settings,state.settings);
+
+  applySettings();
+
+  toast("تم حفظ الإعدادات");
+}
+
+
+function applySettings(){
+
+  if(state.settings.title){
+
+    document.getElementById("platformTitle")
+      .textContent = state.settings.title;
+  }
+
+  document.getElementById("schoolName").value =
+    state.settings.schoolName || "";
+
+  document.getElementById("labWorker").value =
+    state.settings.labWorker || "";
+
+  document.getElementById("customTitle").value =
+    state.settings.title || "منصة المخبري";
+}
+
+
+/* =====================================================
+   النسخ الاحتياطي
+===================================================== */
+
+function exportData(){
+
+  const backup = {
+    version:1,
+    date:new Date().toISOString(),
+    data:state
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(backup,null,2)],
+    {type:"application/json"}
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+
+  a.href=url;
+  a.download="نسخة_احتياطية_منصة_المخبري.json";
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  toast("تم إنشاء النسخة الاحتياطية");
+}
+
+
+/* =====================================================
+   مسح البيانات
+===================================================== */
+
+function clearAllData(){
+
+  const ok =
+    confirm(
+      "تحذير: سيتم حذف جميع البيانات المحفوظة على هذا الجهاز. هل تريد المتابعة؟"
+    );
+
+  if(!ok) return;
+
+  Object.values(KEYS).forEach(key=>{
+    localStorage.removeItem(key);
+  });
+
+  location.reload();
+}
+
+
+/* =====================================================
+   تشغيل المنصة
+===================================================== */
+
+function initialize(){
+
+  updateDate();
+
+  setInterval(updateDate,60000);
+
+  const dateFields = [
+    "reqDate",
+    "prepDate",
+    "movDate",
+    "dailyDate",
+    "invoiceDate"
+  ];
+
+  dateFields.forEach(id=>{
+
+    const el=document.getElementById(id);
+
+    if(el){
+      el.value=today();
     }
 
-    function renderReqs() {
-      document.getElementById('reqTable').innerHTML = reqs.map((r, i) => `
-        <tr>
-          <td>${i+1}</td><td><strong>${r.name}</strong></td><td>${r.cls}</td><td>${r.date}</td><td>${r.time}</td>
-          <td style="text-align:right;">${r.items}</td>
-          <td><span class="badge ${r.status.includes('جاهز')?'badge-d':'badge-p'}" onclick="toggleStatus(${r.id})">${r.status}</span></td>
-          <td><button class="btn-del" onclick="reqs=reqs.filter(x=>x.id!==${r.id}); localStorage.setItem('l_reqs_v3', JSON.stringify(reqs)); renderReqs();">حذف</button></td>
-        </tr>
-      `).join('') || "<tr><td colspan='8'>لا توجد طلبات حالية</td></tr>";
+  });
+
+  const timeFields = [
+    "movTime",
+    "dailyTime"
+  ];
+
+  timeFields.forEach(id=>{
+
+    const el=document.getElementById(id);
+
+    if(el){
+      el.value=currentTime();
     }
 
-    function addChem() {
-      chems.push({
-        id: Date.now(),
-        name: document.getElementById('cName').value,
-        form: document.getElementById('cForm').value,
-        qty: document.getElementById('cQty').value,
-        unit: document.getElementById('cUnit').value
-      });
-      localStorage.setItem('l_chems_v3', JSON.stringify(chems));
-      renderChems();
-      toast('تمت إضافة المادة');
-    }
+  });
 
-    function renderChems() {
-      document.getElementById('chemTable').innerHTML = chems.map(c => `
-        <tr><td>${c.name}</td><td>${c.form}</td><td>${c.qty}</td><td>${c.unit}</td>
-        <td><button class="btn-del" onclick="chems=chems.filter(x=>x.id!==${c.id}); localStorage.setItem('l_chems_v3', JSON.stringify(chems)); renderChems();">حذف</button></td></tr>
-      `).join('') || "<tr><td colspan='5'>لا توجد مواد مسجلة</td></tr>";
-    }
+  renderReqs();
+  renderProgress();
+  renderExperiments();
+  renderPreparation();
+  renderInventory();
+  renderChem();
+  renderMovements();
+  renderDaily();
+  renderReports();
+  renderInvoices();
 
-    function addInv() {
-      invs.push({
-        id: Date.now(),
-        name: document.getElementById('iName').value,
-        no: document.getElementById('iNo').value,
-        qty: document.getElementById('iQty').value
-      });
-      localStorage.setItem('l_invs_v3', JSON.stringify(invs));
-      renderInvs();
-      toast('تمت إضافة الأداة للجرد');
-    }
+  updateStats();
 
-    function renderInvs() {
-      document.getElementById('invTable').innerHTML = invs.map(i => `
-        <tr><td>${i.name}</td><td>${i.no}</td><td>${i.qty}</td>
-        <td><button class="btn-del" onclick="invs=invs.filter(x=>x.id!==${i.id}); localStorage.setItem('l_invs_v3', JSON.stringify(invs)); renderInvs();">حذف</button></td></tr>
-      `).join('') || "<tr><td colspan='4'>لا توجد أدوات مسجلة</td></tr>";
-    }
+  applySettings();
+}
 
-    document.getElementById('dateBox').textContent = new Date().toLocaleDateString('ar-DZ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    document.getElementById('rDate').valueAsDate = new Date();
-    renderReqs();
-    renderChems();
-    renderInvs();
-  </script>
+
+initialize();
+
+</script>
+
 </body>
 </html>
-
-```
