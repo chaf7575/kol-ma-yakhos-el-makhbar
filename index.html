@@ -616,4 +616,663 @@
         <div class="form-grid">
           <div class="field">
             <label for="invNo">رقم الجرد</label>
-            <input id="invNo" placeho
+            <input id="invNo" placeholder="مثال: G-2026/01">
+          </div>
+
+          <div class="field">
+            <label for="invName">اسم المادة أو الوسيلة</label>
+            <input id="invName" placeholder="مثال: مجهر ضوئي">
+          </div>
+
+          <div class="field">
+            <label for="invQty">الكمية</label>
+            <input id="invQty" type="number" min="0" placeholder="0">
+          </div>
+
+          <div class="field">
+            <label for="invDate">تاريخ الدخول</label>
+            <input id="invDate" type="date">
+          </div>
+
+          <div class="field">
+            <label for="invState">الحالة</label>
+            <select id="invState">
+              <option value="جيدة">جيدة</option>
+              <option value="متوسطة">متوسطة</option>
+              <option value="تحتاج إصلاح">تحتاج إصلاح</option>
+              <option value="تالفة">تالفة</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" onclick="addInventory()">＋ إضافة إلى الجرد</button>
+          <button class="btn btn-secondary" onclick="clearInventoryForm()">↺ مسح الحقول</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header no-print">
+          <div class="panel-title">
+            <h2>سجل الجرد العام</h2>
+            <p>يمكنك البحث، الطباعة، أو تصدير البيانات إلى ملف CSV.</p>
+          </div>
+
+          <div class="actions" style="margin-top:0">
+            <input class="search-input" id="inventorySearch" oninput="renderInventory()" placeholder="🔎 ابحث باسم المادة أو رقم الجرد">
+            <button class="btn btn-secondary" onclick="exportInventoryCSV()">⬇ تصدير CSV</button>
+            <button class="btn btn-primary" onclick="printInventory()">🖨️ طباعة الجرد</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>اسم المادة</th>
+                <th>الكمية</th>
+                <th>رقم الجرد</th>
+                <th>تاريخ الدخول</th>
+                <th>الحالة</th>
+                <th class="no-print">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم التقرير اليومي -->
+    <section id="dailyReport" class="section">
+
+      <div class="panel no-print">
+        <div class="panel-header">
+          <div class="panel-title">
+            <h2>إعداد التقرير اليومي</h2>
+            <p>أدخل بيانات المؤسسة والحصص المنجزة في المخبر.</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="schoolName">اسم المتوسطة</label>
+            <input id="schoolName" placeholder="مثال: متوسطة الشهيد ..." oninput="updateReportMeta()">
+          </div>
+
+          <div class="field">
+            <label for="educationDirectorate">مديرية التربية</label>
+            <input id="educationDirectorate" placeholder="مثال: مديرية التربية لولاية الأغواط" oninput="updateReportMeta()">
+          </div>
+
+          <div class="field">
+            <label for="reportNo">رقم التقرير</label>
+            <input id="reportNo" placeholder="مثال: 05/2026" oninput="updateReportMeta()">
+          </div>
+
+          <div class="field">
+            <label for="reportDate">تاريخ التقرير</label>
+            <input id="reportDate" type="date" onchange="updateReportMeta()">
+          </div>
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:1.25rem 0;">
+
+        <div class="panel-title">
+          <h2 style="font-size:1rem;">إضافة حصة أو أستاذ</h2>
+          <p>تظهر البيانات تلقائيًا في الورقة الرسمية للتقرير.</p>
+        </div>
+
+        <div class="form-grid" style="margin-top:0.8rem;">
+          <div class="field">
+            <label for="teacherName">اسم الأستاذ</label>
+            <input id="teacherName" placeholder="الاسم واللقب">
+          </div>
+
+          <div class="field">
+            <label for="lessonTime">التوقيت</label>
+            <input id="lessonTime" placeholder="08:00 - 09:00">
+          </div>
+
+          <div class="field">
+            <label for="className">القسم</label>
+            <input id="className" placeholder="مثال: 4م1">
+          </div>
+
+          <div class="field">
+            <label for="roomNo">رقم القاعة</label>
+            <input id="roomNo" placeholder="مثال: 03">
+          </div>
+
+          <div class="field">
+            <label for="appTitle">عنوان التطبيق أو التجربة</label>
+            <input id="appTitle" placeholder="عنوان النشاط">
+          </div>
+
+          <div class="field">
+            <label for="toolsUsed">الأدوات المستعملة</label>
+            <input id="toolsUsed" placeholder="مثال: مجهر، شرائح زجاجية">
+          </div>
+
+          <div class="field">
+            <label for="teacherNote">ملاحظة</label>
+            <input id="teacherNote" placeholder="اختياري">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-success" onclick="addTeacherRow()">＋ إضافة إلى التقرير</button>
+          <button class="btn btn-secondary" onclick="clearTeacherForm()">↺ مسح الحقول</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header no-print">
+          <div class="panel-title">
+            <h2>المعاينة الرسمية</h2>
+            <p>تحقق من المعلومات قبل طباعة التقرير.</p>
+          </div>
+          <button class="btn btn-primary" onclick="printReport()">🖨️ طباعة التقرير اليومي</button>
+        </div>
+
+        <div class="official-report">
+          <div class="official-header">
+            الجمهورية الجزائرية الديمقراطية الشعبية<br>
+            وزارة التربية الوطنية<br>
+            <span id="lblDirectorate">مديرية التربية لولاية: ............................</span><br>
+            المتوسطة: <span id="lblSchool">....................................</span>
+          </div>
+
+          <div class="meta-info">
+            <span>التقرير رقم: <span id="lblReportNo">......</span></span>
+            <span>التاريخ: <span id="lblDate">.. / .. / ....</span></span>
+          </div>
+
+          <div class="official-title">التقرير اليومي للمخبر</div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>اسم الأستاذ</th>
+                  <th>التوقيت</th>
+                  <th>القسم</th>
+                  <th>رقم القاعة</th>
+                  <th>عنوان التطبيق</th>
+                  <th>الأدوات المستعملة</th>
+                  <th>ملاحظة</th>
+                  <th class="no-print">إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="report-section-title">1. حالة الأدوات المستعملة:</div>
+          <textarea id="repToolsStatus" rows="3" placeholder="اكتب حالة الأدوات بعد الاستعمال..." oninput="saveReportNotes()"></textarea>
+
+          <div class="report-section-title">2. الأدوات المحتاجة وغير المتوفرة:</div>
+
+          <div class="form-grid no-print" style="margin-bottom:0.7rem;">
+            <div class="field">
+              <label for="missingToolName">اسم الأداة غير المتوفرة</label>
+              <input id="missingToolName" placeholder="مثال: أنابيب اختبار">
+            </div>
+
+            <div class="field">
+              <label for="missingToolDate">تاريخ الاحتياج</label>
+              <input id="missingToolDate" type="date">
+            </div>
+
+            <div class="field" style="justify-content:end;">
+              <label>&nbsp;</label>
+              <button class="btn btn-secondary" onclick="addMissingTool()">＋ إضافة الأداة</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>الأداة غير المتوفرة</th>
+                  <th>تاريخ الاحتياج</th>
+                  <th class="no-print">إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="missingToolsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="report-section-title">3. ملاحظات مختلفة:</div>
+          <textarea id="repOtherNotes" rows="3" placeholder="أي ملاحظات إضافية تخص سير العمل بالمخبر..." oninput="saveReportNotes()"></textarea>
+
+          <div class="signatures">
+            <div>
+              المحضّر المخبري
+              <div class="signature-line">الإمضاء والختم</div>
+            </div>
+            <div>
+              مستشار التربية
+              <div class="signature-line">الإمضاء والختم</div>
+            </div>
+            <div>
+              المدير
+              <div class="signature-line">الإمضاء والختم</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="no-print">
+    <button class="active" onclick="showSection('inventory', this)">📦 سجل الجرد</button>
+    <button onclick="showSection('dailyReport', this)">📑 التقرير اليومي</button>
+  </nav>
+
+  <div id="toast"></div>
+
+  <script>
+    const storageKeys = {
+      inventory: "lab_inventory_v3",
+      reportRows: "lab_report_rows_v3",
+      missingTools: "lab_missing_tools_v3",
+      meta: "lab_report_meta_v3",
+      notes: "lab_report_notes_v3"
+    };
+
+    const store = {
+      inventory: JSON.parse(localStorage.getItem(storageKeys.inventory) || "[]"),
+      reportRows: JSON.parse(localStorage.getItem(storageKeys.reportRows) || "[]"),
+      missingTools: JSON.parse(localStorage.getItem(storageKeys.missingTools) || "[]"),
+      meta: JSON.parse(localStorage.getItem(storageKeys.meta) || '{"school":"","directorate":"","no":"","date":""}'),
+      notes: JSON.parse(localStorage.getItem(storageKeys.notes) || '{"toolsStatus":"","otherNotes":""}')
+    };
+
+    function uid() {
+      return window.crypto && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
+
+    function formatArabicDate(dateString) {
+      if (!dateString) return ".. / .. / ....";
+
+      const date = new Date(`${dateString}T12:00:00`);
+      return new Intl.DateTimeFormat("ar-DZ", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(date);
+    }
+
+    function saveData(showMessage = false) {
+      localStorage.setItem(storageKeys.inventory, JSON.stringify(store.inventory));
+      localStorage.setItem(storageKeys.reportRows, JSON.stringify(store.reportRows));
+      localStorage.setItem(storageKeys.missingTools, JSON.stringify(store.missingTools));
+      localStorage.setItem(storageKeys.meta, JSON.stringify(store.meta));
+      localStorage.setItem(storageKeys.notes, JSON.stringify(store.notes));
+
+      renderAll();
+
+      if (showMessage) {
+        showToast("تم حفظ البيانات بنجاح");
+      }
+    }
+
+    function showSection(id, button) {
+      document.querySelectorAll(".section").forEach(section => {
+        section.classList.remove("active");
+      });
+
+      document.querySelectorAll("nav button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      document.getElementById(id).classList.add("active");
+      button.classList.add("active");
+    }
+
+    function clearInventoryForm() {
+      ["invNo", "invName", "invQty", "invDate"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+
+      document.getElementById("invState").value = "جيدة";
+      document.getElementById("invName").focus();
+    }
+
+    function addInventory() {
+      const name = document.getElementById("invName").value.trim();
+      const quantity = Number(document.getElementById("invQty").value || 0);
+
+      if (!name) {
+        showToast("يرجى كتابة اسم المادة أو الوسيلة");
+        document.getElementById("invName").focus();
+        return;
+      }
+
+      if (quantity < 0) {
+        showToast("لا يمكن أن تكون الكمية سالبة");
+        return;
+      }
+
+      store.inventory.unshift({
+        id: uid(),
+        no: document.getElementById("invNo").value.trim() || "—",
+        name,
+        qty: quantity,
+        date: document.getElementById("invDate").value || "—",
+        state: document.getElementById("invState").value
+      });
+
+      clearInventoryForm();
+      saveData();
+      showToast("تمت إضافة المادة إلى سجل الجرد");
+    }
+
+    function deleteInventory(id) {
+      if (!confirm("هل تريد حذف هذا العنصر من سجل الجرد؟")) return;
+
+      store.inventory = store.inventory.filter(item => item.id !== id);
+      saveData();
+      showToast("تم حذف العنصر من الجرد");
+    }
+
+    function getStateBadge(state) {
+      const classes = {
+        "جيدة": "badge-good",
+        "متوسطة": "badge-medium",
+        "تحتاج إصلاح": "badge-repair",
+        "تالفة": "badge-damaged"
+      };
+
+      return `<span class="badge ${classes[state] || "badge-medium"}">${escapeHtml(state)}</span>`;
+    }
+
+    function renderInventory() {
+      const tbody = document.getElementById("inventoryTable");
+      const searchValue = document.getElementById("inventorySearch")?.value.trim().toLowerCase() || "";
+
+      const items = store.inventory.filter(item => {
+        const text = `${item.name} ${item.no} ${item.state}`.toLowerCase();
+        return text.includes(searchValue);
+      });
+
+      if (!items.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="empty-cell">
+              ${searchValue ? "لا توجد نتائج مطابقة للبحث." : "لا توجد عناصر مسجلة في الجرد بعد."}
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = items.map((item, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td><strong>${escapeHtml(item.name)}</strong></td>
+            <td>${escapeHtml(item.qty)}</td>
+            <td>${escapeHtml(item.no)}</td>
+            <td>${item.date === "—" ? "—" : formatArabicDate(item.date)}</td>
+            <td>${getStateBadge(item.state)}</td>
+            <td class="no-print">
+              <button class="btn btn-danger" onclick="deleteInventory('${item.id}')">🗑️ حذف</button>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      document.getElementById("statItems").textContent = store.inventory.length;
+      document.getElementById("statQuantity").textContent = store.inventory.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+      document.getElementById("statRepair").textContent = store.inventory.filter(item => item.state === "تحتاج إصلاح").length;
+      document.getElementById("statDamaged").textContent = store.inventory.filter(item => item.state === "تالفة").length;
+    }
+
+    function updateReportMeta() {
+      store.meta.school = document.getElementById("schoolName").value.trim();
+      store.meta.directorate = document.getElementById("educationDirectorate").value.trim();
+      store.meta.no = document.getElementById("reportNo").value.trim();
+      store.meta.date = document.getElementById("reportDate").value;
+
+      saveData();
+    }
+
+    function clearTeacherForm() {
+      ["teacherName", "lessonTime", "className", "roomNo", "appTitle", "toolsUsed", "teacherNote"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+
+      document.getElementById("teacherName").focus();
+    }
+
+    function addTeacherRow() {
+      const teacher = document.getElementById("teacherName").value.trim();
+
+      if (!teacher) {
+        showToast("يرجى كتابة اسم الأستاذ");
+        document.getElementById("teacherName").focus();
+        return;
+      }
+
+      store.reportRows.push({
+        id: uid(),
+        teacher,
+        time: document.getElementById("lessonTime").value.trim() || "—",
+        cls: document.getElementById("className").value.trim() || "—",
+        room: document.getElementById("roomNo").value.trim() || "—",
+        title: document.getElementById("appTitle").value.trim() || "—",
+        tools: document.getElementById("toolsUsed").value.trim() || "—",
+        note: document.getElementById("teacherNote").value.trim() || "—"
+      });
+
+      clearTeacherForm();
+      saveData();
+      showToast("تمت إضافة الحصة إلى التقرير اليومي");
+    }
+
+    function deleteTeacherRow(id) {
+      if (!confirm("هل تريد حذف هذه الحصة من التقرير؟")) return;
+
+      store.reportRows = store.reportRows.filter(row => row.id !== id);
+      saveData();
+      showToast("تم حذف الحصة من التقرير");
+    }
+
+    function addMissingTool() {
+      const name = document.getElementById("missingToolName").value.trim();
+
+      if (!name) {
+        showToast("يرجى كتابة اسم الأداة غير المتوفرة");
+        document.getElementById("missingToolName").focus();
+        return;
+      }
+
+      store.missingTools.push({
+        id: uid(),
+        name,
+        date: document.getElementById("missingToolDate").value || "—"
+      });
+
+      document.getElementById("missingToolName").value = "";
+      document.getElementById("missingToolDate").value = "";
+
+      saveData();
+      showToast("تمت إضافة الأداة إلى القائمة");
+    }
+
+    function deleteMissingTool(id) {
+      if (!confirm("هل تريد حذف هذه الأداة من القائمة؟")) return;
+
+      store.missingTools = store.missingTools.filter(tool => tool.id !== id);
+      saveData();
+      showToast("تم حذف الأداة من القائمة");
+    }
+
+    function saveReportNotes() {
+      store.notes.toolsStatus = document.getElementById("repToolsStatus").value;
+      store.notes.otherNotes = document.getElementById("repOtherNotes").value;
+
+      localStorage.setItem(storageKeys.notes, JSON.stringify(store.notes));
+    }
+
+    function renderReport() {
+      document.getElementById("lblSchool").textContent =
+        store.meta.school || "....................................";
+
+      document.getElementById("lblDirectorate").textContent =
+        store.meta.directorate || "مديرية التربية لولاية: ............................";
+
+      document.getElementById("lblReportNo").textContent =
+        store.meta.no || "......";
+
+      document.getElementById("lblDate").textContent =
+        formatArabicDate(store.meta.date);
+
+      document.getElementById("schoolName").value = store.meta.school || "";
+      document.getElementById("educationDirectorate").value = store.meta.directorate || "";
+      document.getElementById("reportNo").value = store.meta.no || "";
+      document.getElementById("reportDate").value = store.meta.date || "";
+
+      document.getElementById("repToolsStatus").value = store.notes.toolsStatus || "";
+      document.getElementById("repOtherNotes").value = store.notes.otherNotes || "";
+
+      const reportBody = document.getElementById("reportTableBody");
+
+      if (!store.reportRows.length) {
+        reportBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty-cell">لم تتم إضافة أي حصة لهذا اليوم بعد.</td>
+          </tr>
+        `;
+      } else {
+        reportBody.innerHTML = store.reportRows.map(row => `
+          <tr>
+            <td><strong>${escapeHtml(row.teacher)}</strong></td>
+            <td>${escapeHtml(row.time)}</td>
+            <td>${escapeHtml(row.cls)}</td>
+            <td>${escapeHtml(row.room)}</td>
+            <td>${escapeHtml(row.title)}</td>
+            <td>${escapeHtml(row.tools)}</td>
+            <td>${escapeHtml(row.note)}</td>
+            <td class="no-print">
+              <button class="btn btn-danger" onclick="deleteTeacherRow('${row.id}')">🗑️ حذف</button>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      const missingBody = document.getElementById("missingToolsBody");
+
+      if (!store.missingTools.length) {
+        missingBody.innerHTML = `
+          <tr>
+            <td colspan="3" class="empty-cell">لا توجد أدوات ناقصة مسجلة.</td>
+          </tr>
+        `;
+      } else {
+        missingBody.innerHTML = store.missingTools.map(tool => `
+          <tr>
+            <td>${escapeHtml(tool.name)}</td>
+            <td>${tool.date === "—" ? "—" : formatArabicDate(tool.date)}</td>
+            <td class="no-print">
+              <button class="btn btn-danger" onclick="deleteMissingTool('${tool.id}')">🗑️ حذف</button>
+            </td>
+          </tr>
+        `).join("");
+      }
+    }
+
+    function renderAll() {
+      renderInventory();
+      renderReport();
+    }
+
+    function printInventory() {
+      showSection("inventory", document.querySelector("nav button:first-child"));
+      setTimeout(() => window.print(), 150);
+    }
+
+    function printReport() {
+      showSection("dailyReport", document.querySelector("nav button:nth-child(2)"));
+      setTimeout(() => window.print(), 150);
+    }
+
+    function exportInventoryCSV() {
+      if (!store.inventory.length) {
+        showToast("لا توجد بيانات في الجرد لتصديرها");
+        return;
+      }
+
+      const headers = ["الرقم", "اسم المادة", "الكمية", "رقم الجرد", "تاريخ الدخول", "الحالة"];
+      const rows = store.inventory.map((item, index) => [
+        index + 1,
+        item.name,
+        item.qty,
+        item.no,
+        item.date === "—" ? "" : item.date,
+        item.state
+      ]);
+
+      const csv = [
+        headers,
+        ...rows
+      ].map(row =>
+        row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+      ).join("
+");
+
+      const blob = new Blob(["﻿" + csv], {
+        type: "text/csv;charset=utf-8;"
+      });
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `سجل_الجرد_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+
+      URL.revokeObjectURL(link.href);
+      showToast("تم تصدير سجل الجرد بنجاح");
+    }
+
+    function initialize() {
+      if (!store.meta.date) {
+        store.meta.date = new Date().toISOString().slice(0, 10);
+      }
+
+      document.getElementById("todayLabel").textContent =
+        new Intl.DateTimeFormat("ar-DZ", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }).format(new Date());
+
+      renderAll();
+    }
+
+    initialize();
+  </script>
+</body>
+</html>
