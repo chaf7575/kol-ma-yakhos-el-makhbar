@@ -1,360 +1,472 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>كل ما يخص المخبر</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة مخبري المتكاملة</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f4f7fb;color:#172033}
-header{background:#123b5d;color:#fff;padding:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-h1{margin:0;font-size:25px}.sub{font-size:13px;opacity:.9}.badge{background:#1f6f8b;padding:8px 12px;border-radius:20px}
-nav{background:#fff;padding:9px;display:flex;gap:7px;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px #0001}
-nav button{border:0;background:#e8eef5;color:#17324d;border-radius:8px;padding:10px 13px;cursor:pointer}nav button.active{background:#176b87;color:white}
-main{max-width:1350px;margin:18px auto;padding:0 12px}.section{display:none}.section.active{display:block}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.card,.panel{background:#fff;border:1px solid #dce5ed;border-radius:12px;padding:15px}
-.num{font-size:30px;font-weight:700;margin-top:6px}
-.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}.full{grid-column:1/-1}
-input,select,textarea{width:100%;padding:10px;font:inherit;border:1px solid #cbd5e1;border-radius:8px}textarea{min-height:70px}
-button.primary{background:#176b87;color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
-button.secondary{background:#edf2f7;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
-button.danger{background:#fff0f0;color:#a00000;border:1px solid #ffd0d0;border-radius:7px;padding:6px 9px;cursor:pointer}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.toolbar>*{max-width:280px}
-.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;background:#fff;min-width:900px}
-th,td{padding:9px;border-bottom:1px solid #e3e9ef;text-align:right;vertical-align:top}th{background:#edf3f8;white-space:nowrap}
-.tag{display:inline-block;background:#eef4f8;padding:5px 9px;border-radius:15px;margin:3px;font-size:12px}
-.notice{background:#fff8db;border:1px solid #efdf9e;padding:12px;border-radius:10px;margin:10px 0}
-.small{font-size:12px;color:#667085}.empty{padding:22px;text-align:center;color:#667085;background:#fff;border:1px dashed #cbd5e1;border-radius:10px}
-@media print{nav,header,.no-print,.form,.toolbar,.notice{display:none!important}.section{display:none!important}.section.printable{display:block!important}.tablewrap{overflow:visible}table{min-width:0;font-size:9px}}
-.chem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
-.chem-card{background:#fff;border:1px solid #dce5ed;border-radius:12px;padding:14px}
-.chem-card h3{margin:0 0 8px}.chem-meta{font-size:13px;line-height:1.8;color:#475467}
-.overlay{position:fixed;inset:0;background:#0008;display:none;z-index:100;padding:18px;overflow:auto}
-.overlay.show{display:block}.modal{background:#fff;max-width:1100px;margin:20px auto;border-radius:14px;padding:18px}
-.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
-.kpi .card{background:#f7fafc}.danger-text{color:#a00000;font-weight:700}.ok-text{color:#137333;font-weight:700}
-.timetable{overflow:auto}.timetable table{min-width:1100px}
-.tt-cell{min-width:150px;height:78px}
-.lesson-card{background:#f4f8fb;border:1px solid #d8e4ed;border-radius:8px;padding:7px;font-size:12px;line-height:1.5;margin-bottom:5px;position:relative}
-.lesson-card strong{display:block;font-size:13px}
+:root {
+  --primary: #1e3a8a;
+  --primary-light: #3b82f6;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --danger: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+body { background: var(--bg); color: var(--text); padding-bottom: 70px; }
+
+header {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  color: white;
+  padding: 1.25rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+header h1 { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+header .badge { background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
+
+/* Navigation - Mobile Friendly Nav */
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid var(--border);
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+nav button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.6rem 0.2rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  cursor: pointer;
+}
+nav button.active { color: var(--primary-light); font-weight: bold; }
+nav button svg { width: 20px; height: 20px; fill: currentColor; }
+
+main { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+.kpi-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-top: 0.25rem; }
+
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+.panel h2 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; }
+.full-width { grid-column: 1 / -1; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: #fafafa;
+  outline: none;
+  transition: border 0.2s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--primary-light); background: #fff; }
+textarea { resize: vertical; min-height: 80px; }
+
+.btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+button.btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: opacity 0.2s;
+}
+button.btn:active { opacity: 0.8; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: #e2e8f0; color: var(--text); }
+.btn-danger { background: #fee2e2; color: var(--danger); }
+
+.table-container { overflow-x: auto; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.88rem; min-width: 600px; }
+th, td { padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--border); }
+th { background: #f1f5f9; color: var(--text-muted); font-weight: 600; }
+
+.badge-status { padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+.status-good { background: #d1fae5; color: #065f46; }
+.status-warning { background: #fef3c7; color: #92400e; }
+.status-danger { background: #fee2e2; color: #991b1b; }
+
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
+  display: none; align-items: center; justify-content: center; padding: 1rem;
+}
+.modal.show { display: flex; }
+.modal-content { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 1.5rem; }
+
+@media print {
+  nav, .no-print, button, .form-grid { display: none !important; }
+  body { padding-bottom: 0; background: white; }
+  .panel { border: none; padding: 0; }
+  .table-container { border: none; }
+  table { min-width: 100%; font-size: 10pt; }
+}
 </style>
 </head>
-<script>
-  const ACTIVATION_KEY = "LAB2026";
-  function checkActivationCode() {
-    const savedCode = localStorage.getItem("lab_activation_code");
-    if (savedCode === ACTIVATION_KEY) return true;
-    const code = prompt("أدخل كود تفعيل منصة المخبري:");
-    if (code === ACTIVATION_KEY) {
-      localStorage.setItem("lab_activation_code", code);
-      alert("تم تفعيل منصة المخبري بنجاح.");
-      return true;
-    }
-    alert("كود التفعيل غير صحيح.");
-    return false;
-  }
-  window.addEventListener("load", checkActivationCode);
-</script>
 <body>
+
 <header>
-<div><h1>🔬 كل ما يخص المخبر</h1><div class="sub">منصة عمل المخبري — الجرد، التجارب، التدرج، التقارير والصيانة</div></div>
-<div class="badge">2026 / 2027</div>
+  <h1>🔬 مخبري — إدارة المختبر المتوسط</h1>
+  <span class="badge">2026/2027</span>
 </header>
 
-<nav id="nav">
-<button class="active" data-id="home">الرئيسية</button>
-<button data-id="inventory">المخزون والجرد</button>
-<button data-id="chemicals">المواد الكيميائية</button>
-<button data-id="timetable">استعمال زمن الأساتذة</button>
-<button data-id="experiments">التجارب والوسائل</button>
-<button data-id="weekly">الخطة الأسبوعية</button>
-<button data-id="reports">الأعمال التطبيقية</button>
-<button data-id="maintenance">الصيانة</button>
-<button data-id="curriculum">المنهاج والمحاور</button>
-</nav>
-
 <main>
-<section id="home" class="section active">
-<h2>لوحة التحكم</h2>
-<div class="notice">البيانات المعروضة أدناه مدمجة داخل المنصة وتحفظ تلقائياً في المتصفح المحالي.</div>
-<div class="cards">
-<div class="card">وسائل الجرد<div class="num" id="statInv">0</div></div>
-<div class="card">التجارب والأنشطة<div class="num" id="statEx">0</div></div>
-<div class="card">أسابيع الخطة<div class="num" id="statWeek">0</div></div>
-<div class="card">التقارير<div class="num" id="statRep">0</div></div>
-<div class="card">تنبيهات الجرد<div class="num" id="statAlert">0</div></div>
-</div>
-<div class="panel" style="margin-top:14px">
-<h3>المستويات Target</h3><span class="tag">1 متوسط</span><span class="tag">2 متوسط</span><span class="tag">3 متوسط</span><span class="tag">4 متوسط</span>
-</div>
-</section>
+  <!-- 1. لوحة التحكم -->
+  <section id="dashboard" class="section active">
+    <div class="card-grid">
+      <div class="kpi-card"><span>وسائل الجرد</span><div class="num" id="kpiInv">0</div></div>
+      <div class="kpi-card"><span>المواد الكيميائية</span><div class="num" id="kpiChem">0</div></div>
+      <div class="kpi-card"><span>التجارب</span><div class="num" id="kpiEx">0</div></div>
+      <div class="kpi-card"><span>التنبيهات</span><div class="num" id="kpiAlerts" style="color:var(--danger)">0</div></div>
+    </div>
 
-<section id="inventory" class="section">
-<h2>المخزون والجرد</h2>
-<div class="panel form">
-<input id="invName" placeholder="اسم الوسيلة أو المادة">
-<select id="invCat"><option>زجاجيات</option><option>أجهزة قياس</option><option>أجهزة كهربائية</option><option>أجهزة بصرية</option><option>ميكانيك</option><option>مواد وكواشف تعليمية</option><option>معدات سلامة</option><option>معدات عامة</option></select>
-<input id="invQty" type="number" min="0" placeholder="الكمية">
-<input id="invMin" type="number" min="0" placeholder="الحد الأدنى">
-<select id="invState"><option>جيدة</option><option>متوسطة</option><option>تحتاج إصلاح</option><option>تالفة</option></select>
-<input id="invPlace" placeholder="مكان التخزين"><input id="invRef" placeholder="رقم الجرد">
-<textarea id="invNote" class="full" placeholder="ملاحظات"></textarea>
-<button id="addInvBtn" class="primary">إضافة إلى الجرد</button>
-</div>
-<div class="toolbar no-print"><input id="invSearch" placeholder="بحث في الجرد"><button id="printInv" class="secondary">طباعة الجرد</button></div>
-<div id="inventoryOut"></div>
-</section>
+    <div class="panel">
+      <h2>📌 ملخص حالة المخبر</h2>
+      <p style="color:var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+        مرحباً بك في منصة مخبري. تم تصميم الصفحة لتتيح لك التحكم الكامل في العتاد والمواد الكيميائية، إعداد استعمال الزمن، وتتبع الأنشطة والتجارب اليومية بكل سهولة.
+      </p>
+    </div>
+  </section>
 
-<section id="chemicals" class="section">
-<h2>المخزون الكيميائي</h2>
-<div class="notice">لكل مادة كيميائية بطاقة مستقلة يتابع فيها المتبقي تلقائياً.</div>
-<div class="panel form">
-<input id="chemName" placeholder="اسم المادة الكيميائية">
-<input id="chemFormula" placeholder="الصيغة / الرمز">
-<input id="chemStock" type="number" min="0" step="0.01" placeholder="المخزون الأولي">
-<select id="chemUnit"><option>mL</option><option>L</option><option>g</option><option>kg</option><option>وحدة</option></select>
-<input id="chemPurchaseDate" type="date">
-<input id="chemSource" placeholder="الجهة المستخرج/المشتراة منها">
-<input id="chemStorage" placeholder="مكان التخزين">
-<input id="chemHazard" placeholder="احتياطات/تصنيف السلامة">
-<textarea id="chemNote" class="full" placeholder="ملاحظات"></textarea>
-<button id="addChemBtn" class="primary">إضافة مادة كيميائية</button>
-</div>
-<div class="toolbar no-print"><input id="chemSearch" placeholder="بحث في المواد الكيميائية"><button id="printChem" class="secondary">طباعة المخزون الكيميائي</button></div>
-<div id="chemicalsOut"></div>
-</section>
+  <!-- 2. الجرد والمخزون -->
+  <section id="inventory" class="section">
+    <div class="panel no-print">
+      <h2>📦 إضافة وسيلة / عتاد للجرد</h2>
+      <div class="form-grid">
+        <input id="invName" placeholder="اسم الوسيلة/العتاد">
+        <select id="invCat">
+          <option>زجاجيات</option><option>أجهزة قياس</option><option>أجهزة كهربائية</option>
+          <option>أجهزة بصرية</option><option>ميكانيك</option><option>أدوات عامة</option>
+        </select>
+        <input id="invQty" type="number" placeholder="الكمية المتوفرة">
+        <input id="invMin" type="number" placeholder="الحد الأدنى للتنبيه">
+        <select id="invState">
+          <option value="جيدة">جيدة</option>
+          <option value="متوسطة">متوسطة</option>
+          <option value="تحتاج إصلاح">تحتاج إصلاح</option>
+          <option value="تالفة">تالفة</option>
+        </select>
+        <input id="invPlace" placeholder="مكان التخزين (الخزانة/الرف)">
+        <textarea id="invNote" class="full-width" placeholder="ملاحظات إضافية..."></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="addInventory()">إضافة للجرد</button>
+      </div>
+    </div>
 
-<section id="timetable" class="section">
-<h2>استعمال زمن الأساتذة</h2>
-<div class="panel form">
-<input id="ttTeacher" placeholder="اسم الأستاذ">
-<select id="ttSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
-<select id="ttLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
-<input id="ttClass" placeholder="القسم — مثال: 1م1">
-<select id="ttDay"><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
-<select id="ttSlot">
-  <option value="08:00 - 09:00">08:00 - 09:00</option>
-  <option value="09:00 - 10:00">09:00 - 10:00</option>
-  <option value="10:00 - 11:00">10:00 - 11:00</option>
-  <option value="11:00 - 12:00">11:00 - 12:00</option>
-  <option value="13:00 - 14:00">13:00 - 14:00</option>
-  <option value="14:00 - 15:00">14:00 - 15:00</option>
-  <option value="15:00 - 16:00">15:00 - 16:00</option>
-  <option value="16:00 - 17:00">16:00 - 17:00</option>
-</select>
-<input id="ttRoom" placeholder="القاعة/المخبر">
-<input id="ttActivity" placeholder="التجربة / النشاط">
-<textarea id="ttNote" class="full" placeholder="ملاحظات"></textarea>
-<button id="addTTBtn" class="primary">إضافة حصة</button>
-</div>
-<div class="toolbar no-print">
-<input id="ttSearch" placeholder="بحث في استعمال الزمن">
-<select id="ttTeacherFilter"><option value="">كل الأساتذة</option></select>
-<select id="ttDayFilter"><option value="">كل الأيام</option><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
-<button id="printTT" class="secondary">طباعة استعمال الزمن</button>
-</div>
-<div id="timetableOut"></div>
-</section>
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;" class="no-print">
+        <h2>📋 سجل الجرد العام</h2>
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ طباعة السجل</button>
+      </div>
+      <input id="invSearch" class="no-print" placeholder="🔍 بحث في الجرد..." oninput="renderInventory()" style="margin-bottom: 1rem;">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>الوسيلة</th>
+              <th>الصنف</th>
+              <th>الكمية</th>
+              <th>الحالة</th>
+              <th>المكان</th>
+              <th class="no-print">إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-<section id="experiments" class="section">
-<h2>التجارب والوسائل المطلوبة</h2>
-<div class="panel form">
-<select id="exLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
-<select id="exSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
-<input id="exUnit" placeholder="المحور/المقطع"><input id="exTitle" placeholder="عنوان التجربة"><input id="exGoal" placeholder="الهدف">
-<input id="exTime" placeholder="المدة"><textarea id="exTools" class="full" placeholder="الوسائل والمواد المطلوبة"></textarea>
-<textarea id="exSafety" class="full" placeholder="احتياطات السلامة"></textarea><textarea id="exSteps" class="full" placeholder="خطوات الإنجاز"></textarea>
-<button id="addExBtn" class="primary">حفظ التجربة</button>
-</div>
-<div class="toolbar no-print"><select id="exFilter"><option value="">كل المستويات</option><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select><input id="exSearch" placeholder="بحث في التجارب"><button id="printEx" class="secondary">طباعة التجارب</button></div>
-<div id="experimentsOut"></div>
-</section>
+  <!-- 3. المواد الكيميائية -->
+  <section id="chemicals" class="section">
+    <div class="panel no-print">
+      <h2>🧪 إضافة مادة كيميائية</h2>
+      <div class="form-grid">
+        <input id="chemName" placeholder="اسم المادة الكيميائية">
+        <input id="chemFormula" placeholder="الصيغة الكيميائية (إن وجدت)">
+        <input id="chemStock" type="number" step="0.01" placeholder="الكمية الإجمالية">
+        <select id="chemUnit"><option>g</option><option>kg</option><option>mL</option><option>L</option><option>وحدة</option></select>
+        <input id="chemStorage" placeholder="مكان الحفظ">
+        <input id="chemHazard" placeholder="محاذير السلامة (مثال: أكال، سريع الاشتعال)">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="addChemical()">إضافة المادة</button>
+      </div>
+    </div>
 
-<section id="weekly" class="section">
-<h2>الخطة الأسبوعية</h2>
-<div class="panel form">
-<input id="wWeek" type="number" min="1" max="52" placeholder="الأسبوع"><select id="wLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
-<select id="wSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select><input id="wLesson" placeholder="الدرس/المحور"><input id="wExp" placeholder="التجربة/النشاط">
-<input id="wTools" class="full" placeholder="الوسائل المطلوبة"><select id="wStatus"><option>مبرمج</option><option>تم التحضير</option><option>تم الإنجاز</option><option>مؤجل</option></select><textarea id="wNote" class="full" placeholder="ملاحظات"></textarea>
-<button id="addWBtn" class="primary">حفظ الأسبوع</button>
-</div>
-<div class="toolbar no-print"><select id="wLevelFilter"><option value="">كل المستويات</option><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select><select id="wSubjectFilter"><option value="">كل المواد</option><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select><select id="wWeekFilter"></select><button id="printW" class="secondary">طباعة</button></div>
-<div id="weeklyOut"></div>
-</section>
+    <div class="panel">
+      <h2>🧪 قائمة المواد الكيميائية المخزنة</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>المادة</th>
+              <th>الصيغة</th>
+              <th>المخزون الحالي</th>
+              <th>مكان الحفظ</th>
+              <th class="no-print">إجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="chemicalTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-<section id="reports" class="section">
-<h2>تقارير الأعمال التطبيقية</h2>
-<div class="panel form">
-<input id="rDate" type="date"><input id="rTeacher" placeholder="اسم الأستاذ"><input id="rClass" placeholder="القسم"><input id="rTime" placeholder="التوقيت">
-<select id="rLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
-<select id="rSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
-<input id="rTitle" class="full" placeholder="عنوان التجربة"><textarea id="rTools" class="full" placeholder="الوسائل المستعملة"></textarea><textarea id="rResult" class="full" placeholder="النتيجة / سير العمل"></textarea><textarea id="rNote" class="full" placeholder="ملاحظات"></textarea>
-<button id="addRBtn" class="primary">حفظ التقرير</button>
-</div>
-<div class="toolbar no-print"><input id="rSearch" placeholder="بحث في التقارير"><button id="printR" class="secondary">طباعة التقارير</button></div>
-<div id="reportsOut"></div>
-</section>
+  <!-- 4. استعمال الزمن -->
+  <section id="timetable" class="section">
+    <div class="panel no-print">
+      <h2>📅 إضافة حصة في جدول الأوقات</h2>
+      <div class="form-grid">
+        <input id="ttTeacher" placeholder="اسم الأستاذ">
+        <select id="ttSubject"><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select>
+        <select id="ttLevel"><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select>
+        <input id="ttClass" placeholder="القسم (مثال: 1م2)">
+        <select id="ttDay"><option>الأحد</option><option>الإثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option></select>
+        <select id="ttSlot">
+          <option>08:00 - 09:00</option><option>09:00 - 10:00</option><option>10:00 - 11:00</option><option>11:00 - 12:00</option>
+          <option>13:00 - 14:00</option><option>14:00 - 15:00</option><option>15:00 - 16:00</option>
+        </select>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="addTimetable()">حفظ الحصة</button>
+      </div>
+    </div>
 
-<section id="maintenance" class="section">
-<h2>الصيانة والأعطال</h2>
-<div class="panel form">
-<input id="mDate" type="date"><input id="mItem" placeholder="الجهاز/الوسيلة"><select id="mState"><option>مسجل</option><option>قيد الإصلاح</option><option>تم الإصلاح</option><option>خارج الخدمة</option></select>
-<input id="mBy" placeholder="المكلف"><textarea id="mProblem" class="full" placeholder="العطل"></textarea><textarea id="mAction" class="full" placeholder="الإجراء المتخذ"></textarea>
-<button id="addMBtn" class="primary">حفظ</button>
-</div>
-<div class="toolbar no-print"><button id="printM" class="secondary">طباعة سجل الصيانة</button></div>
-<div id="maintenanceOut"></div>
-</section>
-
-<section id="curriculum" class="section">
-<h2>المنهاج والمحاور المرجعية</h2>
-<div class="toolbar no-print"><select id="cLevel"><option value="">كل المستويات</option><option>1 متوسط</option><option>2 متوسط</option><option>3 متوسط</option><option>4 متوسط</option></select><select id="cSubject"><option value="">كل المواد</option><option>علوم فيزيائية وتكنولوجيا</option><option>علوم الطبيعة والحياة</option></select><input id="cSearch" placeholder="بحث"></div>
-<div id="curriculumOut"></div>
-</section>
+    <div class="panel">
+      <h2>🗓️ جدول استعمال زمن المخبر</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>التوقيت</th><th>الأحد</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th>
+            </tr>
+          </thead>
+          <tbody id="timetableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 </main>
 
-<div id="chemicalPage" class="overlay" onclick="if(event.target===this)closeChemical()"></div>
+<!-- Bottom Navigation Bar for Mobile -->
+<nav class="no-print">
+  <button class="active" onclick="showSection('dashboard', this)">
+    <span>🏠</span>الرئيسية
+  </button>
+  <button onclick="showSection('inventory', this)">
+    <span>📦</span>الجرد
+  </button>
+  <button onclick="showSection('chemicals', this)">
+    <span>🧪</span>الكيمياء
+  </button>
+  <button onclick="showSection('timetable', this)">
+    <span>📅</span>البرنامج
+  </button>
+</nav>
 
 <script>
-const inventorySeed=[["بيشر 100 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["بيشر 250 مل","زجاجيات",12,3,"جيدة","خزانة الزجاجيات"],["مخبار مدرج 100 مل","زجاجيات",10,2,"جيدة","خزانة القياس"],["ميزان إلكتروني","أجهزة قياس",2,1,"جيدة","خزانة الأجهزة"],["مولد توتر منخفض","أجهزة كهربائية",4,1,"جيدة","خزانة الكهرباء"]];
-const experimentSeed=[["1 متوسط","علوم الطبيعة والحياة","التغذية","الكشف عن النشاء في الأغذية","يود/لوغول؛ عينات غذائية؛ أطباق","الكشف عن النشاء"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة وتحولاتها","قياس الحجم بالمخبار المدرج","مخبار مدرج؛ ماء؛ أجسام مناسبة","قراءة الحجم"]];
-const curriculumSeed=[["1 متوسط","علوم الطبيعة والحياة","التغذية عند الإنسان","مصدر وتركيب الأغذية؛ دور الأغذية في الجسم"],["1 متوسط","علوم فيزيائية وتكنولوجيا","المادة والتحولات","حالات المادة؛ القياس؛ الظواهر الكهربائية"]];
-
-const state={
-  inventory:[],
-  experiments:[],
-  weekly:[],
-  reports:[],
-  maintenance:[],
-  chemicals:[],
-  timetable:[]
+// State Management with LocalStorage
+const store = {
+  inventory: JSON.parse(localStorage.getItem('mb_inventory') || '[]'),
+  chemicals: JSON.parse(localStorage.getItem('mb_chemicals') || '[]'),
+  timetable: JSON.parse(localStorage.getItem('mb_timetable') || '[]')
 };
 
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function by(id){return document.getElementById(id)}
-
-function save(){localStorage.setItem('km_fixed_v2',JSON.stringify(state))}
-
-function load(){
-  try{
-    const x=JSON.parse(localStorage.getItem('km_fixed_v2')||'null');
-    if(x){
-      Object.assign(state, x);
-    } else {
-      state.inventory = inventorySeed.map(x=>({name:x[0],cat:x[1],qty:x[2],min:x[3],state:x[4],place:x[5],ref:'',note:''}));
-      state.experiments = experimentSeed.map(x=>({level:x[0],subject:x[1],unit:x[2],title:x[3],tools:x[4],goal:x[5],time:'حصة',safety:'',steps:''}));
-    }
-  }catch(e){console.error(e)}
+function saveData() {
+  localStorage.setItem('mb_inventory', JSON.stringify(store.inventory));
+  localStorage.setItem('mb_chemicals', JSON.stringify(store.chemicals));
+  localStorage.setItem('mb_timetable', JSON.stringify(store.timetable));
+  renderAll();
 }
 
-function deleteItem(arrayName, index) {
-  if(confirm("هل أنت أصلًا متأكد من الحذف؟")) {
-    state[arrayName].splice(index, 1);
-    save();
-    renderAll();
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// 1. Inventory Functions
+function addInventory() {
+  const name = document.getElementById('invName').value.trim();
+  const qty = parseInt(document.getElementById('invQty').value) || 0;
+  if(!name) return alert('يرجى أدخال اسم الوسيلة');
+  
+  store.inventory.push({
+    id: Date.now(),
+    name,
+    cat: document.getElementById('invCat').value,
+    qty,
+    min: parseInt(document.getElementById('invMin').value) || 0,
+    state: document.getElementById('invState').value,
+    place: document.getElementById('invPlace').value || 'غير محدد',
+    note: document.getElementById('invNote').value
+  });
+  
+  clearFields(['invName', 'invQty', 'invMin', 'invPlace', 'invNote']);
+  saveData();
+}
+
+function deleteInventory(id) {
+  if(confirm('هل انت متأكد من حذف هذه الوسيلة؟')) {
+    store.inventory = store.inventory.filter(item => item.id !== id);
+    saveData();
   }
 }
 
-function renderAll(){
- // 1. Inventory
- let q=(by('invSearch').value||'').toLowerCase();
- let a=state.inventory.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
- by('inventoryOut').innerHTML='<div class="tablewrap"><table><tr><th>الوسيلة</th><th>الصنف</th><th>الكمية</th><th>الحد</th><th>الحالة</th><th>المكان</th><th>إجراء</th></tr>'+a.map((x,i)=>'<tr><td>'+esc(x.name)+'</td><td>'+esc(x.cat)+'</td><td>'+x.qty+'</td><td>'+x.min+'</td><td>'+esc(x.state)+'</td><td>'+esc(x.place)+'</td><td><button class="danger" onclick="deleteItem(\'inventory\','+i+')">حذف</button></td></tr>').join('')+'</table></div>';
+function renderInventory() {
+  const query = (document.getElementById('invSearch')?.value || '').toLowerCase();
+  const tbody = document.getElementById('inventoryTable');
+  const items = store.inventory.filter(i => i.name.toLowerCase().includes(query));
 
- // 2. Chemicals
- q=(by('chemSearch').value||'').toLowerCase();
- const ca=state.chemicals.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
- by('chemicalsOut').innerHTML=ca.length?'<div class="chem-grid">'+ca.map((x,i)=>{
-   const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
-   const remaining=Math.max(0,(parseFloat(x.stock)||0)-used);
-   return '<div class="chem-card"><h3>'+esc(x.name)+'</h3><div class="chem-meta">الصيغة: '+esc(x.formula||'—')+'<br>المخزون الأولي: '+esc(x.stock)+' '+esc(x.unit)+'<br><span class="'+(remaining<=0?'danger-text':'ok-text')+'">المتبقي: '+remaining.toFixed(2)+' '+esc(x.unit)+'</span></div><div class="toolbar no-print"><button class="primary" onclick="openChemical('+i+')">فتح</button><button class="danger" onclick="deleteItem(\'chemicals\','+i+')">حذف</button></div></div>';
- }).join('')+'</div>':'<div class="empty">لا توجد مواد كيميائية مدخلة.</div>';
+  tbody.innerHTML = items.map(item => {
+    let badgeClass = 'status-good';
+    if(item.state === 'تالفة' || item.qty <= item.min) badgeClass = 'status-danger';
+    else if(item.state === 'تحتاج إصلاح') badgeClass = 'status-warning';
 
- // 3. Timetable
- const teacherNames=[...new Set(state.timetable.map(x=>x.teacher).filter(Boolean))];
- const selectedTeacher=by('ttTeacherFilter').value, selectedDay=by('ttDayFilter').value;
- const tq=(by('ttSearch').value||'').toLowerCase();
- let tt=state.timetable.filter(x=>(!selectedTeacher||x.teacher===selectedTeacher)&&(!selectedDay||x.day===selectedDay)&&Object.values(x).join(' ').toLowerCase().includes(tq));
- by('ttTeacherFilter').innerHTML='<option value="">كل الأساتذة</option>'+teacherNames.map(n=>'<option '+(n===selectedTeacher?'selected':'')+'>'+esc(n)+'</option>').join('');
- 
- const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس'];
- const fixedSlots=['08:00 - 09:00','09:00 - 10:00','10:00 - 11:00','11:00 - 12:00','13:00 - 14:00','14:00 - 15:00','15:00 - 16:00','16:00 - 17:00'];
- 
- by('timetableOut').innerHTML='<div class="tablewrap timetable"><table><tr><th>الساعة</th>'+days.map(d=>'<th>'+d+'</th>').join('')+'</tr>'+
- fixedSlots.map(slot=>{
-   return '<tr><th>'+esc(slot)+'</th>'+days.map(day=>{
-     const items=tt.filter(x=>x.day===day&&x.slot===slot);
-     return '<td class="tt-cell">'+items.map(x=>'<div class="lesson-card"><strong>'+esc(x.teacher)+'</strong>'+esc(x.subject)+'<br>القسم: '+esc(x.cls)+'</div>').join('')+'</td>';
-   }).join('')+'</tr>';
- }).join('')+'</table></div>';
-
- // Stats
- by('statInv').textContent=state.inventory.length;
- by('statEx').textContent=state.experiments.length;
- by('statWeek').textContent=state.weekly.length;
- by('statRep').textContent=state.reports.length;
- by('statAlert').textContent=state.inventory.filter(x=>(x.min>0&&x.qty<=x.min)||x.state!=='جيدة').length;
+    return `<tr>
+      <td><b>${item.name}</b></td>
+      <td>${item.cat}</td>
+      <td>${item.qty}</td>
+      <td><span class="badge-status ${badgeClass}">${item.state}</span></td>
+      <td>${item.place}</td>
+      <td class="no-print">
+        <button class="btn btn-danger" onclick="deleteInventory(${item.id})">حذف</button>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--text-muted)">لا توجد عناصر مسجلة</td></tr>';
 }
 
-function clearIds(ids){ids.forEach(id=>by(id).value='')}
+// 2. Chemical Functions
+function addChemical() {
+  const name = document.getElementById('chemName').value.trim();
+  const stock = parseFloat(document.getElementById('chemStock').value) || 0;
+  if(!name) return alert('يرجى إدخال اسم المادة');
 
-function addInventory(){
- if(!by('invName').value) return alert('يرجى أدخال الاسم');
- state.inventory.push({name:by('invName').value,cat:by('invCat').value,qty:+by('invQty').value||0,min:+by('invMin').value||0,state:by('invState').value,place:by('invPlace').value,ref:by('invRef').value,note:by('invNote').value});
- save();clearIds(['invName','invQty','invMin','invPlace','invRef','invNote']);renderAll();
+  store.chemicals.push({
+    id: Date.now(),
+    name,
+    formula: document.getElementById('chemFormula').value,
+    stock,
+    unit: document.getElementById('chemUnit').value,
+    storage: document.getElementById('chemStorage').value || 'غير محدد',
+    hazard: document.getElementById('chemHazard').value
+  });
+
+  clearFields(['chemName', 'chemFormula', 'chemStock', 'chemStorage', 'chemHazard']);
+  saveData();
 }
 
-function addChemical(){
- const name=by('chemName').value.trim();
- if(!name) return alert('أدخل اسم المادة');
- state.chemicals.push({name,formula:by('chemFormula').value.trim(),stock:parseFloat(by('chemStock').value)||0,unit:by('chemUnit').value,purchaseDate:by('chemPurchaseDate').value,source:by('chemSource').value.trim(),storage:by('chemStorage').value.trim(),hazard:by('chemHazard').value.trim(),note:by('chemNote').value.trim(),usages:[]});
- save(); clearIds(['chemName','chemFormula','chemStock','chemPurchaseDate','chemSource','chemStorage','chemHazard','chemNote']); renderAll();
+function deleteChemical(id) {
+  if(confirm('هل تريد مسح المادة الكيميائية؟')) {
+    store.chemicals = store.chemicals.filter(c => c.id !== id);
+    saveData();
+  }
 }
 
-function addTimetable(){
- const teacher=by('ttTeacher').value.trim(), cls=by('ttClass').value.trim(), slot=by('ttSlot').value, day=by('ttDay').value;
- if(!teacher||!cls) return alert('يرجى كتابة اسم الأستاذ والقسم');
- state.timetable.push({teacher,subject:by('ttSubject').value,level:by('ttLevel').value,cls,day,slot,room:by('ttRoom').value.trim(),activity:by('ttActivity').value.trim(),note:by('ttNote').value.trim()});
- save();clearIds(['ttTeacher','ttClass','ttRoom','ttActivity','ttNote']);renderAll();
+function renderChemicals() {
+  const tbody = document.getElementById('chemicalTable');
+  tbody.innerHTML = store.chemicals.map(c => `
+    <tr>
+      <td><b>${c.name}</b></td>
+      <td>${c.formula || '—'}</td>
+      <td>${c.stock} ${c.unit}</td>
+      <td>${c.storage}</td>
+      <td class="no-print">
+        <button class="btn btn-danger" onclick="deleteChemical(${c.id})">حذف</button>
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">لا توجد مواد كيميائية</td></tr>';
 }
 
-function openChemical(index){
- const x=state.chemicals[index]; if(!x)return;
- const used=(x.usages||[]).reduce((sum,u)=>sum+(parseFloat(u.volume)||0),0);
- const remaining=Math.max(0,(parseFloat(x.stock)||0)-used);
- by('chemicalPage').innerHTML=
- '<div class="modal"><div style="display:flex;justify-content:space-between"><h2>بطاقة: '+esc(x.name)+'</h2><button class="secondary" onclick="closeChemical()">إغلاق</button></div>'+
- '<p>المتبقي: '+remaining.toFixed(2)+' '+esc(x.unit)+'</p>'+
- '</div>';
- by('chemicalPage').classList.add('show');
+// 3. Timetable Functions
+function addTimetable() {
+  const teacher = document.getElementById('ttTeacher').value.trim();
+  const cls = document.getElementById('ttClass').value.trim();
+  if(!teacher || !cls) return alert('يرجى إدخال اسم الأستاذ والقسم');
+
+  store.timetable.push({
+    id: Date.now(),
+    teacher,
+    subject: document.getElementById('ttSubject').value,
+    level: document.getElementById('ttLevel').value,
+    cls,
+    day: document.getElementById('ttDay').value,
+    slot: document.getElementById('ttSlot').value
+  });
+
+  clearFields(['ttTeacher', 'ttClass']);
+  saveData();
 }
-function closeChemical(){by('chemicalPage').classList.remove('show');}
 
-function printSection(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('printable'));by(id).classList.add('printable');window.print();}
+function renderTimetable() {
+  const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+  const slots = ['08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00'];
+  const tbody = document.getElementById('timetableBody');
 
-// Listeners Navigation
-document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
-  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
-  by(b.dataset.id).classList.add('active');
-}));
+  tbody.innerHTML = slots.map(slot => `
+    <tr>
+      <th>${slot}</th>
+      ${days.map(day => {
+        const match = store.timetable.find(t => t.day === day && t.slot === slot);
+        return `<td>${match ? `<b>${match.teacher}</b><br><small>${match.cls} (${match.level})</small>` : '—'}</td>`;
+      }).join('')}
+    </tr>
+  `).join('');
+}
 
-// Action buttons
-by('addInvBtn').addEventListener('click',addInventory);
-by('addChemBtn').addEventListener('click',addChemical);
-by('addTTBtn').addEventListener('click',addTimetable);
+// Helper Functions
+function clearFields(ids) { ids.forEach(id => document.getElementById(id).value = ''); }
 
-// Filtering / Input Listeners
-['invSearch','chemSearch','ttSearch'].forEach(id=>by(id).addEventListener('input',renderAll));
-['ttTeacherFilter','ttDayFilter','exFilter','wLevelFilter','wSubjectFilter','wWeekFilter','cLevel','cSubject'].forEach(id=>{
-  if(by(id)) by(id).addEventListener('change',renderAll);
-});
+function renderAll() {
+  renderInventory();
+  renderChemicals();
+  renderTimetable();
+  
+  // Update KPI Stats
+  document.getElementById('kpiInv').textContent = store.inventory.length;
+  document.getElementById('kpiChem').textContent = store.chemicals.length;
+  document.getElementById('kpiEx').textContent = store.timetable.length;
+  document.getElementById('kpiAlerts').textContent = store.inventory.filter(i => i.qty <= i.min || i.state === 'تالفة').length;
+}
 
-by('printInv').addEventListener('click',()=>printSection('inventory'));
-by('printChem').addEventListener('click',()=>printSection('chemicals'));
-by('printTT').addEventListener('click',()=>printSection('timetable'));
-
-load();renderAll();
+// Initial Load
+renderAll();
 </script>
 </body>
 </html>
