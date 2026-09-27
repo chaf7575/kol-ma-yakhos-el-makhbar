@@ -7,295 +7,202 @@
 
 <style>
 *{box-sizing:border-box}
-
 body{
   margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#f3f6fa;
-  color:#172033;
+  font-family:Arial,Tahoma,sans-serif;
+  background:#f4f7fb;
+  color:#172033
 }
-
 header{
   background:#123b5d;
-  color:white;
-  padding:18px 14px;
-  box-shadow:0 2px 10px #0002;
+  color:#fff;
+  padding:18px;
+  position:sticky;
+  top:0;
+  z-index:10
 }
-
-header h1{
-  margin:0;
-  font-size:25px;
-}
-
-header p{
-  margin:7px 0 0;
-  opacity:.9;
-}
+h1,h2,h3{margin-top:0}
 
 nav{
   display:flex;
-  flex-wrap:wrap;
   gap:7px;
-  padding:10px;
-  background:#0d2f4b;
+  overflow:auto;
+  margin-top:12px
 }
 
-nav button,
-.btn{
+button{
   border:0;
   border-radius:9px;
-  padding:9px 12px;
-  cursor:pointer;
-  background:#e7eef5;
-  color:#123b5d;
-  font-weight:bold;
+  padding:10px 13px;
+  cursor:pointer
 }
 
-nav button:hover,
-.btn:hover{
-  filter:brightness(.95);
+nav button{
+  white-space:nowrap;
+  background:#fff;
+  color:#123b5d
+}
+
+.primary{
+  background:#1769aa;
+  color:#fff
+}
+
+.danger{
+  background:#b42318;
+  color:#fff
 }
 
 .container{
   max-width:1250px;
   margin:auto;
-  padding:16px;
+  padding:18px
 }
 
-.section{
-  display:none;
-}
+.section{display:none}
+.section.active{display:block}
 
-.section.active{
-  display:block;
-}
-
-.card{
-  background:white;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 3px 14px #00000012;
+.head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:12px;
+  gap:12px
 }
 
-.formgrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-  gap:10px;
+.card,.statbox,.cat{
+  background:#fff;
+  border-radius:15px;
+  padding:16px;
+  margin:12px 0;
+  box-shadow:0 4px 16px #0001
 }
 
-input,
-select,
-textarea{
+label{font-weight:bold}
+
+input,select,textarea{
+  display:block;
   width:100%;
   padding:10px;
-  border:1px solid #ccd6df;
+  margin-top:6px;
+  border:1px solid #ccd6e2;
   border-radius:8px;
-  font:inherit;
-  background:white;
+  font:inherit
 }
 
-textarea{
-  min-height:85px;
-  resize:vertical;
+textarea{min-height:80px}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px
 }
 
-label{
+.hidden{display:none!important}
+
+.notice{
+  background:#edf6ff;
+  border-right:5px solid #1769aa;
+  padding:13px;
+  border-radius:9px;
+  margin:12px 0
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px
+}
+
+.statbox{text-align:center}
+
+.statbox b{
   display:block;
-  font-weight:bold;
-  margin-bottom:5px;
+  font-size:28px;
+  color:#1769aa
 }
 
-h2{
-  color:#123b5d;
-  margin-top:0;
+.cats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px
 }
 
-h3{
-  color:#234f70;
+.cat{cursor:pointer}
+
+.cat strong{
+  font-size:25px;
+  color:#1769aa
+}
+
+.tablewrap{
+  overflow:auto;
+  margin-top:15px
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  background:white;
+  min-width:800px;
+  background:#fff
 }
 
-th,
-td{
+th,td{
   border:1px solid #d7e0e8;
   padding:8px;
   text-align:right;
-  vertical-align:top;
+  vertical-align:top
 }
 
-th{
-  background:#eaf1f6;
-  color:#123b5d;
+th{background:#eaf0f6}
+
+.success{
+  background:#e8f7ee;
+  padding:12px;
+  border-radius:8px;
+  margin-top:10px
 }
 
-.tablewrap{
-  overflow:auto;
-}
-
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:10px;
-}
-
-.primary{
-  background:#123b5d!important;
-  color:white!important;
-}
-
-.danger{
-  background:#fee2e2!important;
-  color:#991b1b!important;
-}
-
-.ok{
-  background:#dcfce7!important;
-  color:#166534!important;
-}
-
-.muted{
-  color:#65758b;
-}
-
-.stat{
-  font-size:28px;
-  font-weight:bold;
-  color:#123b5d;
-}
-
-.category{
-  cursor:pointer;
-  border:1px solid #d6e1ea;
-  border-radius:13px;
-  padding:18px;
-  background:linear-gradient(135deg,#fff,#eef6fb);
-  transition:.2s;
-}
-
-.category:hover{
-  transform:translateY(-2px);
-  box-shadow:0 5px 15px #0001;
+.official{
+  background:#fff;
+  padding:20px;
+  border-radius:12px
 }
 
 .badge{
   display:inline-block;
-  padding:4px 9px;
+  padding:6px 10px;
   border-radius:20px;
-  background:#e8eef5;
+  background:#e9f6ec
 }
 
-.hidden{
-  display:none!important;
-}
+.small{color:#607086}
 
-.notice{
-  padding:10px;
-  border-radius:9px;
-  background:#fff7d6;
-  border:1px solid #efd889;
-}
-
-.success{
-  padding:10px;
-  border-radius:9px;
-  background:#e7f8ed;
-  border:1px solid #b9e4c7;
-}
-
-.print-area{
-  background:white;
+footer{
+  text-align:center;
   padding:25px;
-}
-
-.report-head{
-  text-align:center;
-  border-bottom:2px solid #123b5d;
-  padding-bottom:12px;
-  margin-bottom:15px;
-}
-
-.signatures{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-  margin-top:60px;
-  text-align:center;
-}
-
-.signature{
-  height:90px;
-  border-top:1px solid #333;
-  padding-top:8px;
-}
-
-.safety li{
-  margin:8px 0;
-}
-
-.loginbox{
-  max-width:500px;
-  margin:40px auto;
-}
-
-@media(max-width:600px){
-  header h1{
-    font-size:20px;
-  }
-
-  nav button{
-    font-size:12px;
-    padding:8px;
-  }
-
-  .signatures{
-    grid-template-columns:1fr;
-  }
+  color:#667
 }
 
 @media print{
-  header,
-  nav,
-  .no-print{
-    display:none!important;
+  header,nav,.no-print,footer{
+    display:none!important
   }
-
-  body{
-    background:white;
-  }
-
   .section{
-    display:none!important;
+    display:none!important
   }
-
   .section.printing{
-    display:block!important;
+    display:block!important
   }
-
-  .container{
-    padding:0;
-    max-width:none;
-  }
-
   .card{
-    box-shadow:none;
-    padding:0;
-  }
-
-  .print-area{
-    padding:10px;
+    box-shadow:none
   }
 }
 </style>
@@ -304,209 +211,147 @@ th{
 <body>
 
 <header>
-  <h1>🔬 منصة المخبري</h1>
-  <p>متوسطة قايد أحمد – غليزان | إدارة وتسيير المخبر</p>
-</header>
+<h1>🔬 منصة المخبري</h1>
+<div>متوسطة قايد أحمد – غليزان</div>
 
-<nav id="mainNav">
-
-<button onclick="showSection('home')">
-الرئيسية
-</button>
-
-<button onclick="showSection('inventory')">
-📦 الجرد
-</button>
-
-<button onclick="showSection('chemicals')">
-⚗️ المواد الكيميائية
-</button>
-
-<button onclick="showSection('movements')">
-🔄 حركة الوسائل
-</button>
-
-<button onclick="showSection('daily')">
-📝 التقارير اليومية
-</button>
-
-<button onclick="showSection('progress')">
-📚 التدرج السنوي
-</button>
-
-<button onclick="showSection('requests')">
-📋 طلبات الوسائل
-</button>
-
-<button onclick="showSection('safety')">
-🛡️ السلامة والأمن
-</button>
-
-<button onclick="showSection('various')">
-🎨 منوعات
-</button>
-
-<button onclick="showSection('other')">
-📚 سجلات إضافية
-</button>
-
-<button onclick="showSection('settings')">
-⚙️ الإعدادات
-</button>
-
-<button onclick="teacherMode()">
-👨‍🏫 فضاء الأستاذ
-</button>
-
+<nav>
+<button onclick="show('home')">🏠 الرئيسية</button>
+<button onclick="show('inventory')">📦 الجرد</button>
+<button onclick="show('chemicals')">⚗️ المحاليل</button>
+<button onclick="show('movements')">🔄 الحركات</button>
+<button onclick="show('daily')">📝 التقارير</button>
+<button onclick="show('progress')">📅 التدرج</button>
+<button onclick="show('requests')">📨 الطلبات</button>
+<button onclick="show('safety')">🦺 السلامة</button>
+<button onclick="show('various')">🧪 منوعات</button>
+<button onclick="show('other')">🎧 الصوتيات والسمعيات</button>
+<button onclick="teacherMode()">👨‍🏫 الأستاذ</button>
+<button onclick="show('settings')">⚙️ الإعدادات</button>
 </nav>
+</header>
 
 <div class="container">
 
 <section id="home" class="section active">
 
-<div class="card">
-
+<div class="head">
+<div>
 <h2>لوحة التحكم</h2>
-
-<div class="grid">
-
-<div class="category"
-onclick="showSection('inventory')">
-<h3>📦 الجرد</h3>
-<div class="stat" id="statInventory">0</div>
-<div>تجهيزات ووسائل المخبر</div>
-</div>
-
-<div class="category"
-onclick="showSection('chemicals')">
-<h3>⚗️ المواد الكيميائية</h3>
-<div class="stat" id="statChem">0</div>
-<div>بطاقات المخزون والاستعمال</div>
-</div>
-
-<div class="category"
-onclick="showSection('daily')">
-<h3>📝 التقارير اليومية</h3>
-<div class="stat" id="statDaily">0</div>
-<div>تقارير جاهزة للطبع</div>
-</div>
-
-<div class="category"
-onclick="showSection('requests')">
-<h3>📋 الطلبات</h3>
-<div class="stat" id="statRequests">0</div>
-<div>طلبات الأساتذة</div>
-</div>
-
-<div class="category"
-onclick="showSection('progress')">
-<h3>📚 التدرج السنوي</h3>
-<div class="stat">4</div>
-<div>عرض ثابت</div>
-</div>
-
-<div class="category"
-onclick="showSection('safety')">
-<h3>🛡️ السلامة</h3>
-<div class="stat">✓</div>
-<div>السلامة والأمن في المخبر</div>
-</div>
-
-<div class="category"
-onclick="showSection('various')">
-<h3>🎨 منوعات</h3>
-<div class="stat" id="statProjects">0</div>
-<div>مشاريع ونشاطات التلاميذ</div>
-</div>
-
+<p class="small">إدارة أعمال المخبر.</p>
 </div>
 </div>
 
+<div class="stats">
+
+<div class="statbox">
+الجرد
+<b id="sInv">0</b>
+</div>
+
+<div class="statbox">
+المحاليل
+<b id="sChem">0</b>
+</div>
+
+<div class="statbox">
+التقارير
+<b id="sDaily">0</b>
+</div>
+
+<div class="statbox">
+الطلبات
+<b id="sReq">0</b>
+</div>
+
+<div class="statbox">
+المشاريع
+<b id="sProj">0</b>
+</div>
+
+</div>
 </section>
+
 
 <section id="inventory" class="section">
 
-<div class="card">
+<div class="head">
 
+<div>
 <h2>📦 الجرد</h2>
+<p class="small">ست فئات منفصلة.</p>
+</div>
 
-<div class="grid" id="inventoryCats"></div>
-
-<div class="actions no-print">
-
-<button class="primary"
-onclick="showInventoryForm()">
-➕ إضافة تجهيز
+<div class="actions">
+<button class="primary" onclick="toggle('invForm')">
+➕ إضافة
 </button>
 
-<button onclick="printSection('inventory')">
+<button onclick="printSec('inventory')">
 🖨️ طباعة
 </button>
+</div>
 
 </div>
 
-<div id="inventoryForm"
-class="card hidden">
+<div id="cats" class="cats"></div>
 
-<h3>إضافة تجهيز</h3>
+<div id="invForm" class="card hidden">
 
-<div class="formgrid">
+<div class="grid">
 
-<div>
-<label>رقم الجرد</label>
-<input id="iNo">
-</div>
+<label>
+رقم الجرد
+<input id="ino">
+</label>
 
-<div>
-<label>اسم التجهيز أو الوسيلة</label>
-<input id="iName">
-</div>
+<label>
+اسم التجهيز
+<input id="iname">
+</label>
 
-<div>
-<label>الصنف</label>
-<select id="iCat"></select>
-</div>
+<label>
+الفئة
+<select id="icat"></select>
+</label>
 
-<div>
-<label>العدد</label>
-<input id="iQty" type="number" min="0">
-</div>
+<label>
+الكمية
+<input id="iqty" type="number" min="0" value="1">
+</label>
 
-<div>
-<label>الحالة</label>
-<select id="iCondition">
-<option>جيدة</option>
-<option>متوسطة</option>
-<option>معطلة</option>
-<option>تحتاج صيانة</option>
+<label>
+الحالة
+<select id="icond">
+<option>جيد</option>
+<option>يحتاج صيانة</option>
+<option>معطل</option>
 </select>
-</div>
+</label>
 
-<div>
-<label>مكان الحفظ</label>
-<input id="iLocation">
-</div>
+<label>
+المكان
+<input id="iloc">
+</label>
 
-<div>
-<label>تاريخ الجرد</label>
-<input id="iDate" type="date">
-</div>
+<label>
+التاريخ
+<input id="idate" type="date">
+</label>
 
-<div>
-<label>ملاحظات</label>
-<input id="iNotes">
-</div>
+<label>
+ملاحظات
+<textarea id="inote"></textarea>
+</label>
 
 </div>
 
 <div class="actions">
 
-<button class="primary"
-onclick="addInventory()">
-حفظ
+<button class="primary" onclick="addInv()">
+💾 حفظ
 </button>
 
-<button onclick="closeForm('inventoryForm')">
+<button onclick="toggle('invForm')">
 إلغاء
 </button>
 
@@ -520,10 +365,10 @@ onclick="addInventory()">
 
 <thead>
 <tr>
-<th>رقم الجرد</th>
-<th>الوسيلة</th>
-<th>الصنف</th>
-<th>العدد</th>
+<th>رقم</th>
+<th>التجهيز</th>
+<th>الفئة</th>
+<th>الكمية</th>
 <th>الحالة</th>
 <th>المكان</th>
 <th>التاريخ</th>
@@ -531,160 +376,167 @@ onclick="addInventory()">
 </tr>
 </thead>
 
-<tbody id="inventoryBody"></tbody>
+<tbody id="invBody"></tbody>
 
 </table>
 
 </div>
 
-</div>
-
 </section>
+
+
 <section id="chemicals" class="section">
 
-<div class="card">
+<div class="head">
 
-<h2>⚗️ بطاقات المواد الكيميائية والمخزون</h2>
+<div>
+<h2>⚗️ المحاليل والمواد الكيميائية</h2>
+<p class="small">المتبقي يحسب آليًا.</p>
+</div>
+
+<div class="actions">
+
+<button class="primary" onclick="toggle('chemForm')">
+➕ إضافة كمية
+</button>
+
+<button onclick="printSec('chemicals')">
+🖨️ طباعة
+</button>
+
+</div>
+
+</div>
 
 <div class="notice">
-كل استعمال يسجل في بطاقة المادة ويُنقص المخزون تلقائيًا.
-وعند إضافة كمية جديدة تضاف إلى المخزون الحالي.
+<b>الحساب:</b>
+الرصيد السابق + الكمية الجديدة − الكمية المستعملة = الرصيد المتبقي.
 </div>
 
-<div class="actions no-print">
+<div id="chemForm" class="card hidden">
 
-<button class="primary"
-onclick="toggle('chemicalForm')">
-➕ مادة / كمية جديدة
-</button>
+<div class="grid">
 
-<button onclick="printSection('chemicals')">
-🖨️ طباعة البطاقات
-</button>
+<label>
+اسم المادة
+<input id="cname">
+</label>
 
-</div>
+<label>
+الكمية الجديدة
+<input id="cqty" type="number" min="0" step="any">
+</label>
 
-<div id="chemicalForm" class="card hidden">
+<label>
+الوحدة
+<input id="cunit" placeholder="مل، لتر، غ، كغ...">
+</label>
 
-<div class="formgrid">
+<label>
+التاريخ
+<input id="cdate" type="date">
+</label>
 
-<div>
-<label>اسم المادة</label>
-<input id="cName">
-</div>
-
-<div>
-<label>تاريخ دخول الكمية</label>
-<input id="cDate" type="date">
-</div>
-
-<div>
-<label>الكمية الجديدة</label>
-<input id="cQty" type="number" min="0" step="any">
-</div>
-
-<div>
-<label>الوحدة</label>
-<input id="cUnit"
-placeholder="مل / لتر / غ / كغ">
-</div>
-
-<div>
-<label>الحالة</label>
-<select id="cState">
+<label>
+الحالة
+<select id="cstate">
 <option>متوفرة</option>
 <option>قليلة</option>
 <option>منتهية</option>
 </select>
-</div>
+</label>
 
-<div>
-<label>ملاحظة</label>
-<input id="cNotes">
-</div>
+<label>
+ملاحظات
+<textarea id="cnote"></textarea>
+</label>
 
 </div>
 
 <div class="actions">
 
-<button class="primary"
-onclick="addChemical()">
-إضافة إلى المخزون
+<button class="primary" onclick="addChem()">
+💾 حفظ
+</button>
+
+<button onclick="toggle('chemForm')">
+إلغاء
 </button>
 
 </div>
 
 </div>
 
-<div id="chemicalCards"></div>
-
-</div>
+<div id="chemCards"></div>
 
 </section>
 
 
 <section id="movements" class="section">
 
-<div class="card">
+<div class="head">
 
-<h2>🔄 سجل حركة الوسائل</h2>
+<h2>🔄 سجل الحركات</h2>
 
-<div class="formgrid">
-
-<div>
-<label>الوسيلة</label>
-<input id="mEquip">
-</div>
-
-<div>
-<label>نوع الحركة</label>
-<select id="mType">
-<option>إخراج</option>
-<option>إرجاع</option>
-</select>
-</div>
-
-<div>
-<label>الأستاذ</label>
-<input id="mTeacher">
-</div>
-
-<div>
-<label>القسم</label>
-<input id="mClass">
-</div>
-
-<div>
-<label>التاريخ</label>
-<input id="mDate" type="date">
-</div>
-
-<div>
-<label>التوقيت</label>
-<input id="mTime" type="time">
-</div>
-
-<div>
-<label>الكمية</label>
-<input id="mQty" type="number" min="1">
-</div>
-
-<div>
-<label>ملاحظة</label>
-<input id="mNotes">
-</div>
-
-</div>
-
-<div class="actions no-print">
-
-<button class="primary"
-onclick="addMovement()">
-حفظ الحركة
+<button onclick="printSec('movements')">
+🖨️ طباعة
 </button>
 
-<button onclick="printSection('movements')">
-🖨️ طباعة
+</div>
+
+<div class="card">
+
+<div class="grid">
+
+<label>
+التجهيز
+<input id="mequip">
+</label>
+
+<label>
+الحركة
+<select id="mtype">
+<option>إخراج</option>
+<option>إرجاع</option>
+<option>إعارة</option>
+<option>استلام</option>
+</select>
+</label>
+
+<label>
+الأستاذ
+<input id="mteach">
+</label>
+
+<label>
+القسم
+<input id="mclass">
+</label>
+
+<label>
+التاريخ
+<input id="mdate" type="date">
+</label>
+
+<label>
+الوقت
+<input id="mtime" type="time">
+</label>
+
+<label>
+الكمية
+<input id="mqty" type="number" min="1" value="1">
+</label>
+
+<label>
+ملاحظات
+<textarea id="mnote"></textarea>
+</label>
+
+</div>
+
+<button class="primary" onclick="addMove()">
+💾 تسجيل
 </button>
 
 </div>
@@ -695,22 +547,20 @@ onclick="addMovement()">
 
 <thead>
 <tr>
-<th>الوسيلة</th>
+<th>التجهيز</th>
 <th>الحركة</th>
 <th>الأستاذ</th>
 <th>القسم</th>
 <th>التاريخ</th>
 <th>الوقت</th>
 <th>الكمية</th>
-<th>ملاحظة</th>
+<th>ملاحظات</th>
 </tr>
 </thead>
 
-<tbody id="movementBody"></tbody>
+<tbody id="moveBody"></tbody>
 
 </table>
-
-</div>
 
 </div>
 
@@ -719,140 +569,124 @@ onclick="addMovement()">
 
 <section id="daily" class="section">
 
-<div class="card">
+<div class="head">
 
-<h2>📝 التقارير اليومية</h2>
+<h2>📝 التقرير اليومي</h2>
 
-<div class="formgrid no-print">
+<div class="actions">
 
-<div>
-<label>التاريخ</label>
-<input id="dDate" type="date">
-</div>
+<button class="primary" onclick="saveDaily()">
+💾 حفظ
+</button>
 
-<div>
-<label>الأستاذ</label>
-<input id="dTeacher">
-</div>
+<button onclick="printDaily()">
+🖨️ طباعة
+</button>
 
-<div>
-<label>القسم</label>
-<input id="dClass">
-</div>
-
-<div>
-<label>التوقيت</label>
-<input id="dTime" type="time">
-</div>
-
-<div>
-<label>عنوان التجربة</label>
-<input id="dExperiment">
-</div>
-
-<div>
-<label>الأدوات والوسائل المستعملة</label>
-<input id="dEquipment">
-</div>
-
-<div>
-<label>ملاحظة</label>
-<input id="dNote">
-</div>
-
-</div>
-
-<div class="actions no-print">
-
-<button class="primary"
-onclick="addDailyRow()">
-➕ إضافة أستاذ للتقرير
+<button onclick="mailDaily()">
+📧 بريد
 </button>
 
 </div>
 
-<hr>
-
-<div class="formgrid no-print">
-
-<div>
-<label>الملاحظات الإجمالية</label>
-<textarea id="dGeneral"></textarea>
 </div>
 
-<div>
-<label>احتياجات المخبر</label>
-<textarea id="dNeeds"></textarea>
-</div>
+<div class="card no-print">
+
+<div class="grid">
+
+<label>
+التاريخ
+<input id="ddate" type="date">
+</label>
+
+<label>
+الأستاذ
+<input id="dteach">
+</label>
+
+<label>
+القسم
+<input id="dclass">
+</label>
+
+<label>
+الوقت
+<input id="dtime" type="time">
+</label>
+
+<label>
+التجربة
+<input id="dexp">
+</label>
+
+<label>
+الأدوات
+<input id="dequip">
+</label>
+
+<label>
+ملاحظة
+<textarea id="dnote"></textarea>
+</label>
 
 </div>
 
-<div class="actions no-print">
-
-<button class="primary"
-onclick="newDailyReport()">
-💾 حفظ التقرير
+<button class="primary" onclick="addDailyRow()">
+➕ إضافة صف
 </button>
 
-<button onclick="printCurrentDaily()">
-🖨️ طباعة التقرير
-</button>
+<div class="grid">
 
-<button onclick="emailDaily()">
-📧 إرسال عبر البريد الإلكتروني
-</button>
+<label>
+ملاحظات عامة
+<textarea id="dgen"></textarea>
+</label>
+
+<label>
+احتياجات المخبر
+<textarea id="dneeds"></textarea>
+</label>
 
 </div>
 
+</div>
 
-<div id="dailyPrint" class="print-area">
+<div class="official">
 
-<div class="report-head">
-
-<div>
+<h2 style="text-align:center">
 الجمهورية الجزائرية الديمقراطية الشعبية
-</div>
-
-<div>
-وزارة التربية الوطنية
-</div>
-
-<div>
-متوسطة قايد أحمد – غليزان
-</div>
-
-<h2>
-تقرير يومي لنشاط المخبر
 </h2>
 
-<div>
-رقم التقرير:
-<strong id="printReportNo">---</strong>
+<h3 style="text-align:center">
+متوسطة قايد أحمد – غليزان
+</h3>
 
-&nbsp; | &nbsp;
+<h2 style="text-align:center">
+تقرير يومي للمخبر
+</h2>
 
-التاريخ:
-<strong id="printDate">---</strong>
-</div>
-
-</div>
-
+<p>
+<b>الرقم:</b>
+<span id="rno">غير محفوظ</span>
+&nbsp;
+<b>التاريخ:</b>
+<span id="rdate"></span>
+</p>
 
 <div class="tablewrap">
 
 <table>
 
 <thead>
-
 <tr>
 <th>الأستاذ</th>
 <th>القسم</th>
-<th>التوقيت</th>
-<th>عنوان التجربة</th>
-<th>الأدوات والوسائل المستعملة</th>
+<th>الوقت</th>
+<th>التجربة</th>
+<th>الأدوات</th>
 <th>ملاحظة</th>
 </tr>
-
 </thead>
 
 <tbody id="dailyBody"></tbody>
@@ -861,74 +695,51 @@ onclick="newDailyReport()">
 
 </div>
 
+<h4>ملاحظات عامة</h4>
+<div id="pgen"></div>
 
-<div style="margin-top:18px">
+<h4>احتياجات المخبر</h4>
+<div id="pneeds"></div>
 
-<strong>
-ملاحظات إجمالية:
-</strong>
-
-<div id="printGeneral" class="card"></div>
-
-</div>
-
+<div class="grid" style="text-align:center;margin-top:35px">
 
 <div>
-
-<strong>
-احتياجات المخبر:
-</strong>
-
-<div id="printNeeds" class="card"></div>
-
-</div>
-
-
-<div class="signatures">
-
-<div class="signature">
 المدير
-<br><br>
-الإمضاء والختم
+<br>________
 </div>
 
-<div class="signature">
+<div>
 مسؤول المخبر
-<br><br>
-الإمضاء
+<br>________
 </div>
 
-<div class="signature">
+<div>
 المستشار
-<br><br>
-الإمضاء
+<br>________
 </div>
 
 </div>
 
 </div>
 
+<div class="card no-print">
 
-<h3 class="no-print">
-التقارير المحفوظة
-</h3>
+<h3>التقارير المحفوظة</h3>
 
-<div class="tablewrap no-print">
+<div class="tablewrap">
 
 <table>
 
 <thead>
-
 <tr>
-<th>رقم</th>
+<th>الرقم</th>
 <th>التاريخ</th>
-<th>عدد الأساتذة</th>
+<th>الصفوف</th>
 <th>إجراء</th>
 </tr>
-
 </thead>
 
-<tbody id="savedDailyBody"></tbody>
+<tbody id="savedDaily"></tbody>
 
 </table>
 
@@ -941,64 +752,51 @@ onclick="newDailyReport()">
 
 <section id="progress" class="section">
 
-<div class="card">
+<div class="head">
 
-<h2>📚 التدرج السنوي</h2>
-
-<div class="notice">
-
-هذا القسم ثابت للعرض والاطلاع فقط،
-ولا يمكن تعديله من المنصة.
-
+<div>
+<h2>📅 التدرج السنوي</h2>
+<p class="small">
+مراجع رسمية؛ المحتوى التفصيلي لا يوصف بأنه وزاري إلا إذا كان منقولًا من الوثيقة الأصلية.
+</p>
 </div>
 
-<div class="actions no-print">
-
-<select id="progressLevel"
-onchange="renderProgress()">
-
-<option value="1">
-السنة الأولى متوسط
-</option>
-
-<option value="2">
-السنة الثانية متوسط
-</option>
-
-<option value="3">
-السنة الثالثة متوسط
-</option>
-
-<option value="4">
-السنة الرابعة متوسط
-</option>
-
-</select>
-
-<button onclick="printSection('progress')">
+<button onclick="printSec('progress')">
 🖨️ طباعة
 </button>
 
 </div>
 
-<div id="progressTable"></div>
+<div class="card">
+
+<label>
+المستوى
+
+<select id="plevel" onchange="renderProgress()">
+<option value="1">الأولى متوسط</option>
+<option value="2">الثانية متوسط</option>
+<option value="3">الثالثة متوسط</option>
+<option value="4">الرابعة متوسط</option>
+</select>
+
+</label>
 
 </div>
+
+<div id="progressBox"></div>
 
 </section>
 
 
 <section id="requests" class="section">
 
-<div class="card">
+<div class="head">
 
-<h2>📋 طلبات الوسائل</h2>
+<h2>📨 طلبات الأساتذة</h2>
 
-<div class="notice">
-
-هذه الصفحة مخصصة لمسؤول المخبر.
-الأستاذ لا يصل إليها؛
-الأستاذ يستعمل فقط «فضاء الأستاذ».
+<button onclick="printSec('requests')">
+🖨️ طباعة
+</button>
 
 </div>
 
@@ -1007,26 +805,22 @@ onchange="renderProgress()">
 <table>
 
 <thead>
-
 <tr>
 <th>الأستاذ</th>
 <th>القسم</th>
 <th>التاريخ</th>
-<th>التوقيت</th>
+<th>الوقت</th>
 <th>التجربة</th>
-<th>الوسائل المطلوبة</th>
+<th>الوسائل</th>
 <th>ملاحظة</th>
 <th>الحالة</th>
 <th class="no-print">إجراء</th>
 </tr>
-
 </thead>
 
-<tbody id="requestsBody"></tbody>
+<tbody id="reqBody"></tbody>
 
 </table>
-
-</div>
 
 </div>
 
@@ -1035,342 +829,436 @@ onchange="renderProgress()">
 
 <section id="safety" class="section">
 
-<div class="card safety">
+<h2>🦺 السلامة</h2>
 
-<h2>
-🛡️ السلامة والأمن في المخبر
-</h2>
+<div class="card">
 
 <ul>
 
-<li>
-الالتزام بتعليمات الأستاذ ومسؤول المخبر وعدم استعمال أي جهاز أو مادة دون إذن.
-</li>
+<li>استعمال وسائل الوقاية المناسبة.</li>
 
-<li>
-ارتداء وسائل الوقاية المناسبة حسب النشاط، مثل المئزر والنظارات والقفازات عند الحاجة.
-</li>
+<li>عدم الأكل أو الشرب داخل المخبر.</li>
 
-<li>
-قراءة بطاقة تعريف المادة قبل استعمالها وحفظ المواد في أماكنها المناسبة.
-</li>
+<li>فحص التجهيزات الكهربائية قبل الاستعمال.</li>
 
-<li>
-عدم خلط المواد الكيميائية عشوائيًا وعدم تذوقها أو لمسها مباشرة.
-</li>
+<li>احترام تعليمات المواد الكيميائية.</li>
 
-<li>
-إبعاد المواد القابلة للاشتعال عن اللهب ومصادر الحرارة.
-</li>
+<li>إبقاء مخارج النجدة والممرات خالية.</li>
 
-<li>
-معرفة مكان وسائل الإطفاء ومخارج النجدة.
-</li>
+<li>التبليغ عن أي حادث أو خلل.</li>
 
-<li>
-فحص الأسلاك والمقابس والأجهزة الكهربائية قبل الاستعمال.
-</li>
+<li>حفظ المواد الكيميائية في أماكنها المناسبة.</li>
 
-<li>
-عدم استعمال أي جهاز كهربائي تالف.
-</li>
-
-<li>
-الحفاظ على الطاولات والممرات خالية من العوائق.
-</li>
-
-<li>
-تنظيف مكان العمل بعد نهاية النشاط.
-</li>
-
-<li>
-يمنع الأكل والشرب والعبث داخل المخبر.
-</li>
-
-<li>
-عند وقوع حادث أو انسكاب مادة أو تلف جهاز يجب إيقاف النشاط وإبلاغ المسؤول فورًا.
-</li>
-
-<li>
-اتباع تعليمات السلامة الخاصة بكل مادة أو جهاز.
-</li>
+<li>عدم استعمال جهاز معطل.</li>
 
 </ul>
 
 </div>
 
 </section>
+
+
 <section id="various" class="section">
-  <div class="section-head">
-    <div>
-      <h2>🧪 منوعات ومشاريع التلاميذ</h2>
-      <p>تسجيل المشاريع والأنشطة العلمية والتطبيقية.</p>
-    </div>
-    <button class="primary" onclick="toggle('projectForm')">➕ مشروع جديد</button>
-  </div>
 
-  <div id="projectForm" class="card hidden">
-    <div class="grid">
-      <label>عنوان المشروع
-        <input id="pTitle" placeholder="عنوان المشروع">
-      </label>
+<div class="head">
 
-      <label>التلاميذ
-        <input id="pStudents" placeholder="أسماء التلاميذ">
-      </label>
+<h2>🧪 منوعات ومشاريع التلاميذ</h2>
 
-      <label>القسم
-        <input id="pClass" placeholder="القسم">
-      </label>
+<button class="primary" onclick="toggle('projForm')">
+➕ إضافة مشروع
+</button>
 
-      <label>التاريخ
-        <input id="pDate" type="date">
-      </label>
+</div>
 
-      <label>نوع النشاط
-        <select id="pType">
-          <option>مشروع علمي</option>
-          <option>تجربة تطبيقية</option>
-          <option>فيزياء</option>
-          <option>علوم طبيعية</option>
-          <option>إعلام آلي</option>
-          <option>بيئة وإعادة تدوير</option>
-          <option>مسابقة</option>
-          <option>نشاط آخر</option>
-        </select>
-      </label>
+<div id="projForm" class="card hidden">
 
-      <label>الوصف
-        <textarea id="pDesc" placeholder="وصف المشروع أو النشاط"></textarea>
-      </label>
-    </div>
+<div class="grid">
 
-    <div class="actions">
-      <button class="primary" onclick="addProject()">💾 حفظ المشروع</button>
-      <button onclick="closeForm('projectForm')">إلغاء</button>
-    </div>
-  </div>
+<label>
+عنوان المشروع
+<input id="ptitle">
+</label>
 
-  <div class="tablewrap">
-    <table>
-      <thead>
-        <tr>
-          <th>المشروع</th>
-          <th>التلاميذ</th>
-          <th>القسم</th>
-          <th>التاريخ</th>
-          <th>النوع</th>
-          <th>الوصف</th>
-          <th class="no-print">إجراء</th>
-        </tr>
-      </thead>
-      <tbody id="projectsBody"></tbody>
-    </table>
-  </div>
+<label>
+التلاميذ
+<input id="pstudents">
+</label>
+
+<label>
+القسم
+<input id="pclass">
+</label>
+
+<label>
+التاريخ
+<input id="pdate" type="date">
+</label>
+
+<label>
+النوع
+<select id="ptype">
+<option>مشروع علمي</option>
+<option>تجربة تطبيقية</option>
+<option>بيئة وإعادة تدوير</option>
+<option>فيزياء</option>
+<option>إعلام آلي</option>
+<option>مسابقة</option>
+</select>
+</label>
+
+<label>
+الوصف
+<textarea id="pdesc"></textarea>
+</label>
+
+</div>
+
+<div class="actions">
+
+<button class="primary" onclick="addProject()">
+💾 حفظ
+</button>
+
+<button onclick="toggle('projForm')">
+إلغاء
+</button>
+
+</div>
+
+</div>
+
+<div class="tablewrap">
+
+<table>
+
+<thead>
+<tr>
+<th>المشروع</th>
+<th>التلاميذ</th>
+<th>القسم</th>
+<th>التاريخ</th>
+<th>النوع</th>
+<th>الوصف</th>
+<th class="no-print">إجراء</th>
+</tr>
+</thead>
+
+<tbody id="projBody"></tbody>
+
+</table>
+
+</div>
+
 </section>
 
 
 <section id="other" class="section">
-  <div class="section-head">
-    <div>
-      <h2>📚 السجلات الأخرى</h2>
-      <p>مساحات مخصصة للسجلات والوسائل المرتبطة بالمواد المختلفة.</p>
-    </div>
-  </div>
 
-  <div class="grid">
-    <div class="card">
-      <h3>🌍 التاريخ والجغرافيا</h3>
-      <p>سجل الخرائط والوسائل والوثائق الخاصة بالمادة.</p>
-    </div>
+<div class="head">
 
-    <div class="card">
-      <h3>🇫🇷 اللغة الفرنسية</h3>
-      <p>سجل الوسائل والوثائق التعليمية.</p>
-    </div>
+<h2>🎧 الصوتيات والسمعيات البصرية</h2>
 
-    <div class="card">
-      <h3>🇬🇧 اللغة الإنجليزية</h3>
-      <p>سجل الوسائل والوثائق التعليمية.</p>
-    </div>
+<div class="actions">
 
-    <div class="card">
-      <h3>🇩🇿 اللغة العربية</h3>
-      <p>سجل الوسائل والوثائق التعليمية.</p>
-    </div>
+<button class="primary" onclick="toggle('avForm')">
+➕ إضافة سجل
+</button>
 
-    <div class="card">
-      <h3>💻 الإعلام الآلي</h3>
-      <p>سجل أجهزة الإعلام الآلي وملحقاتها.</p>
-    </div>
+<button onclick="printSec('other')">
+🖨️ طباعة
+</button>
 
-    <div class="card">
-      <h3>🎧 الصوتيات والسمعيات البصرية</h3>
-      <p>سجل الأجهزة والوسائل السمعية والبصرية.</p>
-    </div>
+</div>
 
-    <div class="card">
-      <h3>🗺️ الخرائط والوسائل</h3>
-      <p>سجل الخرائط والوسائل التعليمية المختلفة.</p>
-    </div>
+</div>
 
-    <div class="card">
-      <h3>📦 سجل عام</h3>
-      <p>مساحة للسجلات الإضافية التي يحتاجها المخبر.</p>
-    </div>
-  </div>
-</section>
+<div id="avForm" class="card hidden">
 
+<div class="grid">
 
-<section id="settings" class="section">
-  <div class="section-head">
-    <div>
-      <h2>⚙️ الإعدادات والنسخ الاحتياطي</h2>
-      <p>إدارة بيانات المنصة المحفوظة على هذا الجهاز.</p>
-    </div>
-  </div>
+<label>
+رقم السجل
+<input id="avno">
+</label>
 
-  <div class="grid">
-    <div class="card">
-      <h3>💾 نسخة احتياطية</h3>
-      <p>حفظ جميع بيانات المنصة في ملف.</p>
-      <button class="primary" onclick="backup()">⬇️ إنشاء نسخة احتياطية</button>
-    </div>
+<label>
+التاريخ
+<input id="avdate" type="date">
+</label>
 
-    <div class="card">
-      <h3>📂 استرجاع البيانات</h3>
-      <p>استرجاع نسخة محفوظة سابقًا.</p>
-      <input type="file" accept=".json" onchange="restore(event)">
-    </div>
+<label>
+اسم الجهاز/الوسيلة
+<input id="avname">
+</label>
 
-    <div class="card">
-      <h3>⚠️ حذف البيانات</h3>
-      <p>حذف جميع البيانات المحفوظة على هذا الجهاز.</p>
-      <button class="danger" onclick="clearAll()">🗑️ حذف جميع البيانات</button>
-    </div>
-  </div>
+<label>
+النوع
+<select id="avtype">
+<option>صوتيات</option>
+<option>سمعيات بصرية</option>
+</select>
+</label>
+
+<label>
+رقم الجرد
+<input id="avinv">
+</label>
+
+<label>
+الكمية
+<input id="avqty" type="number" min="1" value="1">
+</label>
+
+<label>
+الحالة
+<select id="avcond">
+<option>جيد</option>
+<option>يحتاج صيانة</option>
+<option>معطل</option>
+</select>
+</label>
+
+<label>
+المكان
+<input id="avloc">
+</label>
+
+<label>
+المستعمل
+<input id="avuser">
+</label>
+
+<label>
+الغرض
+<input id="avpurpose">
+</label>
+
+<label>
+ملاحظات
+<textarea id="avnote"></textarea>
+</label>
+
+</div>
+
+<div class="actions">
+
+<button class="primary" onclick="addAV()">
+💾 حفظ
+</button>
+
+<button onclick="toggle('avForm')">
+إلغاء
+</button>
+
+</div>
+
+</div>
+
+<div class="tablewrap">
+
+<table>
+
+<thead>
+<tr>
+<th>الرقم</th>
+<th>التاريخ</th>
+<th>الجهاز</th>
+<th>النوع</th>
+<th>رقم الجرد</th>
+<th>الكمية</th>
+<th>الحالة</th>
+<th>المكان</th>
+<th>المستعمل</th>
+<th>الغرض</th>
+<th>ملاحظات</th>
+<th class="no-print">إجراء</th>
+</tr>
+</thead>
+
+<tbody id="avBody"></tbody>
+
+</table>
+
+</div>
+
 </section>
 
 
 <section id="teacher" class="section">
-  <div class="section-head">
-    <div>
-      <h2>👨‍🏫 فضاء الأستاذ</h2>
-      <p>إرسال طلب تجهيز التجربة أو النشاط إلى مسؤول المخبر.</p>
-    </div>
-  </div>
 
-  <div class="notice">
-    هذا الفضاء مخصص لإرسال الطلبات فقط، ولا يتيح للأستاذ الوصول إلى
-    الجرد أو المواد الكيميائية أو التقارير أو الإعدادات.
-  </div>
+<div class="head">
 
-  <div class="card">
-    <div class="grid">
-
-      <label>اسم الأستاذ
-        <input id="tName" placeholder="اسم ولقب الأستاذ">
-      </label>
-
-      <label>القسم
-        <input id="tClass" placeholder="القسم">
-      </label>
-
-      <label>التاريخ
-        <input id="tDate" type="date">
-      </label>
-
-      <label>التوقيت
-        <input id="tTime" type="time">
-      </label>
-
-      <label>التجربة أو النشاط
-        <input id="tExp" placeholder="عنوان التجربة أو النشاط">
-      </label>
-
-      <label>الوسائل المطلوبة
-        <textarea id="tTools" placeholder="اكتب الأدوات والمواد المطلوبة"></textarea>
-      </label>
-
-      <label>ملاحظة
-        <textarea id="tNote" placeholder="أي ملاحظة إضافية"></textarea>
-      </label>
-
-    </div>
-
-    <div class="actions">
-      <button class="primary" onclick="teacherRequest()">📨 إرسال الطلب</button>
-    </div>
-
-    <div id="teacherMsg"></div>
-  </div>
-</section>
+<div>
+<h2>👨‍🏫 فضاء الأستاذ</h2>
+<p class="small">
+يمكن للأستاذ إرسال طلب تجهيز للمخبر.
+</p>
+</div>
 
 </div>
 
+<div class="notice">
+هذا القسم مخصص لإرسال طلبات الوسائل والتجارب.
+</div>
+
+<div class="card">
+
+<div class="grid">
+
+<label>
+اسم الأستاذ
+<input id="tname">
+</label>
+
+<label>
+القسم
+<input id="tclass">
+</label>
+
+<label>
+التاريخ
+<input id="tdate" type="date">
+</label>
+
+<label>
+الوقت
+<input id="ttime" type="time">
+</label>
+
+<label>
+التجربة أو النشاط
+<input id="texp">
+</label>
+
+<label>
+الوسائل المطلوبة
+<textarea id="ttools"></textarea>
+</label>
+
+<label>
+ملاحظات
+<textarea id="tnote"></textarea>
+</label>
+
+</div>
+
+<button class="primary" onclick="sendRequest()">
+📨 إرسال الطلب
+</button>
+
+<div id="tmsg"></div>
+
+</div>
+
+</section>
+
+
+<section id="settings" class="section">
+
+<div class="head">
+
+<h2>⚙️ الإعدادات</h2>
+
+</div>
+
+<div class="card">
+
+<h3>نسخ احتياطي</h3>
+
+<p class="small">
+احفظ نسخة من بيانات المنصة في ملف على هاتفك أو حاسوبك.
+</p>
+
+<button class="primary" onclick="backup()">
+💾 إنشاء نسخة احتياطية
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>استرجاع البيانات</h3>
+
+<input
+type="file"
+accept=".json"
+onchange="restore(event)"
+>
+
+</div>
+
+<div class="card">
+
+<h3>حذف جميع البيانات</h3>
+
+<p>
+استخدم هذا الخيار فقط إذا كنت متأكدًا.
+</p>
+
+<button class="danger" onclick="clearAll()">
+🗑️ حذف جميع البيانات
+</button>
+
+</div>
+
+</section>
+
+
+</div>
+
+<footer>
+منصة المخبري — متوسطة قايد أحمد – غليزان
+</footer>
+
 <script>
-"use strict";
+ const KEY='LAB_PLATFORM_FINAL_V4';
 
-const KEY = "LAB_PLATFORM_PRO_V2";
-
-const categories = [
-  "معدات الفيزياء",
-  "معدات العلوم",
-  "معدات الإعلام الآلي",
-  "معدات الصوتيات",
-  "الأجهزة السمعية البصرية",
-  "الأدوات والتجهيزات العامة"
+const CATS=[
+  'معدات الفيزياء',
+  'معدات العلوم',
+  'معدات الإعلام الآلي',
+  'معدات الصوتيات',
+  'الأجهزة السمعية البصرية',
+  'الأدوات والتجهيزات العامة'
 ];
 
-const DB0 = {
-  inventory: [],
-  chemicals: [],
-  movements: [],
-  daily: [],
-  requests: [],
-  projects: [],
-  progress: {}
+const EMPTY={
+  inventory:[],
+  chemicals:[],
+  movements:[],
+  daily:[],
+  requests:[],
+  projects:[],
+  avRecords:[]
 };
 
-let db = loadDB();
+let db=load();
 
-let currentDaily = {
-  no: "",
-  date: "",
-  rows: [],
-  general: "",
-  needs: ""
-};
-
-function loadDB(){
+function load(){
   try{
-    return Object.assign(
-      JSON.parse(JSON.stringify(DB0)),
-      JSON.parse(localStorage.getItem(KEY) || "{}")
-    );
+    const x=JSON.parse(localStorage.getItem(KEY)||'null');
+    return x ? Object.assign({},EMPTY,x) : JSON.parse(JSON.stringify(EMPTY));
   }catch(e){
-    return JSON.parse(JSON.stringify(DB0));
+    return JSON.parse(JSON.stringify(EMPTY));
   }
 }
 
-function saveDB(){
-  localStorage.setItem(KEY, JSON.stringify(db));
-  refresh();
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(db));
+  renderAll();
 }
 
-function uid(){
-  return Date.now().toString(36) +
-         Math.random().toString(36).slice(2);
+function id(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 }
 
-function esc(x){
-  return String(x ?? "").replace(/[&<>"']/g, m => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  }[m]));
+function esc(v){
+  return String(v??'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
 }
 
 function today(){
@@ -1381,913 +1269,916 @@ function nowTime(){
   return new Date().toTimeString().slice(0,5);
 }
 
-function toggle(id){
-  document.getElementById(id).classList.toggle("hidden");
-}
-
-function closeForm(id){
-  document.getElementById(id).classList.add("hidden");
-}
-
-function showSection(id){
-  document.querySelectorAll(".section")
-    .forEach(s => s.classList.remove("active","printing"));
-
-  const el = document.getElementById(id);
-
-  if(!el)return;
-
-  el.classList.add("active");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
+function show(id){
+  document.querySelectorAll('.section').forEach(x=>{
+    x.classList.remove('active','printing');
   });
 
-  if(id === "progress"){
-    renderProgress();
+  const s=document.getElementById(id);
+
+  if(s){
+    s.classList.add('active');
   }
+
+  window.scrollTo(0,0);
+  renderAll();
 }
 
-function printSection(id){
+function toggle(id){
+  const e=document.getElementById(id);
+  if(e)e.classList.toggle('hidden');
+}
 
-  document.querySelectorAll(".section")
-    .forEach(s => s.classList.remove("printing"));
+function teacherMode(){
+  show('teacher');
+}
 
-  const el = document.getElementById(id);
+function printSec(id){
+  document.querySelectorAll('.section').forEach(x=>{
+    x.classList.remove('printing');
+  });
 
-  if(!el)return;
+  const s=document.getElementById(id);
 
-  el.classList.add("printing");
+  if(s){
+    s.classList.add('printing');
+  }
 
   window.print();
 
-  setTimeout(() => {
-    el.classList.remove("printing");
+  setTimeout(()=>{
+    if(s)s.classList.remove('printing');
   },500);
 }
 
-function showInventoryForm(){
-  document
-    .getElementById("inventoryForm")
-    .classList.remove("hidden");
-}
 
+/* =========================
+   الجرد
+========================= */
 
-function refresh(){
+function renderCats(){
 
-  document.getElementById("statInventory").textContent =
-    db.inventory.length;
+  const box=document.getElementById('cats');
 
-  document.getElementById("statChem").textContent =
-    db.chemicals.length;
+  box.innerHTML=CATS.map((c,i)=>{
 
-  document.getElementById("statDaily").textContent =
-    db.daily.length;
+    const n=db.inventory.filter(x=>x.category===c).length;
 
-  document.getElementById("statRequests").textContent =
-    db.requests.length;
+    const icons=[
+      '⚛️',
+      '🧬',
+      '💻',
+      '🎧',
+      '📺',
+      '🧰'
+    ];
 
-  document.getElementById("statProjects").textContent =
-    db.projects.length;
-
-  renderInventoryCats();
-  renderInventory();
-  renderChemicals();
-  renderMovements();
-  renderDailySaved();
-  renderRequests();
-  renderProjects();
-}
-
-
-function renderInventoryCats(){
-
-  const wrap = document.getElementById("inventoryCats");
-
-  if(wrap){
-    wrap.innerHTML = categories.map((c,i) => `
-      <div class="category"
-           onclick="filterInventory('${esc(c)}')">
-
-        <h3>
-          ${["⚛️","🧬","💻","🎧","📺","🧰"][i]}
-          ${esc(c)}
-        </h3>
-
-        <div class="stat">
-          ${db.inventory.filter(x => x.category === c).length}
-        </div>
-
+    return `
+      <div class="cat" onclick="filterInv(${i})">
+        <strong>${icons[i]}</strong>
+        <h3>${esc(c)}</h3>
+        <div>${n} تجهيز</div>
       </div>
-    `).join("");
-  }
+    `;
 
-  const cat = document.getElementById("iCat");
+  }).join('');
 
-  if(cat){
-    cat.innerHTML = categories
-      .map(c => `<option>${esc(c)}</option>`)
-      .join("");
-  }
+  document.getElementById('icat').innerHTML=
+    CATS.map(c=>`<option>${esc(c)}</option>`).join('');
 }
 
 
-let invFilter = "";
+let invFilter='';
 
-function filterInventory(c){
 
-  invFilter = c;
+function filterInv(i){
+
+  invFilter=CATS[i];
 
   renderInventory();
 
-  document
-    .getElementById("inventory")
-    .scrollIntoView({behavior:"smooth"});
+  document.getElementById('inventory')
+    .scrollIntoView({behavior:'smooth'});
+
 }
 
 
 function renderInventory(){
 
-  let arr = invFilter
-    ? db.inventory.filter(x => x.category === invFilter)
-    : db.inventory;
+  const body=document.getElementById('invBody');
 
-  const body = document.getElementById("inventoryBody");
+  let arr=db.inventory;
 
-  if(!body)return;
+  if(invFilter){
+    arr=arr.filter(x=>x.category===invFilter);
+  }
 
-  body.innerHTML =
-    arr.map(x => `
-      <tr>
-        <td>${esc(x.no)}</td>
-        <td>${esc(x.name)}</td>
-        <td>${esc(x.category)}</td>
-        <td>${esc(x.qty)}</td>
-        <td>${esc(x.condition)}</td>
-        <td>${esc(x.location)}</td>
-        <td>${esc(x.date)}</td>
-        <td class="no-print">
-          <button class="danger"
-            onclick="del('inventory','${x.id}')">
-            حذف
-          </button>
-        </td>
-      </tr>
-    `).join("")
-    ||
-    `<tr>
-      <td colspan="8">لا توجد بيانات</td>
-    </tr>`;
+  body.innerHTML=arr.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.item_number)}</td>
+
+      <td>${esc(x.name)}</td>
+
+      <td>${esc(x.category)}</td>
+
+      <td>${esc(x.quantity)}</td>
+
+      <td>${esc(x.condition)}</td>
+
+      <td>${esc(x.location)}</td>
+
+      <td>${esc(x.item_date)}</td>
+
+      <td class="no-print">
+        <button class="danger"
+          onclick="delInv('${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join('');
+
 }
 
 
-function addInventory(){
+function addInv(){
 
-  const x = {
-    id:uid(),
-    no:document.getElementById("iNo").value.trim(),
-    name:document.getElementById("iName").value.trim(),
-    category:document.getElementById("iCat").value,
-    qty:Number(document.getElementById("iQty").value || 0),
-    condition:document.getElementById("iCondition").value,
-    location:document.getElementById("iLocation").value.trim(),
-    date:document.getElementById("iDate").value || today(),
-    notes:document.getElementById("iNotes").value.trim()
+  const item={
+    id:id(),
+    item_number:document.getElementById('ino').value.trim(),
+    name:document.getElementById('iname').value.trim(),
+    category:document.getElementById('icat').value,
+    quantity:Number(document.getElementById('iqty').value||0),
+    condition:document.getElementById('icond').value,
+    location:document.getElementById('iloc').value.trim(),
+    item_date:document.getElementById('idate').value||today(),
+    notes:document.getElementById('inote').value.trim()
   };
 
-  if(!x.name){
-    alert("اكتب اسم التجهيز");
+  if(!item.name){
+    alert('اكتب اسم التجهيز');
     return;
   }
 
-  db.inventory.push(x);
+  db.inventory.push(item);
 
-  saveDB();
+  save();
 
-  ["iNo","iName","iQty","iLocation","iNotes"]
-    .forEach(id => {
-      document.getElementById(id).value = "";
-    });
+  document.getElementById('ino').value='';
+  document.getElementById('iname').value='';
+  document.getElementById('iqty').value=1;
+  document.getElementById('iloc').value='';
+  document.getElementById('inote').value='';
 
-  closeForm("inventoryForm");
+  alert('تم حفظ التجهيز');
 }
 
 
-function addChemical(){
+function delInv(id){
 
-  const name =
-    document.getElementById("cName").value.trim();
+  if(!confirm('هل تريد حذف هذا التجهيز؟'))return;
 
-  const qty =
-    Number(document.getElementById("cQty").value || 0);
+  db.inventory=db.inventory.filter(x=>x.id!==id);
 
-  if(!name || qty <= 0){
-    alert("أدخل اسم المادة والكمية");
-    return;
-  }
-
-  let c = db.chemicals.find(
-    x => x.name.toLowerCase() === name.toLowerCase()
-  );
-
-  if(!c){
-
-    c = {
-      id:uid(),
-      name:name,
-      unit:document.getElementById("cUnit").value.trim(),
-      stock:0,
-      state:document.getElementById("cState").value,
-      entries:[],
-      uses:[],
-      notes:""
-    };
-
-    db.chemicals.push(c);
-  }
-
-  c.unit =
-    document.getElementById("cUnit").value.trim()
-    || c.unit;
-
-  c.stock =
-    Number(c.stock || 0) + qty;
-
-  c.entries.push({
-    date:
-      document.getElementById("cDate").value || today(),
-    qty:qty
-  });
-
-  c.state =
-    document.getElementById("cState").value;
-
-  saveDB();
-
-  ["cName","cQty","cUnit","cNotes"]
-    .forEach(id => {
-      const el = document.getElementById(id);
-      if(el)el.value = "";
-    });
-
-  closeForm("chemicalForm");
+  save();
 }
 
 
-function chemicalUse(id){
+/* =========================
+   المواد الكيميائية
+========================= */
 
-  const c = db.chemicals.find(x => x.id === id);
+function renderChem(){
 
-  if(!c)return;
+  const box=document.getElementById('chemCards');
 
-  const teacher =
-    prompt("اسم الأستاذ:");
+  box.innerHTML=db.chemicals.map(c=>{
 
-  if(teacher === null)return;
+    const used=(c.uses||[])
+      .reduce((a,b)=>a+Number(b.qty||0),0);
 
-  const date =
-    prompt("تاريخ الاستعمال:",today());
+    const total=Number(c.total||0);
 
-  if(date === null)return;
+    const remaining=total-used;
 
-  const qty =
-    Number(
-      prompt(
-        `الكمية المستعملة (${c.unit || "الوحدة"}):`,
-        "0"
-      )
-    );
+    let state='متوفرة';
 
-  if(!qty || qty <= 0){
-    alert("الكمية غير صحيحة");
-    return;
-  }
+    if(remaining<=0){
+      state='منتهية';
+    }else if(remaining<=total*0.2){
+      state='قليلة';
+    }
 
-  if(qty > c.stock){
-    alert("الكمية المستعملة أكبر من المخزون الحالي");
-    return;
-  }
+    return `
 
-  c.stock -= qty;
+      <div class="card">
 
-  c.uses.push({
-    date:date,
-    teacher:teacher,
-    qty:qty,
-    remaining:c.stock
-  });
+        <div class="head">
 
-  c.state =
-    c.stock <= 0
-      ? "منتهية"
-      : c.stock <= 10
-        ? "قليلة"
-        : "متوفرة";
+          <div>
+            <h3>⚗️ ${esc(c.name)}</h3>
 
-  saveDB();
-}
-
-
-function renderChemicals(){
-
-  const box =
-    document.getElementById("chemicalCards");
-
-  if(!box)return;
-
-  box.innerHTML =
-    db.chemicals.map(c => {
-
-      const total =
-        c.entries.reduce(
-          (s,e) => s + Number(e.qty || 0),0
-        );
-
-      const used =
-        c.uses.reduce(
-          (s,e) => s + Number(e.qty || 0),0
-        );
-
-      return `
-        <div class="card">
-
-          <h3>⚗️ ${esc(c.name)}</h3>
-
-          <div class="grid">
-
-            <div>
-              <b>إجمالي الداخل</b>
-              <div class="stat">
-                ${total} ${esc(c.unit)}
-              </div>
-            </div>
-
-            <div>
-              <b>المستعمل</b>
-              <div class="stat">
-                ${used} ${esc(c.unit)}
-              </div>
-            </div>
-
-            <div>
-              <b>المخزون المتبقي</b>
-              <div class="stat">
-                ${c.stock} ${esc(c.unit)}
-              </div>
-            </div>
-
-            <div>
-              <b>الحالة</b>
-              <div class="badge">
-                ${esc(c.state)}
-              </div>
-            </div>
-
+            <span class="badge">
+              ${esc(state)}
+            </span>
           </div>
 
-          <div class="actions no-print">
+          <button class="danger"
+            onclick="delChem('${c.id}')">
+            حذف
+          </button>
 
-            <button class="primary"
-              onclick="chemicalUse('${c.id}')">
-              ➖ تسجيل استعمال
-            </button>
+        </div>
 
-            <button class="danger"
-              onclick="del('chemicals','${c.id}')">
-              حذف المادة
-            </button>
+        <div class="stats">
 
+          <div class="statbox">
+            إجمالي الداخل
+            <b>${total}</b>
+            ${esc(c.unit||'')}
           </div>
 
-          <h4>دفعات الدخول</h4>
+          <div class="statbox">
+            المستعمل
+            <b>${used}</b>
+            ${esc(c.unit||'')}
+          </div>
 
-          <div class="tablewrap">
-            <table>
+          <div class="statbox">
+            المتبقي
+            <b>${remaining}</b>
+            ${esc(c.unit||'')}
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="primary"
+            onclick="useChem('${c.id}')">
+            تسجيل استعمال
+          </button>
+
+          <button
+            onclick="addChemStock('${c.id}')">
+            إضافة كمية
+          </button>
+
+        </div>
+
+        <div class="tablewrap">
+
+          <table>
+
+            <thead>
 
               <tr>
-                <th>تاريخ الدخول</th>
-                <th>الكمية الجديدة</th>
-              </tr>
-
-              ${
-                c.entries.map(e => `
-                  <tr>
-                    <td>${esc(e.date)}</td>
-                    <td>
-                      ${e.qty} ${esc(c.unit)}
-                    </td>
-                  </tr>
-                `).join("")
-                ||
-                `<tr>
-                  <td colspan="2">لا توجد</td>
-                </tr>`
-              }
-
-            </table>
-          </div>
-
-          <h4>سجل الاستعمال</h4>
-
-          <div class="tablewrap">
-            <table>
-
-              <tr>
-                <th>تاريخ الاستعمال</th>
+                <th>التاريخ</th>
                 <th>الأستاذ</th>
                 <th>الكمية المستعملة</th>
                 <th>المتبقي</th>
               </tr>
 
-              ${
-                c.uses.map(u => `
-                  <tr>
-                    <td>${esc(u.date)}</td>
-                    <td>${esc(u.teacher)}</td>
-                    <td>
-                      ${u.qty} ${esc(c.unit)}
-                    </td>
-                    <td>
-                      ${u.remaining} ${esc(c.unit)}
-                    </td>
-                  </tr>
-                `).join("")
-                ||
-                `<tr>
-                  <td colspan="4">
-                    لم تسجل استعمالات
-                  </td>
-                </tr>`
-              }
+            </thead>
 
-            </table>
-          </div>
+            <tbody>
+
+              ${(c.uses||[]).map(u=>`
+
+                <tr>
+                  <td>${esc(u.date)}</td>
+                  <td>${esc(u.teacher)}</td>
+                  <td>${esc(u.qty)} ${esc(c.unit||'')}</td>
+                  <td>${esc(u.remaining)} ${esc(c.unit||'')}</td>
+                </tr>
+
+              `).join('')}
+
+            </tbody>
+
+          </table>
 
         </div>
-      `;
 
-    }).join("")
-    ||
-    `<div class="notice">
-      لا توجد مواد كيميائية بعد.
-    </div>`;
+      </div>
+
+    `;
+
+  }).join('');
+
 }
 
 
-function addMovement(){
+function addChem(){
 
-  db.movements.push({
+  const name=document.getElementById('cname').value.trim();
+  const qty=Number(document.getElementById('cqty').value||0);
 
-    id:uid(),
+  if(!name){
+    alert('اكتب اسم المادة');
+    return;
+  }
 
-    equip:
-      document.getElementById("mEquip").value.trim(),
+  if(qty<=0){
+    alert('أدخل كمية صحيحة');
+    return;
+  }
 
-    type:
-      document.getElementById("mType").value,
+  let existing=db.chemicals.find(
+    x=>x.name.trim().toLowerCase()===name.toLowerCase()
+  );
 
-    teacher:
-      document.getElementById("mTeacher").value.trim(),
+  if(existing){
 
-    className:
-      document.getElementById("mClass").value.trim(),
+    existing.total=
+      Number(existing.total||0)+qty;
 
-    date:
-      document.getElementById("mDate").value || today(),
+    existing.unit=
+      document.getElementById('cunit').value||existing.unit;
 
-    time:
-      document.getElementById("mTime").value || nowTime(),
+  }else{
 
-    qty:
-      Number(
-        document.getElementById("mQty").value || 1
-      ),
+    db.chemicals.push({
 
-    notes:
-      document.getElementById("mNotes").value.trim()
+      id:id(),
+
+      name:name,
+
+      total:qty,
+
+      unit:document.getElementById('cunit').value.trim(),
+
+      date:document.getElementById('cdate').value||today(),
+
+      state:document.getElementById('cstate').value,
+
+      notes:document.getElementById('cnote').value.trim(),
+
+      uses:[]
+
+    });
+
+  }
+
+  save();
+
+  document.getElementById('cname').value='';
+  document.getElementById('cqty').value='';
+  document.getElementById('cunit').value='';
+  document.getElementById('cnote').value='';
+
+  alert('تمت إضافة الكمية');
+}
+
+
+function addChemStock(cid){
+
+  const c=db.chemicals.find(x=>x.id===cid);
+
+  if(!c)return;
+
+  const q=Number(prompt(
+    'أدخل الكمية الجديدة:'
+  ));
+
+  if(!q || q<=0)return;
+
+  c.total=Number(c.total||0)+q;
+
+  save();
+
+  alert('تمت إضافة الكمية');
+}
+
+
+function useChem(cid){
+
+  const c=db.chemicals.find(x=>x.id===cid);
+
+  if(!c)return;
+
+  const q=Number(prompt(
+    'كمية المادة المستعملة:'
+  ));
+
+  if(!q || q<=0)return;
+
+  const used=(c.uses||[])
+    .reduce((a,b)=>a+Number(b.qty||0),0);
+
+  const remaining=Number(c.total||0)-used;
+
+  if(q>remaining){
+
+    alert(
+      'الكمية غير كافية. المتبقي فقط '+
+      remaining+' '+(c.unit||'')
+    );
+
+    return;
+  }
+
+  const teacher=prompt(
+    'اسم الأستاذ:'
+  )||'';
+
+  const r=remaining-q;
+
+  c.uses=c.uses||[];
+
+  c.uses.push({
+
+    date:today(),
+
+    teacher:teacher,
+
+    qty:q,
+
+    remaining:r
 
   });
 
-  saveDB();
+  save();
+
+  alert(
+    'تم التسجيل. المتبقي: '+
+    r+' '+(c.unit||'')
+  );
 }
 
 
-function renderMovements(){
+function delChem(cid){
 
-  const body =
-    document.getElementById("movementBody");
+  if(!confirm('هل تريد حذف هذه المادة؟'))return;
 
-  if(!body)return;
+  db.chemicals=
+    db.chemicals.filter(x=>x.id!==cid);
 
-  body.innerHTML =
-    db.movements.map(x => `
+  save();
+}
+
+
+/* =========================
+   الحركات
+========================= */
+
+function renderMoves(){
+
+  document.getElementById('moveBody').innerHTML=
+    db.movements.map(x=>`
+
       <tr>
 
-        <td>${esc(x.equip)}</td>
+        <td>${esc(x.equipment)}</td>
         <td>${esc(x.type)}</td>
         <td>${esc(x.teacher)}</td>
-        <td>${esc(x.className)}</td>
+        <td>${esc(x.class_name)}</td>
         <td>${esc(x.date)}</td>
         <td>${esc(x.time)}</td>
-        <td>${x.qty}</td>
+        <td>${esc(x.quantity)}</td>
         <td>${esc(x.notes)}</td>
 
       </tr>
-    `).join("");
+
+    `).join('');
+
 }
+
+
+function addMove(){
+
+  const x={
+
+    id:id(),
+
+    equipment:
+      document.getElementById('mequip').value.trim(),
+
+    type:
+      document.getElementById('mtype').value,
+
+    teacher:
+      document.getElementById('mteach').value.trim(),
+
+    class_name:
+      document.getElementById('mclass').value.trim(),
+
+    date:
+      document.getElementById('mdate').value||today(),
+
+    time:
+      document.getElementById('mtime').value||nowTime(),
+
+    quantity:
+      Number(document.getElementById('mqty').value||1),
+
+    notes:
+      document.getElementById('mnote').value.trim()
+
+  };
+
+  if(!x.equipment){
+    alert('اكتب اسم التجهيز');
+    return;
+  }
+
+  db.movements.push(x);
+
+  save();
+
+  document.getElementById('mequip').value='';
+  document.getElementById('mteach').value='';
+  document.getElementById('mclass').value='';
+  document.getElementById('mnote').value='';
+
+  alert('تم تسجيل الحركة');
+}
+
+
+/* =========================
+   التقارير اليومية
+========================= */
+
+let dailyRows=[];
 
 
 function addDailyRow(){
 
-  const row = {
+  const x={
 
     teacher:
-      document.getElementById("dTeacher").value.trim(),
+      document.getElementById('dteach').value.trim(),
 
-    className:
-      document.getElementById("dClass").value.trim(),
+    class_name:
+      document.getElementById('dclass').value.trim(),
 
     time:
-      document.getElementById("dTime").value || nowTime(),
+      document.getElementById('dtime').value||nowTime(),
 
     experiment:
-      document.getElementById("dExperiment").value.trim(),
+      document.getElementById('dexp').value.trim(),
 
     equipment:
-      document.getElementById("dEquipment").value.trim(),
+      document.getElementById('dequip').value.trim(),
 
-    note:
-      document.getElementById("dNote").value.trim()
+    notes:
+      document.getElementById('dnote').value.trim()
 
   };
 
-  if(!row.teacher){
-    alert("اكتب اسم الأستاذ");
+  if(!x.teacher && !x.experiment){
+    alert('أدخل بيانات الصف');
     return;
   }
 
-  currentDaily.date =
-    document.getElementById("dDate").value || today();
+  dailyRows.push(x);
 
-  currentDaily.rows.push(row);
+  renderDailyRows();
 
-  renderCurrentDaily();
+  document.getElementById('dteach').value='';
+  document.getElementById('dclass').value='';
+  document.getElementById('dtime').value='';
+  document.getElementById('dexp').value='';
+  document.getElementById('dequip').value='';
+  document.getElementById('dnote').value='';
 }
 
 
-function renderCurrentDaily(){
+function renderDailyRows(){
 
-  const dateEl =
-    document.getElementById("printDate");
+  document.getElementById('dailyBody').innerHTML=
+    dailyRows.map(x=>`
 
-  const noEl =
-    document.getElementById("printReportNo");
+      <tr>
+        <td>${esc(x.teacher)}</td>
+        <td>${esc(x.class_name)}</td>
+        <td>${esc(x.time)}</td>
+        <td>${esc(x.experiment)}</td>
+        <td>${esc(x.equipment)}</td>
+        <td>${esc(x.notes)}</td>
+      </tr>
 
-  const body =
-    document.getElementById("dailyBody");
+    `).join('');
 
-  if(dateEl)
-    dateEl.textContent =
-      currentDaily.date || today();
-
-  if(noEl)
-    noEl.textContent =
-      currentDaily.no || "سيولد عند الحفظ";
-
-  if(body){
-
-    body.innerHTML =
-      currentDaily.rows.map(r => `
-        <tr>
-          <td>${esc(r.teacher)}</td>
-          <td>${esc(r.className)}</td>
-          <td>${esc(r.time)}</td>
-          <td>${esc(r.experiment)}</td>
-          <td>${esc(r.equipment)}</td>
-          <td>${esc(r.note)}</td>
-        </tr>
-      `).join("");
-  }
-
-  const general =
-    document.getElementById("printGeneral");
-
-  const needs =
-    document.getElementById("printNeeds");
-
-  const dg =
-    document.getElementById("dGeneral");
-
-  const dn =
-    document.getElementById("dNeeds");
-
-  if(general)
-    general.textContent =
-      (dg && dg.value) ||
-      currentDaily.general ||
-      "";
-
-  if(needs)
-    needs.textContent =
-      (dn && dn.value) ||
-      currentDaily.needs ||
-      "";
 }
 
 
-function newDailyReport(){
+function saveDaily(){
 
-  if(!currentDaily.rows.length){
-    alert("أضف أستاذًا واحدًا على الأقل");
+  if(!dailyRows.length){
+
+    alert('أضف صفًا واحدًا على الأقل');
+
     return;
   }
 
-  currentDaily.general =
-    document.getElementById("dGeneral").value;
+  const x={
 
-  currentDaily.needs =
-    document.getElementById("dNeeds").value;
+    id:id(),
 
-  currentDaily.no =
-    "R-" +
-    String(db.daily.length + 1)
-      .padStart(4,"0");
+    number:
+      db.daily.length+1,
 
-  db.daily.push({
-    ...currentDaily,
-    id:uid()
-  });
+    date:
+      document.getElementById('ddate').value||today(),
 
-  saveDB();
+    rows:
+      JSON.parse(JSON.stringify(dailyRows)),
 
-  alert(
-    "تم حفظ التقرير رقم " +
-    currentDaily.no
-  );
+    general:
+      document.getElementById('dgen').value.trim(),
 
-  currentDaily = {
-    no:"",
-    date:"",
-    rows:[],
-    general:"",
-    needs:""
+    needs:
+      document.getElementById('dneeds').value.trim()
+
   };
 
-  document.getElementById("dGeneral").value="";
-  document.getElementById("dNeeds").value="";
+  db.daily.push(x);
 
-  renderCurrentDaily();
+  save();
+
+  document.getElementById('rno').textContent=
+    x.number;
+
+  document.getElementById('rdate').textContent=
+    x.date;
+
+  document.getElementById('pgen').textContent=
+    x.general;
+
+  document.getElementById('pneeds').textContent=
+    x.needs;
+
+  dailyRows=[];
+
+  renderDailyRows();
+  renderSavedDaily();
+
+  alert('تم حفظ التقرير');
 }
 
 
-function renderDailySaved(){
+function renderSavedDaily(){
 
-  const body =
-    document.getElementById("savedDailyBody");
+  document.getElementById('savedDaily').innerHTML=
+    db.daily.map(x=>`
 
-  if(!body)return;
-
-  body.innerHTML =
-    db.daily.map(r => `
       <tr>
 
-        <td>${esc(r.no)}</td>
+        <td>${x.number}</td>
 
-        <td>${esc(r.date)}</td>
+        <td>${esc(x.date)}</td>
 
-        <td>${r.rows.length}</td>
+        <td>${x.rows.length}</td>
 
         <td>
 
-          <button onclick="loadDaily('${r.id}')">
-            عرض
+          <button
+            onclick="loadDaily('${x.id}')">
+            فتح
           </button>
 
           <button class="danger"
-            onclick="del('daily','${r.id}')">
+            onclick="delDaily('${x.id}')">
             حذف
           </button>
 
         </td>
 
       </tr>
-    `).join("");
+
+    `).join('');
+
 }
 
 
 function loadDaily(id){
 
-  const r =
-    db.daily.find(x => x.id === id);
+  const x=db.daily.find(y=>y.id===id);
 
-  if(!r)return;
+  if(!x)return;
 
-  currentDaily = r;
+  document.getElementById('rno').textContent=
+    x.number;
 
-  document.getElementById("dGeneral").value =
-    r.general || "";
+  document.getElementById('rdate').textContent=
+    x.date;
 
-  document.getElementById("dNeeds").value =
-    r.needs || "";
+  document.getElementById('pgen').textContent=
+    x.general||'';
 
-  renderCurrentDaily();
+  document.getElementById('pneeds').textContent=
+    x.needs||'';
 
-  showSection("daily");
+  dailyRows=
+    JSON.parse(JSON.stringify(x.rows||[]));
+
+  renderDailyRows();
+
+  show('daily');
 }
 
 
-function printCurrentDaily(){
+function delDaily(id){
 
-  if(!currentDaily.rows.length){
-    alert("لا يوجد تقرير جاهز للطباعة");
-    return;
-  }
+  if(!confirm('حذف التقرير؟'))return;
 
-  renderCurrentDaily();
+  db.daily=db.daily.filter(x=>x.id!==id);
 
-  document.querySelectorAll(".section")
-    .forEach(s => s.classList.remove("printing"));
+  save();
+}
 
-  const section =
-    document.getElementById("daily");
 
-  section.classList.add("printing");
+function printDaily(){
+
+  const s=document.getElementById('daily');
+
+  document.querySelectorAll('.section')
+    .forEach(x=>x.classList.remove('printing'));
+
+  s.classList.add('printing');
 
   window.print();
 
-  setTimeout(() => {
-    section.classList.remove("printing");
+  setTimeout(()=>{
+    s.classList.remove('printing');
   },500);
 }
 
 
-function emailDaily(){
+function mailDaily(){
 
-  if(!currentDaily.rows.length){
-    alert("أنشئ التقرير أولًا");
-    return;
+  const subject=
+    encodeURIComponent(
+      'التقرير اليومي للمخبر'
+    );
+
+  const body=
+    encodeURIComponent(
+      'تقرير يومي للمخبر - متوسطة قايد أحمد – غليزان'
+    );
+
+  location.href=
+    'mailto:?subject='+subject+
+    '&body='+body;
+}
+
+
+/* =========================
+   التدرج السنوي
+========================= */
+
+const PROG={
+
+  1:{
+    t:'السنة الأولى متوسط',
+    s:'وثائق وزارة التربية الوطنية للمخططات السنوية',
+    u:'https://education.gov.dz/wp-content/uploads/2015/04/1-AM-sc-phy.pdf'
+  },
+
+  2:{
+    t:'السنة الثانية متوسط',
+    s:'المخطط السنوي للعلوم الفيزيائية والتكنولوجيا',
+    u:'https://education.gov.dz/wp-content/uploads/2015/04/2-AM-sc-phy.pdf'
+  },
+
+  3:{
+    t:'السنة الثالثة متوسط',
+    s:'الوثائق الرسمية البيداغوجية للتعليم المتوسط',
+    u:'https://www.education.gov.dz/2017/11/15/%D8%A7%D9%84%D9%88%D8%AB%D8%A7%D8%A6%D9%82-%D8%A7%D9%84%D8%B1%D8%B3%D9%85%D9%8A%D8%A9-%D8%A7%D9%84%D8%A8%D9%8A%D8%AF%D8%A7%D8%BA%D9%88%D8%AC%D9%8A%D8%A9-%D9%84%D9%85%D8%B1%D8%AD%D9%84%D8%AA%D9%8A/'
+  },
+
+  4:{
+    t:'السنة الرابعة متوسط',
+    s:'وثائق المخططات السنوية للعلوم الفيزيائية والتكنولوجيا',
+    u:'https://education.gov.dz/wp-content/uploads/2015/04/4-AM-sc-phy.pdf'
   }
 
-  const lines =
-    currentDaily.rows.map(r =>
-      `${r.teacher} | ${r.className} | ${r.time} | ${r.experiment} | ${r.equipment} | ${r.note}`
-    ).join("\n");
-
-  const body =
-`الجمهورية الجزائرية الديمقراطية الشعبية
-متوسطة قايد أحمد – غليزان
-
-تقرير يومي رقم ${currentDaily.no || "غير محفوظ"}
-
-التاريخ: ${currentDaily.date}
-
-الأستاذ | القسم | التوقيت | التجربة | الأدوات | ملاحظة
-${lines}
-
-ملاحظات إجمالية:
-${document.getElementById("dGeneral").value || currentDaily.general}
-
-احتياجات المخبر:
-${document.getElementById("dNeeds").value || currentDaily.needs}
-
-المدير: __________
-مسؤول المخبر: __________
-المستشار: __________`;
-
-  location.href =
-    `mailto:?subject=${
-      encodeURIComponent(
-        "تقرير مخبر - " +
-        (currentDaily.no || "يومي")
-      )
-    }&body=${encodeURIComponent(body)}`;
-}
+};
 
 
 function renderProgress(){
 
-  const level =
-    document.getElementById("progressLevel").value;
+  const level=
+    document.getElementById('plevel').value;
 
-  const rows = [
+  const p=PROG[level];
 
-    [
-      "1",
-      "برنامج السنة الأولى متوسط",
-      "التدرج السنوي الرسمي المعتمد من وزارة التربية الوطنية — للعرض والاطلاع"
-    ],
+  document.getElementById('progressBox').innerHTML=`
 
-    [
-      "2",
-      "برنامج السنة الثانية متوسط",
-      "التدرج السنوي الرسمي المعتمد من وزارة التربية الوطنية — للعرض والاطلاع"
-    ],
+    <div class="card">
 
-    [
-      "3",
-      "برنامج السنة الثالثة متوسط",
-      "التدرج السنوي الرسمي المعتمد من وزارة التربية الوطنية — للعرض والاطلاع"
-    ],
+      <h2>${esc(p.t)}</h2>
 
-    [
-      "4",
-      "برنامج السنة الرابعة متوسط",
-      "التدرج السنوي الرسمي المعتمد من وزارة التربية الوطنية — للعرض والاطلاع"
-    ]
+      <p>${esc(p.s)}</p>
 
-  ];
+      <div class="notice">
+        التدرج السنوي الرسمي يُرجع إلى الوثيقة الأصلية.
+      </div>
 
-  const r =
-    rows.find(x => x[0] === level);
+      <a
+        href="${p.u}"
+        target="_blank"
+        rel="noopener">
 
-  document.getElementById("progressTable").innerHTML = `
+        <button class="primary">
+          📄 فتح الوثيقة الرسمية
+        </button>
 
-    <div class="notice">
-
-      <b>${r[1]}</b><br>
-
-      ${r[2]}
+      </a>
 
     </div>
 
-    <table>
-
-      <thead>
-        <tr>
-          <th>الفترة</th>
-          <th>المحتوى</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        <tr>
-          <td>السنة الدراسية</td>
-          <td>
-            التدرج السنوي ثابت للعرض،
-            ولا يمكن تعديله من المنصة.
-          </td>
-        </tr>
-
-        <tr>
-          <td>المرجع</td>
-          <td>
-            البرنامج الوزاري الرسمي المعتمد.
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
   `;
+
+}
+
+
+/* =========================
+   الطلبات
+========================= */
+
+function sendRequest(){
+
+  const x={
+
+    id:id(),
+
+    teacher:
+      document.getElementById('tname').value.trim(),
+
+    class_name:
+      document.getElementById('tclass').value.trim(),
+
+    date:
+      document.getElementById('tdate').value||today(),
+
+    time:
+      document.getElementById('ttime').value||nowTime(),
+
+    experiment:
+      document.getElementById('texp').value.trim(),
+
+    tools:
+      document.getElementById('ttools').value.trim(),
+
+    notes:
+      document.getElementById('tnote').value.trim(),
+
+    status:'جديد'
+
+  };
+
+  if(!x.teacher){
+    alert('أدخل اسم الأستاذ');
+    return;
+  }
+
+  db.requests.push(x);
+
+  save();
+
+  document.getElementById('tmsg').innerHTML=
+    '<div class="success">تم إرسال الطلب بنجاح.</div>';
+
+  document.getElementById('tname').value='';
+  document.getElementById('tclass').value='';
+  document.getElementById('texp').value='';
+  document.getElementById('ttools').value='';
+  document.getElementById('tnote').value='';
 }
 
 
 function renderRequests(){
 
-  const body =
-    document.getElementById("requestsBody");
-
-  if(!body)return;
-
-  body.innerHTML =
-    db.requests.map(x => `
+  document.getElementById('reqBody').innerHTML=
+    db.requests.map(x=>`
 
       <tr>
 
         <td>${esc(x.teacher)}</td>
-        <td>${esc(x.className)}</td>
+        <td>${esc(x.class_name)}</td>
         <td>${esc(x.date)}</td>
         <td>${esc(x.time)}</td>
-        <td>${esc(x.exp)}</td>
+        <td>${esc(x.experiment)}</td>
         <td>${esc(x.tools)}</td>
-        <td>${esc(x.note)}</td>
+        <td>${esc(x.notes)}</td>
 
         <td>
 
           <select
-            onchange="setReq('${x.id}',this.value)">
+            onchange="changeReq('${x.id}',this.value)">
 
-            <option
-              ${x.status === "جديد" ? "selected" : ""}>
-              جديد
-            </option>
-
-            <option
-              ${x.status === "قيد التحضير" ? "selected" : ""}>
-              قيد التحضير
-            </option>
-
-            <option
-              ${x.status === "تم التجهيز" ? "selected" : ""}>
-              تم التجهيز
-            </option>
-
-            <option
-              ${x.status === "مغلق" ? "selected" : ""}>
-              مغلق
-            </option>
+            ${['جديد','قيد التحضير','تم','مرفوض']
+              .map(s=>
+                `<option ${s===x.status?'selected':''}>
+                  ${s}
+                </option>`
+              ).join('')}
 
           </select>
 
@@ -2296,7 +2187,7 @@ function renderRequests(){
         <td class="no-print">
 
           <button class="danger"
-            onclick="del('requests','${x.id}')">
+            onclick="delReq('${x.id}')">
             حذف
           </button>
 
@@ -2304,166 +2195,101 @@ function renderRequests(){
 
       </tr>
 
-    `).join("")
-    ||
-    `<tr>
-      <td colspan="9">لا توجد طلبات</td>
-    </tr>`;
+    `).join('');
+
 }
 
 
-function setReq(id,status){
+function changeReq(id,status){
 
-  const x =
-    db.requests.find(x => x.id === id);
+  const x=db.requests.find(y=>y.id===id);
 
-  if(x){
+  if(!x)return;
 
-    x.status = status;
+  x.status=status;
 
-    saveDB();
-  }
+  save();
 }
 
 
-function teacherMode(){
+function delReq(id){
 
-  showSection("teacher");
+  if(!confirm('حذف الطلب؟'))return;
 
-  document.getElementById("tDate").value =
-    today();
+  db.requests=db.requests.filter(x=>x.id!==id);
 
-  document.getElementById("tTime").value =
-    nowTime();
+  save();
 }
 
 
-function teacherRequest(){
-
-  const x = {
-
-    id:uid(),
-
-    teacher:
-      document.getElementById("tName").value.trim(),
-
-    className:
-      document.getElementById("tClass").value.trim(),
-
-    date:
-      document.getElementById("tDate").value || today(),
-
-    time:
-      document.getElementById("tTime").value || nowTime(),
-
-    exp:
-      document.getElementById("tExp").value.trim(),
-
-    tools:
-      document.getElementById("tTools").value.trim(),
-
-    note:
-      document.getElementById("tNote").value.trim(),
-
-    status:"جديد"
-  };
-
-  if(!x.teacher || !x.tools){
-
-    alert(
-      "أدخل اسم الأستاذ والوسائل المطلوبة"
-    );
-
-    return;
-  }
-
-  db.requests.push(x);
-
-  saveDB();
-
-  document.getElementById("teacherMsg").innerHTML =
-    `<div class="success">
-      تم إرسال الطلب بنجاح.
-      لا يملك فضاء الأستاذ صلاحية الوصول
-      إلى بقية أقسام المنصة.
-    </div>`;
-
-  ["tName","tClass","tExp","tTools","tNote"]
-    .forEach(id => {
-      document.getElementById(id).value="";
-    });
-}
-
+/* =========================
+   المشاريع
+========================= */
 
 function addProject(){
 
-  const x = {
+  const x={
 
-    id:uid(),
+    id:id(),
 
     title:
-      document.getElementById("pTitle").value.trim(),
+      document.getElementById('ptitle').value.trim(),
 
     students:
-      document.getElementById("pStudents").value.trim(),
+      document.getElementById('pstudents').value.trim(),
 
-    className:
-      document.getElementById("pClass").value.trim(),
+    class_name:
+      document.getElementById('pclass').value.trim(),
 
     date:
-      document.getElementById("pDate").value || today(),
+      document.getElementById('pdate').value||today(),
 
     type:
-      document.getElementById("pType").value,
+      document.getElementById('ptype').value,
 
-    desc:
-      document.getElementById("pDesc").value.trim()
+    description:
+      document.getElementById('pdesc').value.trim()
 
   };
 
   if(!x.title){
 
-    alert("اكتب عنوان المشروع");
+    alert('اكتب عنوان المشروع');
 
     return;
   }
 
   db.projects.push(x);
 
-  saveDB();
+  save();
 
-  ["pTitle","pStudents","pClass","pDesc"]
-    .forEach(id => {
-      document.getElementById(id).value="";
-    });
+  document.getElementById('ptitle').value='';
+  document.getElementById('pstudents').value='';
+  document.getElementById('pclass').value='';
+  document.getElementById('pdesc').value='';
 
-  closeForm("projectForm");
+  alert('تم حفظ المشروع');
 }
 
 
 function renderProjects(){
 
-  const body =
-    document.getElementById("projectsBody");
-
-  if(!body)return;
-
-  body.innerHTML =
-    db.projects.map(x => `
+  document.getElementById('projBody').innerHTML=
+    db.projects.map(x=>`
 
       <tr>
 
         <td>${esc(x.title)}</td>
         <td>${esc(x.students)}</td>
-        <td>${esc(x.className)}</td>
+        <td>${esc(x.class_name)}</td>
         <td>${esc(x.date)}</td>
         <td>${esc(x.type)}</td>
-        <td>${esc(x.desc)}</td>
+        <td>${esc(x.description)}</td>
 
         <td class="no-print">
 
           <button class="danger"
-            onclick="del('projects','${x.id}')">
+            onclick="delProject('${x.id}')">
             حذف
           </button>
 
@@ -2471,154 +2297,329 @@ function renderProjects(){
 
       </tr>
 
-    `).join("")
-    ||
-    `<tr>
-      <td colspan="7">
-        لا توجد مشاريع
-      </td>
-    </tr>`;
+    `).join('');
+
 }
 
 
-function del(type,id){
+function delProject(id){
 
-  if(!confirm("هل تريد الحذف؟"))
+  if(!confirm('حذف المشروع؟'))return;
+
+  db.projects=db.projects.filter(x=>x.id!==id);
+
+  save();
+}
+
+
+/* =========================
+   الصوتيات والسمعيات
+========================= */
+
+function addAV(){
+
+  const x={
+
+    id:id(),
+
+    no:
+      document.getElementById('avno').value.trim(),
+
+    date:
+      document.getElementById('avdate').value||today(),
+
+    name:
+      document.getElementById('avname').value.trim(),
+
+    type:
+      document.getElementById('avtype').value,
+
+    inventory:
+      document.getElementById('avinv').value.trim(),
+
+    quantity:
+      Number(document.getElementById('avqty').value||1),
+
+    condition:
+      document.getElementById('avcond').value,
+
+    location:
+      document.getElementById('avloc').value.trim(),
+
+    user:
+      document.getElementById('avuser').value.trim(),
+
+    purpose:
+      document.getElementById('avpurpose').value.trim(),
+
+    notes:
+      document.getElementById('avnote').value.trim()
+
+  };
+
+  if(!x.name){
+
+    alert('اكتب اسم الجهاز');
+
     return;
+  }
 
-  db[type] =
-    db[type].filter(x => x.id !== id);
+  db.avRecords.push(x);
 
-  saveDB();
+  save();
+
+  document.getElementById('avno').value='';
+  document.getElementById('avname').value='';
+  document.getElementById('avinv').value='';
+  document.getElementById('avloc').value='';
+  document.getElementById('avuser').value='';
+  document.getElementById('avpurpose').value='';
+  document.getElementById('avnote').value='';
+
+  alert('تم حفظ السجل');
 }
 
+
+function renderAV(){
+
+  document.getElementById('avBody').innerHTML=
+    db.avRecords.map(x=>`
+
+      <tr>
+
+        <td>${esc(x.no)}</td>
+        <td>${esc(x.date)}</td>
+        <td>${esc(x.name)}</td>
+        <td>${esc(x.type)}</td>
+        <td>${esc(x.inventory)}</td>
+        <td>${esc(x.quantity)}</td>
+        <td>${esc(x.condition)}</td>
+        <td>${esc(x.location)}</td>
+        <td>${esc(x.user)}</td>
+        <td>${esc(x.purpose)}</td>
+        <td>${esc(x.notes)}</td>
+
+        <td class="no-print">
+
+          <button class="danger"
+            onclick="delAV('${x.id}')">
+            حذف
+          </button>
+
+        </td>
+
+      </tr>
+
+    `).join('');
+
+}
+
+
+function delAV(id){
+
+  if(!confirm('حذف السجل؟'))return;
+
+  db.avRecords=
+    db.avRecords.filter(x=>x.id!==id);
+
+  save();
+}
+
+
+/* =========================
+   النسخ الاحتياطي
+========================= */
 
 function backup(){
 
-  const blob =
-    new Blob(
-      [JSON.stringify(db,null,2)],
-      {type:"application/json"}
-    );
+  const data=JSON.stringify(
+    db,
+    null,
+    2
+  );
 
-  const a =
-    document.createElement("a");
+  const blob=new Blob(
+    [data],
+    {type:'application/json'}
+  );
 
-  a.href =
-    URL.createObjectURL(blob);
+  const url=URL.createObjectURL(blob);
 
-  a.download =
-    "نسخة-منصة-المخبري-" +
-    today() +
-    ".json";
+  const a=document.createElement('a');
+
+  a.href=url;
+
+  a.download=
+    'منصة-المخبري-نسخة-احتياطية-'+
+    today()+'.json';
+
+  document.body.appendChild(a);
 
   a.click();
 
-  URL.revokeObjectURL(a.href);
+  a.remove();
+
+  URL.revokeObjectURL(url);
 }
 
 
-function restore(e){
+function restore(event){
 
-  const f =
-    e.target.files[0];
+  const file=
+    event.target.files[0];
 
-  if(!f)return;
+  if(!file)return;
 
-  const r =
-    new FileReader();
+  const reader=new FileReader();
 
-  r.onload = () => {
+  reader.onload=function(){
 
     try{
 
-      db =
-        Object.assign(
-          JSON.parse(JSON.stringify(DB0)),
-          JSON.parse(r.result)
-        );
+      const data=
+        JSON.parse(reader.result);
 
-      saveDB();
+      if(!data ||
+         !Array.isArray(data.inventory)){
 
-      alert("تم الاسترجاع");
+        throw new Error('invalid');
 
-    }catch(err){
+      }
 
-      alert("ملف غير صالح");
+      db=Object.assign(
+        {},
+        EMPTY,
+        data
+      );
+
+      save();
+
+      alert('تم استرجاع البيانات بنجاح');
+
+    }catch(e){
+
+      alert(
+        'الملف غير صالح أو تالف'
+      );
 
     }
 
   };
 
-  r.readAsText(f);
+  reader.readAsText(file);
 }
 
 
 function clearAll(){
 
-  if(
-    confirm(
-      "سيتم حذف كل البيانات المحلية. هل أنت متأكد؟"
-    )
-  ){
+  if(!confirm(
+    'سيتم حذف جميع بيانات المنصة. هل أنت متأكد؟'
+  ))return;
 
-    localStorage.removeItem(KEY);
+  if(!confirm(
+    'تأكيد نهائي: سيتم فقدان البيانات غير المحفوظة في نسخة احتياطية.'
+  ))return;
 
-    db = loadDB();
+  db=
+    JSON.parse(
+      JSON.stringify(EMPTY)
+    );
 
-    refresh();
-  }
+  save();
+
+  alert('تم حذف جميع البيانات');
 }
 
 
+/* =========================
+   العرض العام
+========================= */
+
+function renderStats(){
+
+  document.getElementById('sInv').textContent=
+    db.inventory.length;
+
+  document.getElementById('sChem').textContent=
+    db.chemicals.length;
+
+  document.getElementById('sDaily').textContent=
+    db.daily.length;
+
+  document.getElementById('sReq').textContent=
+    db.requests.length;
+
+  document.getElementById('sProj').textContent=
+    db.projects.length;
+}
+
+
+function renderAll(){
+
+  renderStats();
+
+  renderCats();
+
+  renderInventory();
+
+  renderChem();
+
+  renderMoves();
+
+  renderSavedDaily();
+
+  renderRequests();
+
+  renderProjects();
+
+  renderAV();
+
+  renderProgress();
+
+}
+
+
+/* =========================
+   تشغيل أولي
+========================= */
+
 document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+  'DOMContentLoaded',
+  ()=>{
 
-    [
-      "iDate",
-      "cDate",
-      "mDate",
-      "dDate",
-      "pDate"
-    ].forEach(id => {
+    const dates=[
+      'idate',
+      'cdate',
+      'mdate',
+      'ddate',
+      'tdate',
+      'pdate',
+      'avdate'
+    ];
 
-      const el =
-        document.getElementById(id);
+    dates.forEach(x=>{
 
-      if(el)
-        el.value = today();
+      const e=document.getElementById(x);
 
-    });
-
-
-    [
-      "mTime",
-      "dTime",
-      "tTime"
-    ].forEach(id => {
-
-      const el =
-        document.getElementById(id);
-
-      if(el)
-        el.value = nowTime();
+      if(e)e.value=today();
 
     });
 
+    const times=[
+      'mtime',
+      'dtime',
+      'ttime'
+    ];
 
-    const td =
-      document.getElementById("tDate");
+    times.forEach(x=>{
 
-    if(td)
-      td.value = today();
+      const e=document.getElementById(x);
 
+      if(e)e.value=nowTime();
 
-    renderCurrentDaily();
+    });
 
-    renderProgress();
-
-    refresh();
+    renderAll();
 
   }
 );
@@ -2626,4 +2627,4 @@ document.addEventListener(
 </script>
 
 </body>
-</html>
+</html> 
