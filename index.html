@@ -1,288 +1,593 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0d3b5c">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>منصة المخبري</title>
 
 <style>
-*{box-sizing:border-box}
-:root{
---main:#0d3b5c;
---blue:#1677a8;
---cyan:#20a8c9;
---green:#198754;
---red:#c0392b;
---orange:#e09a20;
---bg:#eef4f8;
---card:#fff;
---text:#17232d;
---muted:#687784;
---border:#d8e3ea;
---shadow:0 8px 25px rgba(13,59,92,.10)
+*{
+  box-sizing:border-box;
 }
+
 body{
-margin:0;
-font-family:Tahoma,Arial,sans-serif;
-background:var(--bg);
-color:var(--text)
+  margin:0;
+  font-family:Tahoma,Arial,sans-serif;
+  background:#f3f7fb;
+  color:#172033;
 }
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
+
+button,input,select,textarea{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
 
 header{
-background:linear-gradient(135deg,#092e47,#176f9e);
-color:white;
-padding:15px;
-position:sticky;
-top:0;
-z-index:100;
-box-shadow:0 4px 18px #0003
+  background:linear-gradient(135deg,#073b5c,#12658c);
+  color:white;
+  padding:18px;
+  box-shadow:0 4px 15px #0002;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
-.header{
-max-width:1450px;
-margin:auto
+
+.header-inner{
+  max-width:1250px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
 }
-.brand{
-display:flex;
-align-items:center;
-gap:12px
-}
+
 .logo{
-width:50px;
-height:50px;
-border-radius:15px;
-background:#ffffff20;
-display:grid;
-place-items:center;
-font-size:28px
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
-.brand h1{margin:0;font-size:22px}
-.brand small{opacity:.8}
+
+.logo-icon{
+  width:55px;
+  height:55px;
+  border-radius:18px;
+  background:#ffffff22;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+}
+
+.logo h1{
+  margin:0;
+  font-size:23px;
+}
+
+.logo small{
+  opacity:.85;
+}
+
+.menu-btn{
+  background:#ffffff22;
+  color:white;
+  border:1px solid #ffffff44;
+  border-radius:12px;
+  padding:10px 15px;
+  font-size:22px;
+}
 
 nav{
-display:flex;
-gap:7px;
-overflow-x:auto;
-margin-top:12px;
-padding-bottom:3px
+  max-width:1250px;
+  margin:12px auto 0;
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding-bottom:2px;
 }
+
 nav button{
-border:1px solid #ffffff30;
-background:#ffffff12;
-color:white;
-border-radius:9px;
-padding:9px 12px;
-white-space:nowrap
+  flex:0 0 auto;
+  border:0;
+  background:#ffffff18;
+  color:white;
+  padding:10px 14px;
+  border-radius:10px;
 }
-nav button:hover,nav button.active{
-background:white;
-color:var(--main)
+
+nav button:hover{
+  background:#ffffff30;
 }
 
 main{
-max-width:1450px;
-margin:auto;
-padding:20px 14px
+  max-width:1250px;
+  margin:auto;
+  padding:20px 14px 60px;
 }
-.section{display:none}
-.section.active{display:block}
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
 
 .hero{
-background:linear-gradient(135deg,#fff,#e8f6fa);
-border:1px solid var(--border);
-border-radius:18px;
-padding:22px;
-margin-bottom:18px;
-box-shadow:var(--shadow)
+  border-radius:28px;
+  padding:28px;
+  background:
+    radial-gradient(circle at 15% 20%,#ffffff55 0 45px,transparent 46px),
+    radial-gradient(circle at 85% 70%,#ffffff33 0 70px,transparent 71px),
+    linear-gradient(135deg,#0a5278,#1487a9);
+  color:white;
+  box-shadow:0 12px 35px #06415c33;
+  overflow:hidden;
+  position:relative;
 }
-.hero h2{margin:0 0 8px;color:var(--main)}
-.hero p{margin:0;color:var(--muted)}
 
-.grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:14px
+.hero:before{
+  content:"🔬  🧪  ⚛️  📚  💻";
+  position:absolute;
+  font-size:45px;
+  opacity:.12;
+  left:20px;
+  bottom:10px;
+  letter-spacing:20px;
 }
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:550px){.grid{grid-template-columns:1fr}}
 
-.card{
-background:white;
-border:1px solid var(--border);
-border-radius:16px;
-padding:18px;
-margin-bottom:16px;
-box-shadow:var(--shadow)
+.hero h2{
+  font-size:30px;
+  margin:0 0 8px;
 }
-.card h3{
-margin:0 0 14px;
-color:var(--main)
+
+.hero p{
+  margin:5px 0;
+  opacity:.9;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin:18px 0;
 }
 
 .stat{
-background:white;
-border:1px solid var(--border);
-border-radius:15px;
-padding:18px;
-box-shadow:var(--shadow)
-}
-.stat-number{
-font-size:30px;
-font-weight:bold;
-color:var(--blue)
-}
-.stat-title{
-color:var(--muted);
-margin-top:5px
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 5px 18px #0000000d;
+  text-align:center;
 }
 
-.form{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:12px
+.stat .number{
+  font-size:30px;
+  font-weight:bold;
+  color:#08729b;
 }
-@media(max-width:900px){.form{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:550px){.form{grid-template-columns:1fr}}
 
-.field label{
-display:block;
-font-size:13px;
-color:#52616d;
-margin-bottom:5px
+.stat span{
+  color:#687386;
 }
-.field.full{grid-column:1/-1}
+
+/* ===== الفهرس البصري ===== */
+
+.catalog{
+  margin-top:22px;
+}
+
+.catalog-title{
+  text-align:center;
+  margin:15px 0 20px;
+}
+
+.catalog-title h2{
+  margin:0 0 7px;
+  font-size:27px;
+}
+
+.catalog-title p{
+  margin:0;
+  color:#667085;
+}
+
+.catalog-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:17px;
+}
+
+.catalog-card{
+  min-height:175px;
+  position:relative;
+  overflow:hidden;
+  border-radius:23px;
+  padding:20px 12px;
+  text-align:center;
+  background:linear-gradient(145deg,#ffffff,#edf7fc);
+  border:1px solid #dceaf2;
+  box-shadow:0 8px 25px #0000000d;
+  transition:.35s;
+  cursor:pointer;
+}
+
+.catalog-card:hover{
+  transform:translateY(-8px) scale(1.025);
+  box-shadow:0 16px 32px #0000001a;
+}
+
+.catalog-card:active{
+  transform:scale(.97);
+}
+
+.catalog-card:after{
+  content:"";
+  position:absolute;
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:#ffffff88;
+  top:-55px;
+  left:-45px;
+}
+
+.catalog-icon{
+  display:block;
+  font-size:60px;
+  margin:5px 0 12px;
+  animation:floatIcon 3s ease-in-out infinite;
+  position:relative;
+  z-index:2;
+}
+
+.catalog-card:nth-child(2) .catalog-icon{animation-delay:.3s}
+.catalog-card:nth-child(3) .catalog-icon{animation-delay:.6s}
+.catalog-card:nth-child(4) .catalog-icon{animation-delay:.9s}
+.catalog-card:nth-child(5) .catalog-icon{animation-delay:1.2s}
+.catalog-card:nth-child(6) .catalog-icon{animation-delay:1.5s}
+.catalog-card:nth-child(7) .catalog-icon{animation-delay:1.8s}
+.catalog-card:nth-child(8) .catalog-icon{animation-delay:2.1s}
+
+@keyframes floatIcon{
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-8px) rotate(2deg)}
+}
+
+.catalog-card h3{
+  margin:5px 0 7px;
+  font-size:18px;
+}
+
+.catalog-card p{
+  margin:0;
+  color:#697586;
+  font-size:13px;
+}
+
+/* ===== العناوين ===== */
+
+.page-title{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:0 5px 18px #0000000b;
+}
+
+.page-title h2{
+  margin:0 0 5px;
+}
+
+.page-title p{
+  margin:0;
+  color:#687386;
+}
+
+/* ===== النماذج ===== */
+
+.form-card{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 5px 18px #0000000b;
+  margin-bottom:18px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  font-size:14px;
+  margin-bottom:5px;
+}
 
 input,select,textarea{
-width:100%;
-border:1px solid #c9d7df;
-border-radius:9px;
-padding:10px;
-background:white;
-outline:none
+  width:100%;
+  border:1px solid #d6dee8;
+  border-radius:10px;
+  padding:11px;
+  background:#fff;
+  outline:none;
 }
+
 input:focus,select:focus,textarea:focus{
-border-color:var(--cyan);
-box-shadow:0 0 0 3px #20a8c91c
+  border-color:#1682a5;
+  box-shadow:0 0 0 3px #1682a515;
 }
-textarea{min-height:90px;resize:vertical}
+
+textarea{
+  min-height:80px;
+  resize:vertical;
+}
+
+.full{
+  grid-column:1/-1;
+}
 
 .actions{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-top:15px
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
 }
+
 .btn{
-border:0;
-border-radius:9px;
-padding:10px 15px;
-color:white;
-background:var(--blue)
+  border:0;
+  border-radius:10px;
+  padding:10px 15px;
+  background:#116b91;
+  color:white;
 }
-.btn.green{background:var(--green)}
-.btn.red{background:var(--red)}
-.btn.orange{background:var(--orange)}
-.btn.gray{background:#647687}
+
+.btn:hover{
+  filter:brightness(.95);
+}
+
+.btn.secondary{
+  background:#667085;
+}
+
+.btn.green{
+  background:#16845a;
+}
+
+.btn.red{
+  background:#c43d48;
+}
+
 .btn.light{
-background:#edf4f7;
-color:var(--main);
-border:1px solid var(--border)
+  background:#eaf2f7;
+  color:#17435a;
 }
+
+/* ===== الجداول ===== */
 
 .table-wrap{
-overflow:auto;
-border:1px solid var(--border);
-border-radius:12px
+  overflow:auto;
+  background:white;
+  border-radius:18px;
+  box-shadow:0 5px 18px #0000000b;
 }
+
 table{
-width:100%;
-border-collapse:collapse;
-min-width:850px
+  width:100%;
+  border-collapse:collapse;
+  min-width:800px;
 }
-th,td{
-padding:9px;
-border-bottom:1px solid var(--border);
-text-align:right
-}
+
 th{
-background:#edf5f8;
-color:var(--main)
-}
-.empty{
-text-align:center;
-padding:25px;
-color:var(--muted)
+  background:#0c5d7d;
+  color:white;
+  padding:11px;
+  white-space:nowrap;
 }
 
-.categories{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-bottom:15px
-}
-.categories button{
-background:white;
-border:1px solid var(--border);
-border-radius:20px;
-padding:9px 13px
-}
-.categories button.active{
-background:var(--blue);
-color:white
+td{
+  padding:10px;
+  border-bottom:1px solid #edf0f3;
+  text-align:center;
 }
 
-.inventory-visual{
-background:
-radial-gradient(circle at 15% 20%,#20a8c91c 0 80px,transparent 81px),
-radial-gradient(circle at 85% 75%,#1677a81c 0 110px,transparent 111px),
-linear-gradient(135deg,#fff,#eef9fb)
+tr:hover td{
+  background:#f7fbfd;
 }
 
-.icons{
-display:grid;
-grid-template-columns:repeat(6,1fr);
-gap:10px
-}
-@media(max-width:900px){.icons{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:550px){.icons{grid-template-columns:repeat(2,1fr)}}
-.icon{
-background:white;
-border:1px solid var(--border);
-border-radius:14px;
-padding:15px;
-text-align:center
-}
-.icon b{
-display:block;
-font-size:26px;
-margin-bottom:5px
-}
-.icon span{font-size:12px;color:var(--muted)}
+/* ===== بطاقات ===== */
 
-.badge{
-display:inline-block;
-padding:4px 9px;
-border-radius:20px;
-background:#e9f4f8;
-color:var(--main);
-font-size:12px
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
 }
 
-footer{
-text-align:center;
-padding:30px;
-color:var(--muted)
+.info-card{
+  background:white;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 5px 18px #0000000b;
+}
+
+.info-card h3{
+  margin-top:0;
+}
+
+/* ===== الفئات ===== */
+
+.category-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.category-buttons button{
+  border:0;
+  border-radius:12px;
+  padding:10px 14px;
+  background:#e7f1f6;
+  color:#17516a;
+}
+
+.category-buttons button.active{
+  background:#116b91;
+  color:white;
+}
+
+/* ===== إشعار ===== */
+
+#toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translateX(-50%) translateY(100px);
+  background:#172033;
+  color:white;
+  padding:13px 20px;
+  border-radius:12px;
+  opacity:0;
+  transition:.3s;
+  z-index:9999;
+}
+
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* ===== الجوال ===== */
+
+@media(max-width:950px){
+  .catalog-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .form-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:600px){
+  header{
+    padding:12px;
+  }
+
+  .header-inner{
+    align-items:flex-start;
+  }
+
+  .logo h1{
+    font-size:18px;
+  }
+
+  .logo-icon{
+    width:45px;
+    height:45px;
+    font-size:25px;
+  }
+
+  main{
+    padding:13px 9px 40px;
+  }
+
+  .hero{
+    padding:22px 17px;
+  }
+
+  .hero h2{
+    font-size:24px;
+  }
+
+  .catalog-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
+  }
+
+  .catalog-card{
+    min-height:150px;
+    padding:13px 5px;
+    border-radius:18px;
+  }
+
+  .catalog-icon{
+    font-size:48px;
+  }
+
+  .catalog-card h3{
+    font-size:15px;
+  }
+
+  .catalog-card p{
+    font-size:11px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    gap:8px;
+  }
+
+  .stat{
+    padding:13px 5px;
+  }
+
+  .stat .number{
+    font-size:24px;
+  }
 }
 
 @media print{
-header,nav,.no-print,.actions{display:none!important}
-.section{display:none!important}
-.section.printing{display:block!important}
-main{margin:0;padding:0}
-.card{box-shadow:none;border:0}
-table{font-size:11px}
+  header,
+  nav,
+  .actions,
+  .form-card,
+  .catalog,
+  .hero,
+  .stats{
+    display:none!important;
+  }
+
+  main{
+    padding:0;
+  }
+
+  .section{
+    display:none!important;
+  }
+
+  .section.printing{
+    display:block!important;
+  }
+
+  body{
+    background:white;
+  }
+
+  table{
+    min-width:100%;
+  }
 }
 </style>
 </head>
@@ -290,2156 +595,2262 @@ table{font-size:11px}
 <body>
 
 <header>
-<div class="header">
 
-<div class="brand">
-<div class="logo">🧪</div>
-<div>
-<h1>منصة المخبري</h1>
-<small id="schoolHeader">إدارة المخبر المدرسي</small>
-</div>
-</div>
+  <div class="header-inner">
 
-<nav id="nav"></nav>
+    <div class="logo">
+      <div class="logo-icon">🔬</div>
+      <div>
+        <h1>منصة المخبري</h1>
+        <small>متوسطة قايد أحمد – غليزان</small>
+      </div>
+    </div>
 
-</div>
+    <button class="menu-btn" onclick="goHome()">⌂</button>
+
+  </div>
+
+  <nav>
+
+    <button onclick="showSection('home')">🏠 الرئيسية</button>
+    <button onclick="showSection('inventory')">📦 الجرد</button>
+    <button onclick="showSection('chemicals')">🧪 الكيمياء</button>
+    <button onclick="showSection('movements')">🔄 الحركات</button>
+    <button onclick="showSection('teachers')">👨‍🏫 الأساتذة</button>
+    <button onclick="showSection('requests')">📝 الطلبات</button>
+    <button onclick="showSection('experiments')">🔬 التجارب</button>
+    <button onclick="showSection('daily')">📋 التقارير اليومية</button>
+    <button onclick="showSection('progress')">📚 التدرج</button>
+    <button onclick="showSection('reports')">📊 التقارير</button>
+    <button onclick="showSection('invoices')">🧾 الفواتير</button>
+    <button onclick="showSection('registers')">📒 السجلات</button>
+    <button onclick="showSection('settings')">⚙️ الإعدادات</button>
+
+  </nav>
+
 </header>
 
 <main>
 
-<!-- الرئيسية -->
+<!-- ================= الرئيسية ================= -->
+
 <section id="home" class="section active">
 
-<div class="hero">
-<h2>🧪 لوحة قيادة المخبر</h2>
-<p>نظام متكامل لتسيير وتنظيم مخبر المؤسسة.</p>
-</div>
+  <div class="hero">
 
-<div class="grid" id="dashboard"></div>
+    <h2>مرحبًا بك في منصة المخبري 👋</h2>
 
-<div class="card">
-<h3>الوصول السريع</h3>
+    <p>
+      نظام متكامل لتسيير أعمال المخبر والعتاد والتجارب والجرد والتقارير.
+    </p>
 
-<div class="actions">
-<button class="btn" onclick="openPage('inventory')">📦 الجرد</button>
-<button class="btn" onclick="openPage('chemicals')">🧪 الكيميائيات</button>
-<button class="btn green" onclick="openPage('movements')">🔄 الحركات</button>
-<button class="btn" onclick="openPage('experiments')">🔬 التجارب</button>
-<button class="btn" onclick="openPage('daily')">📋 التقارير اليومية</button>
-<button class="btn" onclick="openPage('progress')">📚 التدرج</button>
-<button class="btn gray" onclick="openPage('reports')">📊 التقارير</button>
-</div>
-</div>
+    <p>
+      🔬 التنظيم • 📚 الدراسة • 🧪 التجارب • 📦 الجرد
+    </p>
+
+  </div>
+
+  <div class="stats">
+
+    <div class="stat">
+      <div class="number" id="statInventory">0</div>
+      <span>مواد الجرد</span>
+    </div>
+
+    <div class="stat">
+      <div class="number" id="statChemicals">0</div>
+      <span>المواد الكيميائية</span>
+    </div>
+
+    <div class="stat">
+      <div class="number" id="statTeachers">0</div>
+      <span>الأساتذة</span>
+    </div>
+
+    <div class="stat">
+      <div class="number" id="statReports">0</div>
+      <span>التقارير</span>
+    </div>
+
+  </div>
+
+  <!-- الفهرس البصري داخل الواجهة الرئيسية -->
+
+  <div class="catalog">
+
+    <div class="catalog-title">
+
+      <h2>🔬 فهرس منصة المخبري</h2>
+
+      <p>
+        اختر المجال الذي تريد الدخول إليه
+      </p>
+
+    </div>
+
+    <div class="catalog-grid">
+
+      <div class="catalog-card" onclick="showSection('chemicals')">
+        <span class="catalog-icon">🧪</span>
+        <h3>المخبر والكيمياء</h3>
+        <p>المواد والتجارب الكيميائية</p>
+      </div>
+
+      <div class="catalog-card" onclick="showInventoryCategory('معدات الفيزياء')">
+        <span class="catalog-icon">⚛️</span>
+        <h3>الفيزياء</h3>
+        <p>أجهزة وأدوات الفيزياء</p>
+      </div>
+
+      <div class="catalog-card" onclick="showInventoryCategory('معدات العلوم')">
+        <span class="catalog-icon">🌱</span>
+        <h3>العلوم</h3>
+        <p>معدات وتجارب العلوم</p>
+      </div>
+
+      <div class="catalog-card" onclick="showInventoryCategory('معدات الإعلام الآلي')">
+        <span class="catalog-icon">💻</span>
+        <h3>الإعلام الآلي</h3>
+        <p>الحواسيب والتجهيزات</p>
+      </div>
+
+      <div class="catalog-card" onclick="showInventoryCategory('معدات الصوتيات')">
+        <span class="catalog-icon">🎧</span>
+        <h3>الصوتيات</h3>
+        <p>معدات الصوت والتسجيل</p>
+      </div>
+
+      <div class="catalog-card" onclick="showInventoryCategory('الأجهزة السمعية البصرية')">
+        <span class="catalog-icon">📺</span>
+        <h3>السمعي البصري</h3>
+        <p>أجهزة العرض والوسائط</p>
+      </div>
+
+      <div class="catalog-card" onclick="showSection('experiments')">
+        <span class="catalog-icon">📚</span>
+        <h3>الدراسة والتجارب</h3>
+        <p>الدروس والتجارب التطبيقية</p>
+      </div>
+
+      <div class="catalog-card" onclick="showInventoryCategory('الأدوات والتجهيزات العامة')">
+        <span class="catalog-icon">📦</span>
+        <h3>الجرد والعتاد</h3>
+        <p>تسيير وتجهيزات المخبر</p>
+      </div>
+
+    </div>
+
+  </div>
 
 </section>
 
 
-<!-- الأساتذة والأقسام -->
-<section id="teachers" class="section">
+<!-- ================= الجرد ================= -->
 
-<div class="hero">
-<h2>👨‍🏫 الأساتذة والأقسام</h2>
-<p>قاعدة بيانات الأساتذة والأقسام.</p>
-</div>
-
-<div class="grid">
-
-<div class="card">
-<h3>إضافة أستاذ</h3>
-
-<div class="form">
-
-<div class="field">
-<label>الاسم واللقب</label>
-<input id="teacherName">
-</div>
-
-<div class="field">
-<label>المادة</label>
-<input id="teacherSubject">
-</div>
-
-<div class="field">
-<label>الهاتف</label>
-<input id="teacherPhone">
-</div>
-
-</div>
-
-<div class="actions">
-<button class="btn green" onclick="addTeacher()">حفظ الأستاذ</button>
-</div>
-</div>
-
-
-<div class="card">
-<h3>إضافة قسم</h3>
-
-<div class="form">
-
-<div class="field">
-<label>المستوى</label>
-<select id="classLevel">
-<option>1 متوسط</option>
-<option>2 متوسط</option>
-<option>3 متوسط</option>
-<option>4 متوسط</option>
-</select>
-</div>
-
-<div class="field">
-<label>اسم القسم</label>
-<input id="className">
-</div>
-
-</div>
-
-<div class="actions">
-<button class="btn green" onclick="addClass()">حفظ القسم</button>
-</div>
-</div>
-
-</div>
-
-<div class="grid">
-
-<div class="card">
-<h3>الأساتذة</h3>
-<div id="teachersTable"></div>
-</div>
-
-<div class="card">
-<h3>الأقسام</h3>
-<div id="classesTable"></div>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- الجرد -->
 <section id="inventory" class="section">
 
-<div class="hero inventory-visual">
-<h2>📦 الجرد والتجهيزات</h2>
-<p>إدارة جميع تجهيزات المخبر وتصنيفها.</p>
-</div>
+  <div class="page-title">
+    <h2>📦 جرد وتجهيزات المخبر</h2>
+    <p>تسجيل ومتابعة جميع المعدات حسب الفئة</p>
+  </div>
 
-<div class="icons no-print">
+  <div class="category-buttons">
 
-<div class="icon"><b>⚛️</b><span>معدات الفيزياء</span></div>
-<div class="icon"><b>🌱</b><span>معدات العلوم</span></div>
-<div class="icon"><b>💻</b><span>الإعلام الآلي</span></div>
-<div class="icon"><b>🔊</b><span>الصوتيات</span></div>
-<div class="icon"><b>📺</b><span>السمعي البصري</span></div>
-<div class="icon"><b>🧰</b><span>التجهيزات العامة</span></div>
+    <button onclick="setCategory('معدات الفيزياء')">⚛️ الفيزياء</button>
 
-</div>
+    <button onclick="setCategory('معدات العلوم')">🌱 العلوم</button>
 
-<div class="card">
+    <button onclick="setCategory('معدات الإعلام الآلي')">💻 الإعلام الآلي</button>
 
-<div class="categories" id="categories"></div>
+    <button onclick="setCategory('معدات الصوتيات')">🎧 الصوتيات</button>
 
-<div class="form">
+    <button onclick="setCategory('الأجهزة السمعية البصرية')">📺 السمعي البصري</button>
 
-<div class="field">
-<label>رقم الجرد</label>
-<input id="invNumber">
-</div>
+    <button onclick="setCategory('الأدوات والتجهيزات العامة')">📦 العامة</button>
 
-<div class="field">
-<label>اسم العتاد</label>
-<input id="invName">
-</div>
+  </div>
 
-<div class="field">
-<label>الكمية</label>
-<input id="invQuantity" type="number" min="0" value="1">
-</div>
+  <div class="form-card">
 
-<div class="field">
-<label>الحالة</label>
-<select id="invCondition">
-<option>جيدة</option>
-<option>متوسطة</option>
-<option>تحتاج صيانة</option>
-<option>غير صالحة</option>
-</select>
-</div>
+    <div class="form-grid">
 
-<div class="field">
-<label>مكان التخزين</label>
-<input id="invLocation">
-</div>
+      <div>
+        <label>رقم الجرد</label>
+        <input id="invNumber">
+      </div>
 
-<div class="field">
-<label>التاريخ</label>
-<input id="invDate" type="date">
-</div>
+      <div>
+        <label>اسم العتاد</label>
+        <input id="invName">
+      </div>
 
-<div class="field full">
-<label>ملاحظات</label>
-<textarea id="invNotes"></textarea>
-</div>
+      <div>
+        <label>الفئة</label>
+        <select id="invCategory">
+          <option>معدات الفيزياء</option>
+          <option>معدات العلوم</option>
+          <option>معدات الإعلام الآلي</option>
+          <option>معدات الصوتيات</option>
+          <option>الأجهزة السمعية البصرية</option>
+          <option>الأدوات والتجهيزات العامة</option>
+        </select>
+      </div>
 
-</div>
+      <div>
+        <label>الكمية</label>
+        <input id="invQuantity" type="number" value="1">
+      </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveInventory()">💾 حفظ العتاد</button>
-<button class="btn gray" onclick="clearInventory()">جديد</button>
-<button class="btn light" onclick="printPage('inventory')">🖨️ طباعة</button>
-</div>
+      <div>
+        <label>الحالة</label>
+        <select id="invCondition">
+          <option>جيد</option>
+          <option>متوسط</option>
+          <option>معطل</option>
+          <option>يحتاج صيانة</option>
+        </select>
+      </div>
 
-</div>
+      <div>
+        <label>مكان التخزين</label>
+        <input id="invLocation">
+      </div>
 
-<div class="card">
-<h3 id="inventoryTitle">معدات الفيزياء</h3>
-<div id="inventoryTable"></div>
-</div>
+      <div>
+        <label>التاريخ</label>
+        <input id="invDate" type="date">
+      </div>
+
+      <div class="full">
+        <label>ملاحظات</label>
+        <textarea id="invNotes"></textarea>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button class="btn green" onclick="addInventory()">➕ إضافة إلى الجرد</button>
+      <button class="btn light" onclick="printCurrentTable()">🖨️ طباعة</button>
+    </div>
+
+  </div>
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>رقم الجرد</th>
+          <th>العتاد</th>
+          <th>الفئة</th>
+          <th>الكمية</th>
+          <th>الحالة</th>
+          <th>المكان</th>
+          <th>التاريخ</th>
+          <th>ملاحظات</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="inventoryTable"></tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- الكيميائيات -->
+<!-- ================= الكيمياء ================= -->
+
 <section id="chemicals" class="section">
 
-<div class="hero">
-<h2>🧪 مخزون المواد الكيميائية</h2>
-<p>تتبع الكمية الأصلية والمستعملة والمتبقية.</p>
-</div>
+  <div class="page-title">
+    <h2>🧪 مخزون المواد الكيميائية</h2>
+    <p>المجموع، المستعمل، والكمية المتبقية</p>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>اسم المادة</label>
-<input id="chemName">
-</div>
+      <div>
+        <label>اسم المادة</label>
+        <input id="chemName">
+      </div>
 
-<div class="field">
-<label>الكمية الأصلية</label>
-<input id="chemTotal" type="number" step="0.01">
-</div>
+      <div>
+        <label>الكمية الإجمالية</label>
+        <input id="chemTotal" type="number" step="0.01">
+      </div>
 
-<div class="field">
-<label>الكمية المستعملة</label>
-<input id="chemUsed" type="number" step="0.01" value="0">
-</div>
+      <div>
+        <label>الكمية المستعملة</label>
+        <input id="chemUsed" type="number" step="0.01" value="0">
+      </div>
 
-<div class="field">
-<label>الوحدة</label>
-<input id="chemUnit" placeholder="g / ml / L">
-</div>
+      <div>
+        <label>الوحدة</label>
+        <input id="chemUnit" placeholder="g / ml / L ...">
+      </div>
 
-<div class="field">
-<label>استعملها الأستاذ</label>
-<select id="chemTeacher"></select>
-</div>
+      <div>
+        <label>استعملها الأستاذ</label>
+        <input id="chemTeacher">
+      </div>
 
-<div class="field">
-<label>التاريخ</label>
-<input id="chemDate" type="date">
-</div>
+      <div>
+        <label>التاريخ</label>
+        <input id="chemDate" type="date">
+      </div>
 
-<div class="field full">
-<label>ملاحظات</label>
-<textarea id="chemNotes"></textarea>
-</div>
+      <div class="full">
+        <label>ملاحظات</label>
+        <textarea id="chemNotes"></textarea>
+      </div>
 
-</div>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveChemical()">حفظ المادة</button>
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addChemical()">➕ إضافة المادة</button>
+    </div>
 
-</div>
+  </div>
 
-<div class="card">
-<div id="chemicalTable"></div>
-</div>
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>المادة</th>
+          <th>الإجمالي</th>
+          <th>المستعمل</th>
+          <th>المتبقي</th>
+          <th>الوحدة</th>
+          <th>الأستاذ</th>
+          <th>التاريخ</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="chemTable"></tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- الحركات -->
+<!-- ================= الحركات ================= -->
+
 <section id="movements" class="section">
 
-<div class="hero">
-<h2>🔄 سجل الحركات</h2>
-<p>إخراج وإرجاع الأدوات مع التاريخ والساعة.</p>
-</div>
+  <div class="page-title">
+    <h2>🔄 سجل حركة العتاد</h2>
+    <p>تسجيل كل حركة مع التاريخ والوقت</p>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>التاريخ</label>
-<input id="moveDate" type="date">
-</div>
+      <div>
+        <label>اسم العتاد</label>
+        <input id="movEquipment">
+      </div>
 
-<div class="field">
-<label>الوقت</label>
-<input id="moveTime" type="time">
-</div>
+      <div>
+        <label>نوع الحركة</label>
+        <select id="movType">
+          <option>إخراج</option>
+          <option>إرجاع</option>
+          <option>صيانة</option>
+          <option>استلام</option>
+        </select>
+      </div>
 
-<div class="field">
-<label>الأداة</label>
-<input id="moveEquipment">
-</div>
+      <div>
+        <label>الأستاذ</label>
+        <input id="movTeacher">
+      </div>
 
-<div class="field">
-<label>العملية</label>
-<select id="moveType">
-<option>إخراج</option>
-<option>إرجاع</option>
-</select>
-</div>
+      <div>
+        <label>القسم</label>
+        <input id="movClass">
+      </div>
 
-<div class="field">
-<label>الأستاذ</label>
-<select id="moveTeacher"></select>
-</div>
+      <div>
+        <label>التاريخ</label>
+        <input id="movDate" type="date">
+      </div>
 
-<div class="field">
-<label>القسم</label>
-<select id="moveClass"></select>
-</div>
+      <div>
+        <label>الوقت</label>
+        <input id="movTime" type="time">
+      </div>
 
-<div class="field">
-<label>الكمية</label>
-<input id="moveQuantity" type="number" min="1" value="1">
-</div>
+      <div>
+        <label>الكمية</label>
+        <input id="movQuantity" type="number" value="1">
+      </div>
 
-<div class="field">
-<label>ملاحظات</label>
-<input id="moveNotes">
-</div>
+      <div class="full">
+        <label>ملاحظات</label>
+        <textarea id="movNotes"></textarea>
+      </div>
 
-</div>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveMovement()">حفظ الحركة</button>
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addMovement()">➕ تسجيل الحركة</button>
+    </div>
 
-</div>
+  </div>
 
-<div class="card">
-<div id="movementTable"></div>
-</div>
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>العتاد</th>
+          <th>الحركة</th>
+          <th>الأستاذ</th>
+          <th>القسم</th>
+          <th>التاريخ</th>
+          <th>الوقت</th>
+          <th>الكمية</th>
+          <th>ملاحظات</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="movementsTable"></tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- طلبات الأساتذة -->
+<!-- ================= الأساتذة ================= -->
+
+<section id="teachers" class="section">
+
+  <div class="page-title">
+    <h2>👨‍🏫 الأساتذة والأقسام</h2>
+  </div>
+
+  <div class="form-card">
+
+    <div class="form-grid">
+
+      <div>
+        <label>اسم الأستاذ</label>
+        <input id="teacherName">
+      </div>
+
+      <div>
+        <label>المادة</label>
+        <input id="teacherSubject">
+      </div>
+
+      <div>
+        <label>القسم</label>
+        <input id="teacherClass">
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button class="btn green" onclick="addTeacher()">➕ إضافة أستاذ</button>
+    </div>
+
+  </div>
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>الأستاذ</th>
+          <th>المادة</th>
+          <th>القسم</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="teachersTable"></tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<!-- ================= الطلبات ================= -->
+
 <section id="requests" class="section">
 
-<div class="hero">
-<h2>📝 طلبات الأساتذة</h2>
-</div>
+  <div class="page-title">
+    <h2>📝 طلبات الأساتذة</h2>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>الأستاذ</label>
-<select id="requestTeacher"></select>
-</div>
+      <div>
+        <label>الأستاذ</label>
+        <input id="reqTeacher">
+      </div>
 
-<div class="field">
-<label>القسم</label>
-<select id="requestClass"></select>
-</div>
+      <div>
+        <label>القسم</label>
+        <input id="reqClass">
+      </div>
 
-<div class="field">
-<label>التجربة</label>
-<input id="requestExperiment">
-</div>
+      <div>
+        <label>التاريخ</label>
+        <input id="reqDate" type="date">
+      </div>
 
-<div class="field">
-<label>التاريخ</label>
-<input id="requestDate" type="date">
-</div>
+      <div>
+        <label>الحالة</label>
+        <select id="reqStatus">
+          <option>جديد</option>
+          <option>قيد التحضير</option>
+          <option>تم التنفيذ</option>
+          <option>ملغى</option>
+        </select>
+      </div>
 
-<div class="field full">
-<label>الطلب</label>
-<textarea id="requestText"></textarea>
-</div>
+      <div class="full">
+        <label>الطلب</label>
+        <textarea id="reqText"></textarea>
+      </div>
 
-</div>
+      <div class="full">
+        <label>ملاحظات</label>
+        <textarea id="reqNotes"></textarea>
+      </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveRequest()">حفظ الطلب</button>
-</div>
+    </div>
 
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addRequest()">➕ تسجيل الطلب</button>
+    </div>
 
-<div class="card">
-<div id="requestTable"></div>
-</div>
+  </div>
+
+  <div class="table-wrap">
+
+    <table>
+      <thead>
+        <tr>
+          <th>الأستاذ</th>
+          <th>القسم</th>
+          <th>الطلب</th>
+          <th>التاريخ</th>
+          <th>الحالة</th>
+          <th>ملاحظات</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="requestsTable"></tbody>
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- التجارب -->
+<!-- ================= التجارب ================= -->
+
 <section id="experiments" class="section">
 
-<div class="hero">
-<h2>🔬 التجارب</h2>
-</div>
+  <div class="page-title">
+    <h2>🔬 التجارب والدراسة</h2>
+    <p>تنظيم التجارب والوسائل المطلوبة</p>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>المستوى</label>
-<select id="experimentLevel">
-<option>1 متوسط</option>
-<option>2 متوسط</option>
-<option>3 متوسط</option>
-<option>4 متوسط</option>
-</select>
-</div>
+      <div>
+        <label>المستوى</label>
+        <select id="expLevel">
+          <option>1 متوسط</option>
+          <option>2 متوسط</option>
+          <option>3 متوسط</option>
+          <option>4 متوسط</option>
+        </select>
+      </div>
 
-<div class="field">
-<label>الأسبوع</label>
-<input id="experimentWeek" type="number" min="1" max="40">
-</div>
+      <div>
+        <label>عنوان التجربة</label>
+        <input id="expTitle">
+      </div>
 
-<div class="field">
-<label>الدرس / التجربة</label>
-<input id="experimentTitle">
-</div>
+      <div>
+        <label>الأسبوع</label>
+        <input id="expWeek">
+      </div>
 
-<div class="field full">
-<label>المواد المطلوبة</label>
-<textarea id="experimentMaterials"></textarea>
-</div>
+      <div class="full">
+        <label>المواد المطلوبة</label>
+        <textarea id="expMaterials"></textarea>
+      </div>
 
-</div>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveExperiment()">حفظ التجربة</button>
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addExperiment()">➕ إضافة التجربة</button>
+    </div>
 
-</div>
+  </div>
 
-<div class="card">
-<div id="experimentTable"></div>
-</div>
+  <div class="table-wrap">
 
-</section>
+    <table>
 
+      <thead>
+        <tr>
+          <th>المستوى</th>
+          <th>التجربة</th>
+          <th>الأسبوع</th>
+          <th>المواد</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
 
-<!-- التحضير -->
-<section id="preparation" class="section">
+      <tbody id="experimentsTable"></tbody>
 
-<div class="hero">
-<h2>🧰 تحضير الأعمال التطبيقية</h2>
-</div>
+    </table>
 
-<div class="card">
-
-<div class="form">
-
-<div class="field">
-<label>التاريخ</label>
-<input id="prepDate" type="date">
-</div>
-
-<div class="field">
-<label>المستوى</label>
-<select id="prepLevel">
-<option>1 متوسط</option>
-<option>2 متوسط</option>
-<option>3 متوسط</option>
-<option>4 متوسط</option>
-</select>
-</div>
-
-<div class="field">
-<label>التجربة</label>
-<input id="prepExperiment">
-</div>
-
-<div class="field full">
-<label>الأدوات والمواد</label>
-<textarea id="prepTools"></textarea>
-</div>
-
-</div>
-
-<div class="actions">
-<button class="btn green" onclick="savePreparation()">حفظ التحضير</button>
-</div>
-
-</div>
-
-<div class="card">
-<div id="preparationTable"></div>
-</div>
+  </div>
 
 </section>
 
 
-<!-- التقرير اليومي -->
+<!-- ================= التقارير اليومية ================= -->
+
 <section id="daily" class="section">
 
-<div class="hero">
-<h2>📋 التقرير اليومي</h2>
-</div>
+  <div class="page-title">
+    <h2>📋 التقرير اليومي للأستاذ</h2>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>التاريخ</label>
-<input id="dailyDate" type="date">
-</div>
+      <div>
+        <label>الأستاذ</label>
+        <input id="dailyTeacher">
+      </div>
 
-<div class="field">
-<label>الوقت</label>
-<input id="dailyTime" type="time">
-</div>
+      <div>
+        <label>القسم</label>
+        <input id="dailyClass">
+      </div>
 
-<div class="field">
-<label>الأستاذ</label>
-<select id="dailyTeacher"></select>
-</div>
+      <div>
+        <label>التجربة</label>
+        <input id="dailyExperiment">
+      </div>
 
-<div class="field">
-<label>القسم</label>
-<select id="dailyClass"></select>
-</div>
+      <div>
+        <label>العتاد المستعمل</label>
+        <input id="dailyEquipment">
+      </div>
 
-<div class="field">
-<label>عنوان التجربة</label>
-<input id="dailyExperiment">
-</div>
+      <div>
+        <label>التاريخ</label>
+        <input id="dailyDate" type="date">
+      </div>
 
-<div class="field">
-<label>الأجهزة المستعملة</label>
-<input id="dailyEquipment">
-</div>
+      <div>
+        <label>الوقت</label>
+        <input id="dailyTime" type="time">
+      </div>
 
-<div class="field full">
-<label>ملاحظات</label>
-<textarea id="dailyNotes"></textarea>
-</div>
+      <div class="full">
+        <label>ملاحظات</label>
+        <textarea id="dailyNotes"></textarea>
+      </div>
 
-</div>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveDaily()">حفظ التقرير</button>
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addDaily()">➕ حفظ التقرير</button>
+    </div>
 
-</div>
+  </div>
 
-<div class="card">
-<div id="dailyTable"></div>
-</div>
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>الأستاذ</th>
+          <th>القسم</th>
+          <th>التجربة</th>
+          <th>العتاد</th>
+          <th>التاريخ</th>
+          <th>الوقت</th>
+          <th>ملاحظات</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="dailyTable"></tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- التدرج -->
+<!-- ================= التدرج ================= -->
+
 <section id="progress" class="section">
 
-<div class="hero">
-<h2>📚 التدرج السنوي</h2>
-</div>
+  <div class="page-title">
+    <h2>📚 التدرج السنوي</h2>
+    <p>متابعة البرنامج حسب المستوى والأسابيع</p>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>المستوى</label>
-<select id="progressLevel">
-<option>1 متوسط</option>
-<option>2 متوسط</option>
-<option>3 متوسط</option>
-<option>4 متوسط</option>
-</select>
-</div>
+      <div>
+        <label>المستوى</label>
+        <select id="progLevel">
+          <option>1 متوسط</option>
+          <option>2 متوسط</option>
+          <option>3 متوسط</option>
+          <option>4 متوسط</option>
+        </select>
+      </div>
 
-<div class="field">
-<label>الفصل</label>
-<select id="progressTerm">
-<option>الأول</option>
-<option>الثاني</option>
-<option>الثالث</option>
-</select>
-</div>
+      <div>
+        <label>الأسبوع</label>
+        <input id="progWeek">
+      </div>
 
-<div class="field">
-<label>الأسبوع</label>
-<input id="progressWeek" type="number">
-</div>
+      <div>
+        <label>الدرس</label>
+        <input id="progLesson">
+      </div>
 
-<div class="field">
-<label>الدرس</label>
-<input id="progressLesson">
-</div>
+      <div class="full">
+        <label>الوسائل والتجارب</label>
+        <textarea id="progMaterials"></textarea>
+      </div>
 
-</div>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveProgress()">حفظ</button>
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addProgress()">➕ إضافة</button>
+    </div>
 
-</div>
+  </div>
 
-<div class="card">
-<div id="progressTable"></div>
-</div>
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>المستوى</th>
+          <th>الأسبوع</th>
+          <th>الدرس</th>
+          <th>الوسائل</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="progressTable"></tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- التقارير -->
+<!-- ================= التقارير ================= -->
+
 <section id="reports" class="section">
 
-<div class="hero">
-<h2>📊 التقارير والإحصائيات</h2>
-</div>
+  <div class="page-title">
+    <h2>📊 التقارير والإحصائيات</h2>
+  </div>
 
-<div class="grid" id="reportStats"></div>
+  <div class="cards">
 
-<div class="card">
+    <div class="info-card">
+      <h3>📦 الجرد</h3>
+      <p>عدد المواد: <b id="reportInventory">0</b></p>
+    </div>
 
-<h3>إنشاء تقرير</h3>
+    <div class="info-card">
+      <h3>🧪 الكيمياء</h3>
+      <p>عدد المواد: <b id="reportChemicals">0</b></p>
+    </div>
 
-<div class="form">
+    <div class="info-card">
+      <h3>👨‍🏫 الأساتذة</h3>
+      <p>عدد الأساتذة: <b id="reportTeachers">0</b></p>
+    </div>
 
-<div class="field">
-<label>نوع التقرير</label>
-<select id="reportType">
-<option>الجرد</option>
-<option>الكيميائيات</option>
-<option>الحركات</option>
-<option>طلبات الأساتذة</option>
-<option>التجارب</option>
-<option>التقارير اليومية</option>
-</select>
-</div>
+    <div class="info-card">
+      <h3>🔄 الحركات</h3>
+      <p>عدد الحركات: <b id="reportMovements">0</b></p>
+    </div>
 
-<div class="field">
-<label>الفترة</label>
-<input id="reportPeriod">
-</div>
+    <div class="info-card">
+      <h3>📝 الطلبات</h3>
+      <p>عدد الطلبات: <b id="reportRequests">0</b></p>
+    </div>
 
-<div class="field full">
-<label>المحتوى</label>
-<textarea id="reportContent"></textarea>
-</div>
+    <div class="info-card">
+      <h3>📋 التقارير اليومية</h3>
+      <p>عدد التقارير: <b id="reportDaily">0</b></p>
+    </div>
 
-</div>
-
-<div class="actions">
-<button class="btn green" onclick="saveReport()">حفظ التقرير</button>
-<button class="btn light" onclick="printPage('reports')">🖨️ طباعة</button>
-</div>
-
-</div>
-
-<div class="card">
-<div id="reportTable"></div>
-</div>
+  </div>
 
 </section>
 
 
-<!-- الفواتير -->
+<!-- ================= الفواتير ================= -->
+
 <section id="invoices" class="section">
 
-<div class="hero">
-<h2>🧾 الفواتير والمشتريات</h2>
-</div>
+  <div class="page-title">
+    <h2>🧾 الفواتير</h2>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>رقم الفاتورة</label>
-<input id="invoiceNumber">
-</div>
+      <div>
+        <label>رقم الفاتورة</label>
+        <input id="invoiceNumber">
+      </div>
 
-<div class="field">
-<label>التاريخ</label>
-<input id="invoiceDate" type="date">
-</div>
+      <div>
+        <label>المورد</label>
+        <input id="invoiceSupplier">
+      </div>
 
-<div class="field">
-<label>المورد</label>
-<input id="supplier">
-</div>
+      <div>
+        <label>التاريخ</label>
+        <input id="invoiceDate" type="date">
+      </div>
 
-<div class="field">
-<label>المبلغ</label>
-<input id="invoiceAmount" type="number" step="0.01">
-</div>
+      <div>
+        <label>المبلغ</label>
+        <input id="invoiceAmount" type="number" step="0.01">
+      </div>
 
-<div class="field full">
-<label>ملاحظات</label>
-<textarea id="invoiceNotes"></textarea>
-</div>
+      <div class="full">
+        <label>البيان</label>
+        <textarea id="invoiceDescription"></textarea>
+      </div>
 
-</div>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveInvoice()">حفظ الفاتورة</button>
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addInvoice()">➕ إضافة فاتورة</button>
+    </div>
 
-</div>
+  </div>
 
-<div class="card">
-<div id="invoiceTable"></div>
-</div>
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>الرقم</th>
+          <th>المورد</th>
+          <th>التاريخ</th>
+          <th>المبلغ</th>
+          <th>البيان</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="invoiceTable"></tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- سجلات إضافية -->
+<!-- ================= السجلات ================= -->
+
 <section id="registers" class="section">
 
-<div class="hero">
-<h2>📚 السجلات الإضافية</h2>
-<p>سجل الوسائط والخرائط والتجهيزات التابعة للمواد المختلفة.</p>
-</div>
+  <div class="page-title">
+    <h2>📒 السجلات الأخرى</h2>
+    <p>التاريخ والجغرافيا واللغات والإعلام والخرائط وغيرها</p>
+  </div>
 
-<div class="card">
+  <div class="form-card">
 
-<div class="form">
+    <div class="form-grid">
 
-<div class="field">
-<label>نوع السجل</label>
-<select id="registerType">
-<option>تاريخ وجغرافيا</option>
-<option>اللغة العربية</option>
-<option>اللغة الفرنسية</option>
-<option>اللغة الإنجليزية</option>
-<option>الإعلام الآلي</option>
-<option>الخرائط والوسائط</option>
-<option>سجل عام</option>
-</select>
-</div>
+      <div>
+        <label>نوع السجل</label>
+        <select id="regType">
+          <option>التاريخ</option>
+          <option>الجغرافيا</option>
+          <option>اللغة العربية</option>
+          <option>اللغة الفرنسية</option>
+          <option>اللغة الإنجليزية</option>
+          <option>الإعلام الآلي</option>
+          <option>الخرائط</option>
+          <option>الوسائط</option>
+          <option>عام</option>
+        </select>
+      </div>
 
-<div class="field">
-<label>العنوان</label>
-<input id="registerTitle">
-</div>
+      <div>
+        <label>العنوان</label>
+        <input id="regTitle">
+      </div>
 
-<div class="field">
-<label>الكمية</label>
-<input id="registerQuantity" type="number" value="1">
-</div>
+      <div>
+        <label>التاريخ</label>
+        <input id="regDate" type="date">
+      </div>
 
-<div class="field">
-<label>التاريخ</label>
-<input id="registerDate" type="date">
-</div>
+      <div class="full">
+        <label>المحتوى</label>
+        <textarea id="regContent"></textarea>
+      </div>
 
-<div class="field full">
-<label>ملاحظات</label>
-<textarea id="registerNotes"></textarea>
-</div>
+    </div>
 
-</div>
+    <div class="actions">
+      <button class="btn green" onclick="addRegister()">➕ إضافة سجل</button>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveRegister()">حفظ السجل</button>
-</div>
+  </div>
 
-</div>
+  <div class="table-wrap">
 
-<div class="card">
-<div id="registerTable"></div>
-</div>
+    <table>
+
+      <thead>
+        <tr>
+          <th>نوع السجل</th>
+          <th>العنوان</th>
+          <th>التاريخ</th>
+          <th>المحتوى</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+
+      <tbody id="registerTable"></tbody>
+
+    </table>
+
+  </div>
 
 </section>
 
 
-<!-- الإعدادات -->
+<!-- ================= الإعدادات ================= -->
+
 <section id="settings" class="section">
 
-<div class="hero">
-<h2>⚙️ الإعدادات</h2>
-</div>
+  <div class="page-title">
+    <h2>⚙️ الإعدادات والنسخ الاحتياطي</h2>
+  </div>
 
-<div class="card">
+  <div class="cards">
 
-<div class="form">
+    <div class="info-card">
 
-<div class="field">
-<label>اسم المؤسسة</label>
-<input id="schoolName">
-</div>
+      <h3>💾 نسخة احتياطية</h3>
 
-<div class="field">
-<label>السنة الدراسية</label>
-<input id="schoolYear">
-</div>
+      <p>
+        احفظ جميع بيانات المنصة في ملف.
+      </p>
 
-<div class="field">
-<label>اسم المخبري</label>
-<input id="labWorker">
-</div>
+      <button class="btn" onclick="backupData()">
+        ⬇️ تحميل النسخة الاحتياطية
+      </button>
 
-</div>
+    </div>
 
-<div class="actions">
-<button class="btn green" onclick="saveSettings()">حفظ الإعدادات</button>
-</div>
+    <div class="info-card">
 
-</div>
+      <h3>📥 استعادة</h3>
 
+      <p>
+        استعادة بيانات محفوظة سابقًا.
+      </p>
 
-<div class="card">
+      <input
+        type="file"
+        id="restoreFile"
+        accept=".json"
+        onchange="restoreData(event)"
+      >
 
-<h3>💾 النسخ الاحتياطي</h3>
+    </div>
 
-<div class="actions">
+    <div class="info-card">
 
-<button class="btn" onclick="backup()">
-⬇️ تنزيل نسخة احتياطية
-</button>
+      <h3>🖨️ الطباعة</h3>
 
-<button class="btn gray" onclick="document.getElementById('restore').click()">
-⬆️ استرجاع نسخة
-</button>
+      <p>
+        طباعة الجدول الحالي.
+      </p>
 
-<input
-id="restore"
-type="file"
-accept=".json"
-hidden
-onchange="restoreBackup(event)"
->
+      <button class="btn secondary" onclick="printCurrentTable()">
+        🖨️ طباعة
+      </button>
 
-<button class="btn red" onclick="deleteAll()">
-🗑️ حذف كل البيانات
-</button>
+    </div>
 
-</div>
+    <div class="info-card">
 
-</div>
+      <h3>⚠️ حذف البيانات</h3>
+
+      <p>
+        حذف جميع البيانات المحلية.
+      </p>
+
+      <button class="btn red" onclick="deleteAllData()">
+        🗑️ حذف الكل
+      </button>
+
+    </div>
+
+  </div>
 
 </section>
 
 </main>
 
-<footer>
-منصة المخبري © 2026 — نظام إدارة المخبر المدرسي
-</footer>
-
+<div id="toast"></div>
 
 <script>
 
-"use strict";
-
-/* =========================
-   DATA
-========================= */
+/* =====================================================
+   قاعدة البيانات المحلية
+===================================================== */
 
 const DB_KEY="LAB_PLATFORM_PRO";
 
-const categories=[
-"معدات الفيزياء",
-"معدات العلوم",
-"معدات الإعلام الآلي",
-"معدات الصوتيات",
-"الأجهزة السمعية البصرية",
-"الأدوات والتجهيزات العامة"
-];
-
 const defaultDB={
-teachers:[],
-classes:[],
-inventory:[],
-chemicals:[],
-movements:[],
-requests:[],
-experiments:[],
-preparation:[],
-daily:[],
-progress:[],
-reports:[],
-invoices:[],
-registers:[],
-settings:{
-school:"متوسطة قايد أحمد – غليزان",
-year:"2026 / 2027",
-worker:""
-}
+  inventory:[],
+  chemicals:[],
+  movements:[],
+  teachers:[],
+  requests:[],
+  experiments:[],
+  daily:[],
+  progress:[],
+  invoices:[],
+  registers:[]
 };
 
 let db=loadDB();
-let currentCategory=categories[0];
+
+let currentCategory="معدات الفيزياء";
 
 
-/* =========================
-   BASIC FUNCTIONS
-========================= */
+/* =====================================================
+   التحميل والحفظ
+===================================================== */
 
 function loadDB(){
 
-try{
+  try{
 
-const saved=localStorage.getItem(DB_KEY);
+    const saved=localStorage.getItem(DB_KEY);
 
-if(saved){
-return Object.assign(
-structuredClone(defaultDB),
-JSON.parse(saved)
-);
+    if(saved){
+
+      const data=JSON.parse(saved);
+
+      return {
+        ...defaultDB,
+        ...data
+      };
+
+    }
+
+  }catch(e){
+
+    console.error(e);
+
+  }
+
+  return JSON.parse(JSON.stringify(defaultDB));
 }
 
-}catch(e){}
-
-return structuredClone(defaultDB);
-}
 
 function saveDB(){
-localStorage.setItem(DB_KEY,JSON.stringify(db));
-refresh();
+
+  localStorage.setItem(
+    DB_KEY,
+    JSON.stringify(db)
+  );
+
+  refreshAll();
+
 }
+
+
+/* =====================================================
+   أدوات عامة
+===================================================== */
 
 function id(){
-return Date.now().toString(36)+Math.random().toString(36).slice(2);
+
+  return Date.now().toString(36)+
+         Math.random().toString(36).slice(2);
+
 }
 
-function value(id){
-const e=document.getElementById(id);
-return e?e.value.trim():"";
+
+function val(element){
+
+  return document.getElementById(element).value.trim();
+
 }
 
-function setValue(id,v){
-const e=document.getElementById(id);
-if(e)e.value=v||"";
-}
 
 function today(){
-return new Date().toISOString().slice(0,10);
+
+  return new Date().toISOString().slice(0,10);
+
 }
+
 
 function nowTime(){
-return new Date().toTimeString().slice(0,5);
-}
 
-function esc(x){
-return String(x??"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-}
+  const d=new Date();
 
-function teachers(){
-return db.teachers.map(x=>x.name).filter(Boolean);
-}
-
-function classes(){
-return db.classes.map(x=>x.name).filter(Boolean);
-}
-
-function selectOptions(arr){
-return `<option value="">اختر</option>`+
-arr.map(x=>`<option>${esc(x)}</option>`).join("");
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-const pages=[
-["home","🏠 الرئيسية"],
-["teachers","👨‍🏫 الأساتذة"],
-["inventory","📦 الجرد"],
-["chemicals","🧪 الكيميائيات"],
-["movements","🔄 الحركات"],
-["requests","📝 الطلبات"],
-["experiments","🔬 التجارب"],
-["preparation","🧰 التحضير"],
-["daily","📋 التقارير اليومية"],
-["progress","📚 التدرج السنوي"],
-["reports","📊 التقارير"],
-["invoices","🧾 الفواتير"],
-["registers","📚 السجلات"],
-["settings","⚙️ الإعدادات"]
-];
-
-function buildNav(){
-
-document.getElementById("nav").innerHTML=
-pages.map(p=>
-`<button data-page="${p[0]}" onclick="openPage('${p[0]}')">${p[1]}</button>`
-).join("");
-
-}
-
-function openPage(id){
-
-document.querySelectorAll(".section")
-.forEach(x=>x.classList.remove("active","printing"));
-
-document.getElementById(id).classList.add("active");
-
-document.querySelectorAll("nav button")
-.forEach(x=>{
-x.classList.toggle(
-"active",
-x.dataset.page===id
-);
-});
-
-window.scrollTo(0,0);
+  return String(d.getHours()).padStart(2,"0")
+       +":"+
+       String(d.getMinutes()).padStart(2,"0");
 
 }
 
 
-/* =========================
-   TABLE
-========================= */
+function esc(value){
 
-function table(headers,rows){
-
-if(!rows.length)
-return `<div class="empty">لا توجد بيانات مسجلة.</div>`;
-
-return `
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-${headers.map(x=>`<th>${x}</th>`).join("")}
-</tr>
-</thead>
-
-<tbody>
-${rows.join("")}
-</tbody>
-
-</table>
-</div>
-`;
-
-}
-
-function deleteButton(collection,itemID){
-
-return `
-<button
-class="btn red"
-style="padding:5px 9px"
-onclick="removeItem('${collection}','${itemID}')">
-حذف
-</button>
-`;
-
-}
-
-function removeItem(collection,itemID){
-
-if(!confirm("هل تريد حذف هذا السجل؟"))return;
-
-db[collection]=db[collection]
-.filter(x=>x.id!==itemID);
-
-saveDB();
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-/* =========================
-   TEACHERS
-========================= */
+function toast(message){
 
-function addTeacher(){
+  const t=document.getElementById("toast");
 
-const name=value("teacherName");
+  t.textContent=message;
 
-if(!name){
-alert("أدخل اسم الأستاذ");
-return;
-}
+  t.classList.add("show");
 
-db.teachers.push({
-id:id(),
-name:name,
-subject:value("teacherSubject"),
-phone:value("teacherPhone")
-});
-
-setValue("teacherName","");
-setValue("teacherSubject","");
-setValue("teacherPhone","");
-
-saveDB();
+  setTimeout(()=>{
+    t.classList.remove("show");
+  },2200);
 
 }
 
 
-/* =========================
-   CLASSES
-========================= */
+/* =====================================================
+   التنقل
+===================================================== */
 
-function addClass(){
+function showSection(name){
 
-const name=value("className");
+  document
+    .querySelectorAll(".section")
+    .forEach(s=>s.classList.remove("active"));
 
-if(!name){
-alert("أدخل اسم القسم");
-return;
-}
+  const target=document.getElementById(name);
 
-db.classes.push({
-id:id(),
-level:value("classLevel"),
-name:name
-});
+  if(target){
 
-setValue("className","");
+    target.classList.add("active");
 
-saveDB();
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
 
-}
+  }
 
-
-/* =========================
-   INVENTORY
-========================= */
-
-function renderCategories(){
-
-document.getElementById("categories").innerHTML=
-categories.map(c=>
-`
-<button
-class="${currentCategory===c?"active":""}"
-onclick="changeCategory('${c}')">
-${c}
-</button>
-`
-).join("");
+  refreshAll();
 
 }
 
-function changeCategory(c){
 
-currentCategory=c;
-renderInventory();
+function goHome(){
 
-}
-
-function saveInventory(){
-
-const name=value("invName");
-
-if(!name){
-alert("أدخل اسم العتاد");
-return;
-}
-
-db.inventory.push({
-
-id:id(),
-
-number:value("invNumber"),
-
-name:name,
-
-category:currentCategory,
-
-quantity:Number(value("invQuantity")||0),
-
-condition:value("invCondition"),
-
-location:value("invLocation"),
-
-date:value("invDate"),
-
-notes:value("invNotes")
-
-});
-
-clearInventory();
-
-saveDB();
+  showSection("home");
 
 }
 
-function clearInventory(){
 
-setValue("invNumber","");
-setValue("invName","");
-setValue("invQuantity","1");
-setValue("invLocation","");
-setValue("invNotes","");
-setValue("invDate",today());
+/* =====================================================
+   الفهرس البصري
+===================================================== */
+
+function showInventoryCategory(category){
+
+  currentCategory=category;
+
+  document.getElementById("invCategory").value=category;
+
+  showSection("inventory");
 
 }
+
+
+/* =====================================================
+   الجرد
+===================================================== */
+
+function setCategory(category){
+
+  currentCategory=category;
+
+  document.getElementById("invCategory").value=category;
+
+  renderInventory();
+
+}
+
+
+function addInventory(){
+
+  const name=val("invName");
+
+  if(!name){
+
+    toast("اكتب اسم العتاد أولاً");
+
+    return;
+
+  }
+
+  db.inventory.push({
+
+    id:id(),
+
+    item_number:val("invNumber"),
+
+    name:name,
+
+    category:val("invCategory"),
+
+    quantity:Number(val("invQuantity")) || 0,
+
+    condition:val("invCondition"),
+
+    location:val("invLocation"),
+
+    date:val("invDate") || today(),
+
+    notes:val("invNotes")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "invNumber",
+    "invName",
+    "invLocation",
+    "invNotes"
+  ]);
+
+  toast("تمت إضافة العتاد بنجاح");
+
+}
+
 
 function renderInventory(){
 
-renderCategories();
+  const tbody=document.getElementById("inventoryTable");
 
-document.getElementById("inventoryTitle")
-.textContent=currentCategory;
+  const rows=db.inventory
+    .filter(x=>x.category===currentCategory);
 
-const data=db.inventory
-.filter(x=>x.category===currentCategory);
+  tbody.innerHTML=rows.map(x=>`
 
-const rows=data.map(x=>
-`
-<tr>
-<td>${esc(x.number)}</td>
-<td>${esc(x.name)}</td>
-<td>${x.quantity}</td>
-<td>${esc(x.condition)}</td>
-<td>${esc(x.location)}</td>
-<td>${esc(x.date)}</td>
-<td>${esc(x.notes)}</td>
-<td>${deleteButton("inventory",x.id)}</td>
-</tr>
-`
-);
+    <tr>
 
-document.getElementById("inventoryTable").innerHTML=
-table(
-[
-"رقم الجرد",
-"العتاد",
-"الكمية",
-"الحالة",
-"مكان التخزين",
-"التاريخ",
-"ملاحظات",
-""
-],
-rows
-);
+      <td>${esc(x.item_number)}</td>
+
+      <td>${esc(x.name)}</td>
+
+      <td>${esc(x.category)}</td>
+
+      <td>${esc(x.quantity)}</td>
+
+      <td>${esc(x.condition)}</td>
+
+      <td>${esc(x.location)}</td>
+
+      <td>${esc(x.date)}</td>
+
+      <td>${esc(x.notes)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('inventory','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   CHEMICALS
-========================= */
+/* =====================================================
+   الكيمياء
+===================================================== */
 
-function saveChemical(){
+function addChemical(){
 
-const name=value("chemName");
+  const name=val("chemName");
 
-if(!name){
-alert("أدخل اسم المادة");
-return;
+  if(!name){
+
+    toast("اكتب اسم المادة");
+
+    return;
+
+  }
+
+  const total=Number(val("chemTotal")) || 0;
+
+  const used=Number(val("chemUsed")) || 0;
+
+  db.chemicals.push({
+
+    id:id(),
+
+    name:name,
+
+    total:total,
+
+    used:used,
+
+    remaining:Math.max(0,total-used),
+
+    unit:val("chemUnit"),
+
+    teacher:val("chemTeacher"),
+
+    date:val("chemDate") || today(),
+
+    notes:val("chemNotes")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "chemName",
+    "chemTotal",
+    "chemUsed",
+    "chemUnit",
+    "chemTeacher",
+    "chemNotes"
+  ]);
+
+  toast("تمت إضافة المادة الكيميائية");
+
 }
 
-const total=Number(value("chemTotal")||0);
-const used=Number(value("chemUsed")||0);
-
-if(used>total){
-alert("الكمية المستعملة أكبر من الكمية الأصلية.");
-return;
-}
-
-db.chemicals.push({
-
-id:id(),
-
-name:name,
-
-total:total,
-
-used:used,
-
-remaining:total-used,
-
-unit:value("chemUnit"),
-
-teacher:value("chemTeacher"),
-
-date:value("chemDate"),
-
-notes:value("chemNotes")
-
-});
-
-saveDB();
-
-}
 
 function renderChemicals(){
 
-const rows=db.chemicals.map(x=>
-`
-<tr>
-<td>${esc(x.name)}</td>
-<td>${x.total}</td>
-<td>${x.used}</td>
-<td><b>${x.remaining}</b></td>
-<td>${esc(x.unit)}</td>
-<td>${esc(x.teacher)}</td>
-<td>${esc(x.date)}</td>
-<td>${deleteButton("chemicals",x.id)}</td>
-</tr>
-`
-);
+  const tbody=document.getElementById("chemTable");
 
-document.getElementById("chemicalTable").innerHTML=
-table(
-[
-"المادة",
-"الأصلية",
-"المستعملة",
-"المتبقية",
-"الوحدة",
-"الأستاذ",
-"التاريخ",
-""
-],
-rows
-);
+  tbody.innerHTML=db.chemicals.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.name)}</td>
+
+      <td>${esc(x.total)}</td>
+
+      <td>${esc(x.used)}</td>
+
+      <td><b>${esc(x.remaining)}</b></td>
+
+      <td>${esc(x.unit)}</td>
+
+      <td>${esc(x.teacher)}</td>
+
+      <td>${esc(x.date)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('chemicals','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
+
+}
+
+
+/* =====================================================
+   الحركات
+===================================================== */
+
+function addMovement(){
+
+  const equipment=val("movEquipment");
+
+  if(!equipment){
+
+    toast("اكتب اسم العتاد");
+
+    return;
+
+  }
+
+  db.movements.push({
+
+    id:id(),
+
+    equipment,
+
+    type:val("movType"),
+
+    teacher:val("movTeacher"),
+
+    className:val("movClass"),
+
+    date:val("movDate") || today(),
+
+    time:val("movTime") || nowTime(),
+
+    quantity:Number(val("movQuantity")) || 0,
+
+    notes:val("movNotes")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "movEquipment",
+    "movTeacher",
+    "movClass",
+    "movNotes"
+  ]);
+
+  toast("تم تسجيل حركة العتاد");
 
 }
 
-
-/* =========================
-   MOVEMENTS
-========================= */
-
-function saveMovement(){
-
-if(!value("moveEquipment")){
-alert("أدخل اسم الأداة");
-return;
-}
-
-db.movements.push({
-
-id:id(),
-
-date:value("moveDate"),
-
-time:value("moveTime"),
-
-equipment:value("moveEquipment"),
-
-type:value("moveType"),
-
-teacher:value("moveTeacher"),
-
-className:value("moveClass"),
-
-quantity:Number(value("moveQuantity")||1),
-
-notes:value("moveNotes")
-
-});
-
-saveDB();
-
-}
 
 function renderMovements(){
 
-const rows=db.movements.map(x=>
-`
-<tr>
-<td>${esc(x.date)}</td>
-<td>${esc(x.time)}</td>
-<td>${esc(x.equipment)}</td>
-<td><span class="badge">${esc(x.type)}</span></td>
-<td>${esc(x.teacher)}</td>
-<td>${esc(x.className)}</td>
-<td>${x.quantity}</td>
-<td>${esc(x.notes)}</td>
-<td>${deleteButton("movements",x.id)}</td>
-</tr>
-`
-);
+  document.getElementById("movementsTable").innerHTML=
+  db.movements.map(x=>`
 
-document.getElementById("movementTable").innerHTML=
-table(
-[
-"التاريخ",
-"الوقت",
-"الأداة",
-"العملية",
-"الأستاذ",
-"القسم",
-"الكمية",
-"ملاحظات",
-""
-],
-rows
-);
+    <tr>
+
+      <td>${esc(x.equipment)}</td>
+      <td>${esc(x.type)}</td>
+      <td>${esc(x.teacher)}</td>
+      <td>${esc(x.className)}</td>
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.time)}</td>
+      <td>${esc(x.quantity)}</td>
+      <td>${esc(x.notes)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('movements','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   REQUESTS
-========================= */
+/* =====================================================
+   الأساتذة
+===================================================== */
 
-function saveRequest(){
+function addTeacher(){
 
-db.requests.push({
+  const name=val("teacherName");
 
-id:id(),
+  if(!name){
 
-teacher:value("requestTeacher"),
+    toast("اكتب اسم الأستاذ");
 
-className:value("requestClass"),
+    return;
 
-experiment:value("requestExperiment"),
+  }
 
-date:value("requestDate"),
+  db.teachers.push({
 
-text:value("requestText"),
+    id:id(),
 
-status:"جديد"
+    name,
 
-});
+    subject:val("teacherSubject"),
 
-saveDB();
+    className:val("teacherClass")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "teacherName",
+    "teacherSubject",
+    "teacherClass"
+  ]);
+
+  toast("تمت إضافة الأستاذ");
 
 }
+
+
+function renderTeachers(){
+
+  document.getElementById("teachersTable").innerHTML=
+  db.teachers.map(x=>`
+
+    <tr>
+
+      <td>${esc(x.name)}</td>
+      <td>${esc(x.subject)}</td>
+      <td>${esc(x.className)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('teachers','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
+
+}
+
+
+/* =====================================================
+   الطلبات
+===================================================== */
+
+function addRequest(){
+
+  const text=val("reqText");
+
+  if(!text){
+
+    toast("اكتب الطلب");
+
+    return;
+
+  }
+
+  db.requests.push({
+
+    id:id(),
+
+    teacher:val("reqTeacher"),
+
+    className:val("reqClass"),
+
+    text,
+
+    date:val("reqDate") || today(),
+
+    status:val("reqStatus"),
+
+    notes:val("reqNotes")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "reqTeacher",
+    "reqClass",
+    "reqText",
+    "reqNotes"
+  ]);
+
+  toast("تم تسجيل الطلب");
+
+}
+
 
 function renderRequests(){
 
-const rows=db.requests.map(x=>
-`
-<tr>
-<td>${esc(x.teacher)}</td>
-<td>${esc(x.className)}</td>
-<td>${esc(x.experiment)}</td>
-<td>${esc(x.date)}</td>
-<td>${esc(x.text)}</td>
-<td><span class="badge">${esc(x.status)}</span></td>
-<td>${deleteButton("requests",x.id)}</td>
-</tr>
-`
-);
+  document.getElementById("requestsTable").innerHTML=
+  db.requests.map(x=>`
 
-document.getElementById("requestTable").innerHTML=
-table(
-[
-"الأستاذ",
-"القسم",
-"التجربة",
-"التاريخ",
-"الطلب",
-"الحالة",
-""
-],
-rows
-);
+    <tr>
+
+      <td>${esc(x.teacher)}</td>
+      <td>${esc(x.className)}</td>
+      <td>${esc(x.text)}</td>
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.status)}</td>
+      <td>${esc(x.notes)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('requests','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   EXPERIMENTS
-========================= */
+/* =====================================================
+   التجارب
+===================================================== */
 
-function saveExperiment(){
+function addExperiment(){
 
-db.experiments.push({
+  const title=val("expTitle");
 
-id:id(),
+  if(!title){
 
-level:value("experimentLevel"),
+    toast("اكتب عنوان التجربة");
 
-week:value("experimentWeek"),
+    return;
 
-title:value("experimentTitle"),
+  }
 
-materials:value("experimentMaterials")
+  db.experiments.push({
 
-});
+    id:id(),
 
-saveDB();
+    level:val("expLevel"),
+
+    title,
+
+    week:val("expWeek"),
+
+    materials:val("expMaterials")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "expTitle",
+    "expWeek",
+    "expMaterials"
+  ]);
+
+  toast("تمت إضافة التجربة");
 
 }
+
 
 function renderExperiments(){
 
-const rows=db.experiments.map(x=>
-`
-<tr>
-<td>${esc(x.level)}</td>
-<td>${esc(x.week)}</td>
-<td>${esc(x.title)}</td>
-<td>${esc(x.materials)}</td>
-<td>${deleteButton("experiments",x.id)}</td>
-</tr>
-`
-);
+  document.getElementById("experimentsTable").innerHTML=
+  db.experiments.map(x=>`
 
-document.getElementById("experimentTable").innerHTML=
-table(
-[
-"المستوى",
-"الأسبوع",
-"الدرس / التجربة",
-"المواد المطلوبة",
-""
-],
-rows
-);
+    <tr>
+
+      <td>${esc(x.level)}</td>
+      <td>${esc(x.title)}</td>
+      <td>${esc(x.week)}</td>
+      <td>${esc(x.materials)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('experiments','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   PREPARATION
-========================= */
+/* =====================================================
+   التقارير اليومية
+===================================================== */
 
-function savePreparation(){
+function addDaily(){
 
-db.preparation.push({
+  const teacher=val("dailyTeacher");
 
-id:id(),
+  if(!teacher){
 
-date:value("prepDate"),
+    toast("اكتب اسم الأستاذ");
 
-level:value("prepLevel"),
+    return;
 
-experiment:value("prepExperiment"),
+  }
 
-tools:value("prepTools")
+  db.daily.push({
 
-});
+    id:id(),
 
-saveDB();
+    teacher,
 
-}
+    className:val("dailyClass"),
 
-function renderPreparation(){
+    experiment:val("dailyExperiment"),
 
-const rows=db.preparation.map(x=>
-`
-<tr>
-<td>${esc(x.date)}</td>
-<td>${esc(x.level)}</td>
-<td>${esc(x.experiment)}</td>
-<td>${esc(x.tools)}</td>
-<td>${deleteButton("preparation",x.id)}</td>
-</tr>
-`
-);
+    equipment:val("dailyEquipment"),
 
-document.getElementById("preparationTable").innerHTML=
-table(
-[
-"التاريخ",
-"المستوى",
-"التجربة",
-"الأدوات والمواد",
-""
-],
-rows
-);
+    date:val("dailyDate") || today(),
+
+    time:val("dailyTime") || nowTime(),
+
+    notes:val("dailyNotes")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "dailyTeacher",
+    "dailyClass",
+    "dailyExperiment",
+    "dailyEquipment",
+    "dailyNotes"
+  ]);
+
+  toast("تم حفظ التقرير اليومي");
 
 }
 
-
-/* =========================
-   DAILY REPORTS
-========================= */
-
-function saveDaily(){
-
-db.daily.push({
-
-id:id(),
-
-date:value("dailyDate"),
-
-time:value("dailyTime"),
-
-teacher:value("dailyTeacher"),
-
-className:value("dailyClass"),
-
-experiment:value("dailyExperiment"),
-
-equipment:value("dailyEquipment"),
-
-notes:value("dailyNotes")
-
-});
-
-saveDB();
-
-}
 
 function renderDaily(){
 
-const rows=db.daily.map(x=>
-`
-<tr>
-<td>${esc(x.date)}</td>
-<td>${esc(x.time)}</td>
-<td>${esc(x.teacher)}</td>
-<td>${esc(x.className)}</td>
-<td>${esc(x.experiment)}</td>
-<td>${esc(x.equipment)}</td>
-<td>${esc(x.notes)}</td>
-<td>${deleteButton("daily",x.id)}</td>
-</tr>
-`
-);
+  document.getElementById("dailyTable").innerHTML=
+  db.daily.map(x=>`
 
-document.getElementById("dailyTable").innerHTML=
-table(
-[
-"التاريخ",
-"الوقت",
-"الأستاذ",
-"القسم",
-"التجربة",
-"الأجهزة",
-"ملاحظات",
-""
-],
-rows
-);
+    <tr>
+
+      <td>${esc(x.teacher)}</td>
+      <td>${esc(x.className)}</td>
+      <td>${esc(x.experiment)}</td>
+      <td>${esc(x.equipment)}</td>
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.time)}</td>
+      <td>${esc(x.notes)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('daily','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   PROGRESS
-========================= */
+/* =====================================================
+   التدرج
+===================================================== */
 
-function saveProgress(){
+function addProgress(){
 
-db.progress.push({
+  const lesson=val("progLesson");
 
-id:id(),
+  if(!lesson){
 
-level:value("progressLevel"),
+    toast("اكتب اسم الدرس");
 
-term:value("progressTerm"),
+    return;
 
-week:value("progressWeek"),
+  }
 
-lesson:value("progressLesson")
+  db.progress.push({
 
-});
+    id:id(),
 
-saveDB();
+    level:val("progLevel"),
+
+    week:val("progWeek"),
+
+    lesson,
+
+    materials:val("progMaterials")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "progWeek",
+    "progLesson",
+    "progMaterials"
+  ]);
+
+  toast("تمت إضافة التدرج");
 
 }
+
 
 function renderProgress(){
 
-const rows=db.progress.map(x=>
-`
-<tr>
-<td>${esc(x.level)}</td>
-<td>${esc(x.term)}</td>
-<td>${esc(x.week)}</td>
-<td>${esc(x.lesson)}</td>
-<td>${deleteButton("progress",x.id)}</td>
-</tr>
-`
-);
+  document.getElementById("progressTable").innerHTML=
+  db.progress.map(x=>`
 
-document.getElementById("progressTable").innerHTML=
-table(
-[
-"المستوى",
-"الفصل",
-"الأسبوع",
-"الدرس",
-""
-],
-rows
-);
+    <tr>
+
+      <td>${esc(x.level)}</td>
+      <td>${esc(x.week)}</td>
+      <td>${esc(x.lesson)}</td>
+      <td>${esc(x.materials)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('progress','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   REPORTS
-========================= */
+/* =====================================================
+   الفواتير
+===================================================== */
 
-function saveReport(){
+function addInvoice(){
 
-db.reports.push({
+  const number=val("invoiceNumber");
 
-id:id(),
+  if(!number){
 
-type:value("reportType"),
+    toast("اكتب رقم الفاتورة");
 
-period:value("reportPeriod"),
+    return;
 
-content:value("reportContent"),
+  }
 
-date:today()
+  db.invoices.push({
 
-});
+    id:id(),
 
-saveDB();
+    number,
 
-}
+    supplier:val("invoiceSupplier"),
 
-function renderReports(){
+    date:val("invoiceDate") || today(),
 
-const rows=db.reports.map(x=>
-`
-<tr>
-<td>${esc(x.type)}</td>
-<td>${esc(x.period)}</td>
-<td>${esc(x.date)}</td>
-<td>${esc(x.content)}</td>
-<td>${deleteButton("reports",x.id)}</td>
-</tr>
-`
-);
+    amount:Number(val("invoiceAmount")) || 0,
 
-document.getElementById("reportTable").innerHTML=
-table(
-[
-"نوع التقرير",
-"الفترة",
-"التاريخ",
-"المحتوى",
-""
-],
-rows
-);
+    description:val("invoiceDescription")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "invoiceNumber",
+    "invoiceSupplier",
+    "invoiceAmount",
+    "invoiceDescription"
+  ]);
+
+  toast("تمت إضافة الفاتورة");
 
 }
 
-
-/* =========================
-   INVOICES
-========================= */
-
-function saveInvoice(){
-
-db.invoices.push({
-
-id:id(),
-
-number:value("invoiceNumber"),
-
-date:value("invoiceDate"),
-
-supplier:value("supplier"),
-
-amount:Number(value("invoiceAmount")||0),
-
-notes:value("invoiceNotes")
-
-});
-
-saveDB();
-
-}
 
 function renderInvoices(){
 
-const rows=db.invoices.map(x=>
-`
-<tr>
-<td>${esc(x.number)}</td>
-<td>${esc(x.date)}</td>
-<td>${esc(x.supplier)}</td>
-<td>${x.amount}</td>
-<td>${esc(x.notes)}</td>
-<td>${deleteButton("invoices",x.id)}</td>
-</tr>
-`
-);
+  document.getElementById("invoiceTable").innerHTML=
+  db.invoices.map(x=>`
 
-document.getElementById("invoiceTable").innerHTML=
-table(
-[
-"رقم الفاتورة",
-"التاريخ",
-"المورد",
-"المبلغ",
-"ملاحظات",
-""
-],
-rows
-);
+    <tr>
+
+      <td>${esc(x.number)}</td>
+      <td>${esc(x.supplier)}</td>
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.amount)}</td>
+      <td>${esc(x.description)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('invoices','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   EXTRA REGISTERS
-========================= */
+/* =====================================================
+   السجلات
+===================================================== */
 
-function saveRegister(){
+function addRegister(){
 
-db.registers.push({
+  const title=val("regTitle");
 
-id:id(),
+  if(!title){
 
-type:value("registerType"),
+    toast("اكتب عنوان السجل");
 
-title:value("registerTitle"),
+    return;
 
-quantity:Number(value("registerQuantity")||0),
+  }
 
-date:value("registerDate"),
+  db.registers.push({
 
-notes:value("registerNotes")
+    id:id(),
 
-});
+    type:val("regType"),
 
-saveDB();
+    title,
+
+    date:val("regDate") || today(),
+
+    content:val("regContent")
+
+  });
+
+  saveDB();
+
+  clearInputs([
+    "regTitle",
+    "regContent"
+  ]);
+
+  toast("تمت إضافة السجل");
 
 }
+
 
 function renderRegisters(){
 
-const rows=db.registers.map(x=>
-`
-<tr>
-<td>${esc(x.type)}</td>
-<td>${esc(x.title)}</td>
-<td>${x.quantity}</td>
-<td>${esc(x.date)}</td>
-<td>${esc(x.notes)}</td>
-<td>${deleteButton("registers",x.id)}</td>
-</tr>
-`
-);
+  document.getElementById("registerTable").innerHTML=
+  db.registers.map(x=>`
 
-document.getElementById("registerTable").innerHTML=
-table(
-[
-"نوع السجل",
-"العنوان",
-"الكمية",
-"التاريخ",
-"ملاحظات",
-""
-],
-rows
-);
+    <tr>
+
+      <td>${esc(x.type)}</td>
+      <td>${esc(x.title)}</td>
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.content)}</td>
+
+      <td>
+        <button class="btn red"
+          onclick="deleteItem('registers','${x.id}')">
+          حذف
+        </button>
+      </td>
+
+    </tr>
+
+  `).join("");
 
 }
 
 
-/* =========================
-   SELECTS
-========================= */
+/* =====================================================
+   الحذف
+===================================================== */
 
-function refreshSelects(){
+function deleteItem(collection,itemId){
 
-const t=teachers();
-const c=classes();
+  if(!confirm("هل تريد حذف هذا العنصر؟")) return;
 
-["chemTeacher","moveTeacher","requestTeacher","dailyTeacher"]
-.forEach(id=>{
-document.getElementById(id).innerHTML=
-selectOptions(t);
-});
+  db[collection]=db[collection]
+    .filter(x=>x.id!==itemId);
 
-["moveClass","requestClass","dailyClass"]
-.forEach(id=>{
-document.getElementById(id).innerHTML=
-selectOptions(c);
-});
+  saveDB();
+
+  toast("تم الحذف");
 
 }
 
 
-/* =========================
-   DASHBOARD
-========================= */
+/* =====================================================
+   تنظيف الحقول
+===================================================== */
 
-function renderDashboard(){
+function clearInputs(ids){
 
-const stats=[
+  ids.forEach(x=>{
 
-["📦",db.inventory.length,"سجلات الجرد"],
+    const el=document.getElementById(x);
 
-["🧪",db.chemicals.length,"المواد الكيميائية"],
+    if(el) el.value="";
 
-["🔄",db.movements.length,"الحركات"],
-
-["📝",db.requests.length,"طلبات الأساتذة"],
-
-["🔬",db.experiments.length,"التجارب"],
-
-["📋",db.daily.length,"التقارير اليومية"],
-
-["👨‍🏫",db.teachers.length,"الأساتذة"],
-
-["🏫",db.classes.length,"الأقسام"]
-
-];
-
-document.getElementById("dashboard").innerHTML=
-stats.map(x=>
-`
-<div class="stat">
-<div style="font-size:25px">${x[0]}</div>
-<div class="stat-number">${x[1]}</div>
-<div class="stat-title">${x[2]}</div>
-</div>
-`
-).join("");
+  });
 
 }
 
 
-/* =========================
-   REPORT STATISTICS
-========================= */
+/* =====================================================
+   الإحصائيات
+===================================================== */
 
-function renderReportStats(){
+function updateStats(){
 
-const totalEquipment=
-db.inventory.reduce(
-(sum,x)=>sum+Number(x.quantity||0),0
-);
+  document.getElementById("statInventory").textContent=
+    db.inventory.length;
 
-const totalChemicals=
-db.chemicals.reduce(
-(sum,x)=>sum+Number(x.remaining||0),0
-);
+  document.getElementById("statChemicals").textContent=
+    db.chemicals.length;
 
-document.getElementById("reportStats").innerHTML=
+  document.getElementById("statTeachers").textContent=
+    db.teachers.length;
 
-[
-["📦",totalEquipment,"إجمالي قطع التجهيزات"],
-["🧪",totalChemicals,"إجمالي المتبقي الكيميائي"],
-["🔄",db.movements.length,"حركات مسجلة"],
-["📝",db.requests.length,"طلبات مسجلة"]
-]
+  document.getElementById("statReports").textContent=
+    db.daily.length;
 
-.map(x=>
-`
-<div class="stat">
-<div style="font-size:25px">${x[0]}</div>
-<div class="stat-number">${x[1]}</div>
-<div class="stat-title">${x[2]}</div>
-</div>
-`
-).join("");
+  document.getElementById("reportInventory").textContent=
+    db.inventory.length;
 
-}
+  document.getElementById("reportChemicals").textContent=
+    db.chemicals.length;
 
+  document.getElementById("reportTeachers").textContent=
+    db.teachers.length;
 
-/* =========================
-   SETTINGS
-========================= */
+  document.getElementById("reportMovements").textContent=
+    db.movements.length;
 
-function saveSettings(){
+  document.getElementById("reportRequests").textContent=
+    db.requests.length;
 
-db.settings={
-
-school:value("schoolName"),
-
-year:value("schoolYear"),
-
-worker:value("labWorker")
-
-};
-
-saveDB();
-
-alert("تم حفظ الإعدادات");
-
-}
-
-function loadSettings(){
-
-setValue("schoolName",db.settings.school);
-setValue("schoolYear",db.settings.year);
-setValue("labWorker",db.settings.worker);
-
-document.getElementById("schoolHeader")
-.textContent=db.settings.school;
+  document.getElementById("reportDaily").textContent=
+    db.daily.length;
 
 }
 
 
-/* =========================
-   BACKUP
-========================= */
+/* =====================================================
+   تحديث كامل
+===================================================== */
 
-function backup(){
+function refreshAll(){
 
-const file=new Blob(
-[JSON.stringify(db,null,2)],
-{type:"application/json"}
-);
-
-const link=document.createElement("a");
-
-link.href=URL.createObjectURL(file);
-
-link.download=
-"منصة_المخبري_نسخة_احتياطية.json";
-
-link.click();
-
-URL.revokeObjectURL(link.href);
-
-}
-
-function restoreBackup(event){
-
-const file=event.target.files[0];
-
-if(!file)return;
-
-const reader=new FileReader();
-
-reader.onload=function(){
-
-try{
-
-const data=JSON.parse(reader.result);
-
-db=Object.assign(
-structuredClone(defaultDB),
-data
-);
-
-saveDB();
-
-alert("تم استرجاع النسخة بنجاح");
-
-}catch(e){
-
-alert("الملف غير صالح");
-
-}
-
-};
-
-reader.readAsText(file);
+  renderInventory();
+  renderChemicals();
+  renderMovements();
+  renderTeachers();
+  renderRequests();
+  renderExperiments();
+  renderDaily();
+  renderProgress();
+  renderInvoices();
+  renderRegisters();
+  updateStats();
 
 }
 
 
-/* =========================
-   DELETE ALL
-========================= */
+/* =====================================================
+   النسخ الاحتياطي
+===================================================== */
 
-function deleteAll(){
+function backupData(){
 
-if(!confirm(
-"تحذير: سيتم حذف جميع بيانات المنصة من هذا الجهاز. هل أنت متأكد؟"
-))return;
+  const blob=new Blob(
+    [JSON.stringify(db,null,2)],
+    {type:"application/json"}
+  );
 
-localStorage.removeItem(DB_KEY);
+  const url=URL.createObjectURL(blob);
 
-db=structuredClone(defaultDB);
+  const a=document.createElement("a");
 
-refresh();
+  a.href=url;
 
-alert("تم حذف البيانات المحلية.");
+  a.download=
+    "نسخة-احتياطية-منصة-المخبري.json";
 
-}
+  a.click();
 
+  URL.revokeObjectURL(url);
 
-/* =========================
-   PRINT
-========================= */
-
-function printPage(id){
-
-document
-.querySelectorAll(".section")
-.forEach(x=>x.classList.remove("printing"));
-
-const section=document.getElementById(id);
-
-section.classList.add("printing");
-
-window.print();
-
-section.classList.remove("printing");
+  toast("تم إنشاء النسخة الاحتياطية");
 
 }
 
 
-/* =========================
-   REFRESH
-========================= */
+function restoreData(event){
 
-function refresh(){
+  const file=event.target.files[0];
 
-renderDashboard();
+  if(!file) return;
 
-renderInventory();
+  const reader=new FileReader();
 
-renderChemicals();
+  reader.onload=function(){
 
-renderMovements();
+    try{
 
-renderRequests();
+      const imported=
+        JSON.parse(reader.result);
 
-renderExperiments();
+      db={
+        ...defaultDB,
+        ...imported
+      };
 
-renderPreparation();
+      saveDB();
 
-renderDaily();
+      toast("تمت استعادة البيانات");
 
-renderProgress();
+    }catch(e){
 
-renderReports();
+      toast("ملف النسخة الاحتياطية غير صالح");
 
-renderInvoices();
+    }
 
-renderRegisters();
+  };
 
-refreshSelects();
-
-renderReportStats();
-
-loadSettings();
+  reader.readAsText(file);
 
 }
 
 
-/* =========================
-   START
-========================= */
+/* =====================================================
+   حذف كل البيانات
+===================================================== */
 
-function start(){
+function deleteAllData(){
 
-buildNav();
+  if(!confirm(
+    "تحذير: سيتم حذف جميع بيانات المنصة من هذا الجهاز. هل أنت متأكد؟"
+  )) return;
 
-setValue("invDate",today());
-setValue("chemDate",today());
-setValue("moveDate",today());
-setValue("moveTime",nowTime());
-setValue("requestDate",today());
-setValue("prepDate",today());
-setValue("dailyDate",today());
-setValue("dailyTime",nowTime());
-setValue("invoiceDate",today());
-setValue("registerDate",today());
+  localStorage.removeItem(DB_KEY);
 
-refresh();
+  db=JSON.parse(
+    JSON.stringify(defaultDB)
+  );
+
+  refreshAll();
+
+  toast("تم حذف جميع البيانات");
 
 }
 
-start();
+
+/* =====================================================
+   الطباعة
+===================================================== */
+
+function printCurrentTable(){
+
+  const active=
+    document.querySelector(".section.active");
+
+  if(!active){
+
+    return;
+
+  }
+
+  document
+    .querySelectorAll(".section")
+    .forEach(x=>x.classList.remove("printing"));
+
+  active.classList.add("printing");
+
+  window.print();
+
+  setTimeout(()=>{
+
+    active.classList.remove("printing");
+
+  },1000);
+
+}
+
+
+/* =====================================================
+   التشغيل الأول
+===================================================== */
+
+document.getElementById("invDate").value=today();
+document.getElementById("chemDate").value=today();
+document.getElementById("movDate").value=today();
+document.getElementById("movTime").value=nowTime();
+document.getElementById("reqDate").value=today();
+document.getElementById("dailyDate").value=today();
+document.getElementById("dailyTime").value=nowTime();
+document.getElementById("invoiceDate").value=today();
+document.getElementById("regDate").value=today();
+
+refreshAll();
 
 </script>
 
