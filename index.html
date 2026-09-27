@@ -1494,11 +1494,18 @@ onclick="selectInventoryCategory('الأدوات والتجهيزات العام
 <footer>
 كل ما يخص المخبر © 2026
 </footer>
-
 <script>
 "use strict";
-const SUPABASE_URL=
-const SUPABASE_PUBLISHABLE_KEY="https://niedzlyvricaofqasohe.supabase.co";
+
+const SUPABASE_URL="https://niedzlyvricaofqasohe.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY=" sb_publishable_iDvPZL5m8A_bfItO0Q9muA_VHJU5-V_";
+
+const supabaseClient=window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
 const STORAGE_PREFIX="LAB_PLATFORM_";
 
 const KEYS={
@@ -1514,8 +1521,7 @@ const KEYS={
   invoices:"invoices",
   settings:"settings"
 };
-
-const INVENTORY_CATEGORIES=[
+"const INVENTORY_CATEGORIES=[
   "معدات الفيزياء",
   "معدات العلوم",
   "معدات الإعلام الآلي",
