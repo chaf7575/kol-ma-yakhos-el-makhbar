@@ -1994,76 +1994,68 @@ renderInventory();
 }
 
 
-async function saveInventoryItem(){
+function saveInventoryItem(){
 
 const name=getValue("inventoryName");
 
 if(!name){
-  alert("أدخل اسم العتاد.");
-  return;
+
+alert("أدخل اسم العتاد.");
+
+return;
+
 }
 
 const item={
-  number:getValue("inventoryNumber"),
-  name:name,
-  category:currentInventoryCategory,
-  quantity:Number(getValue("inventoryQuantity"))||0,
-  condition:getValue("inventoryCondition"),
-  location:getValue("inventoryLocation"),
-  date:getValue("inventoryDate")||today(),
-  notes:getValue("inventoryNotes")
+
+number:getValue("inventoryNumber"),
+name:name,
+category:currentInventoryCategory,
+quantity:Number(getValue("inventoryQuantity"))||0,
+condition:getValue("inventoryCondition"),
+location:getValue("inventoryLocation"),
+date:getValue("inventoryDate")||today(),
+notes:getValue("inventoryNotes")
+
 };
+
 
 if(editingInventoryId){
 
-  const index=state.inventory.findIndex(function(x){
-    return x.id===editingInventoryId;
-  });
+const index=state.inventory.findIndex(function(x){
 
-  if(index!==-1){
-    state.inventory[index]={
-      ...state.inventory[index],
-      ...item
-    };
-  }
+return x.id===editingInventoryId;
 
-  editingInventoryId=null;
+});
+
+if(index!==-1){
+
+state.inventory[index]={
+...state.inventory[index],
+...item
+};
+
+}
+
+editingInventoryId=null;
 
 }else{
 
-  state.inventory.unshift({
-    id:uid(),
-    ...item
-  });
+state.inventory.unshift({
+id:uid(),
+...item
+});
 
 }
 
 savePart("inventory");
+
 clearInventoryForm();
+
 renderAll();
 
-if(navigator.onLine && typeof supabaseClient!=="undefined"){
-
-  const { error } = await supabaseClient
-    .from("inventory")
-    .insert({
-      item_number:item.number,
-      name:item.name,
-      category:item.category,
-      quantity:item.quantity,
-      condition:item.condition,
-      location:item.location,
-      item_date:item.date,
-      notes:item.notes
-    });
-
-  if(error){
-    console.error("Supabase inventory error:",error);
-  }
-
 }
 
-}
 
 function editInventory(id){
 
