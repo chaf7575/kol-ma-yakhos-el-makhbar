@@ -1495,23 +1495,77 @@ onclick="selectInventoryCategory('الأدوات والتجهيزات العام
 كل ما يخص المخبر © 2026
 </footer>
 
-
 <script>
-
 "use strict";
+
+const STORAGE_PREFIX="LAB_PLATFORM_";
+
+const KEYS={
+  requests:"requests",
+  progress:"progress",
+  experiments:"experiments",
+  preparation:"preparation",
+  inventory:"inventory",
+  chemicals:"chemicals",
+  movements:"movements",
+  daily:"daily",
+  reports:"reports",
+  invoices:"invoices",
+  settings:"settings"
+};
+
+const INVENTORY_CATEGORIES=[
+  "معدات الفيزياء",
+  "معدات العلوم",
+  "معدات الإعلام الآلي",
+  "معدات الصوتيات",
+  "الأجهزة السمعية البصرية",
+  "الأدوات والتجهيزات العامة"
+];
+
+function getData(key){
+  try{
+    return JSON.parse(
+      localStorage.getItem(STORAGE_PREFIX+key)||"[]"
+    );
+  }catch(e){
+    return [];
+  }
+}
+
+function setData(key,data){
+  localStorage.setItem(
+    STORAGE_PREFIX+key,
+    JSON.stringify(data)
+  );
+}
+
+function today(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function nowTime(){
+  return new Date().toLocaleTimeString("fr-FR",{
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  document.querySelectorAll('input[type="date"]').forEach(x=>{
+    if(!x.value)x.value=today();
+  });
+});
+
+</script>
+
+
+
 
 /* ================= DATA ================= */
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-const SUPABASE_URL = "https://niedzlyvricaofqasohe.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "ضع المفتاح هنا";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-</script>
 const STORAGE_PREFIX="LAB_PLATFORM_";
 
 const INVENTORY_CATEGORIES=[
