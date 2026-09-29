@@ -2729,7 +2729,8 @@ async function loginUser(){
 
   document.getElementById("loginBox").style.display = "none";
 await loadUserRole();
-  message.textContent = "";
+await hideTeacherSections();
+message.textContent = "";
 }
 </script> 
   <script>
