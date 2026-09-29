@@ -218,7 +218,15 @@ const supabaseClient = window.supabase.createClient(
 </head>
 
 <body>
-
+<div id="activationBox" style="position:fixed;inset:0;background:#f4f7fb;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div style="background:white;padding:25px;border-radius:15px;max-width:420px;width:100%;text-align:center;box-shadow:0 4px 20px #0002">
+    <h2>🔐 تفعيل منصة المخبري</h2>
+    <p>أدخل كود التفعيل الخاص بك للمتابعة</p>
+    <input id="activationCode" type="text" placeholder="كود التفعيل">
+    <button class="primary" onclick="activatePlatform()">تفعيل المنصة</button>
+    <div id="activationMessage"></div>
+  </div>
+</div>
 <header>
 <h1>🔬 منصة المخبري</h1>
 <div>متوسطة قايد أحمد – غليزان</div>
