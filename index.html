@@ -2723,23 +2723,15 @@ await loadUserRole();
   <script>
 async function loadUserRole(){
 
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if(!user) return;
-
-  const { data, error } = await supabaseClient
-    .from("users")
-    .select("role")
-    .eq("auth_id", user.id)
-    .single();
+  const { data, error } = await supabaseClient.rpc("get_my_role");
 
   if(error){
     console.error(error);
     return;
   }
 
-  alert("صلاحية المستخدم: " + data.role);
-}
+  alert("صلاحية المستخدم: " + data);
+    }
 </script>
  <script>
 async function logoutUser(){
