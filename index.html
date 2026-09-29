@@ -2718,5 +2718,26 @@ async function loginUser(){
   message.textContent = "";
 }
 </script> 
+  <script>
+async function loadUserRole(){
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if(!user) return;
+
+  const { data, error } = await supabaseClient
+    .from("users")
+    .select("role")
+    .eq("auth_id", user.id)
+    .single();
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  console.log("صلاحية المستخدم:", data.role);
+}
+</script>
 </body>
 </html> 
