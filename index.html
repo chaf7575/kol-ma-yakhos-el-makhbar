@@ -2641,5 +2641,38 @@ document.addEventListener(
   }
 );
 </script> 
+ <script>
+async function activatePlatform(){
+
+  const code = document.getElementById("activationCode").value.trim();
+  const message = document.getElementById("activationMessage");
+
+  if(!code){
+    message.textContent = "أدخل كود التفعيل";
+    return;
+  }
+
+  message.textContent = "جارٍ التحقق...";
+
+  const { data, error } = await supabaseClient.rpc(
+    "check_activation",
+    { p_code: code }
+  );
+
+  if(error){
+    message.textContent = "حدث خطأ في الاتصال";
+    console.error(error);
+    return;
+  }
+
+  if(data === true){
+    localStorage.setItem("LAB_ACTIVATED","true");
+    document.getElementById("activationBox").style.display = "none";
+    message.textContent = "";
+  }else{
+    message.textContent = "❌ كود التفعيل غير صحيح أو غير نشط";
+  }
+}
+</script> 
 </body>
 </html> 
