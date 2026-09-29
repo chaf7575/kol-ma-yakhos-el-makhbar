@@ -2817,5 +2817,28 @@ async function sendTeacherRequest(){
   document.getElementById("reqNote").value = "";
 }
 </script> 
+ <script>
+async function hideTeacherSections(){
+
+  const { data: role } =
+    await supabaseClient.rpc("get_my_role");
+
+  if(role !== "teacher") return;
+
+  const allowed = ["requests"];
+
+  document.querySelectorAll(".section").forEach(function(sec){
+
+    if(!allowed.includes(sec.id)){
+      sec.style.display = "none";
+    }
+
+  });
+
+  show("requests");
+}
+
+hideTeacherSections();
+</script> 
 </body>
 </html> 
