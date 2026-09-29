@@ -227,7 +227,21 @@ const supabaseClient = window.supabase.createClient(
     <div id="activationMessage"></div>
   </div>
 </div>
+  <div id="loginBox" style="display:none;position:fixed;inset:0;background:#f4f7fb;z-index:99998;align-items:center;justify-content:center;padding:20px">
+  <div style="background:white;padding:25px;border-radius:15px;max-width:420px;width:100%;text-align:center;box-shadow:0 4px 20px #0002">
+    <h2>🔐 تسجيل الدخول</h2>
+
+    <input id="loginEmail" type="email" placeholder="البريد الإلكتروني">
+
+    <input id="loginPassword" type="password" placeholder="كلمة المرور">
+
+    <button class="primary" onclick="loginUser()">دخول</button>
+
+    <div id="loginMessage"></div>
+  </div>
+</div>  
 <header>
+
 <h1>🔬 منصة المخبري</h1>
 <div>متوسطة قايد أحمد – غليزان</div>
 
