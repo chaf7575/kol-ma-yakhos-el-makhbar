@@ -2739,5 +2739,28 @@ async function logoutUser(){
   location.reload();
 }
 </script> 
+<script>
+async function applyRoleAccess(){
+
+  const { data: role } = await supabaseClient.rpc("get_my_role");
+
+  if(role !== "teacher") return;
+
+  const nav = document.getElementById("mainNav");
+  if(!nav) return;
+
+  nav.querySelectorAll("button").forEach(function(btn){
+
+    if(!btn.textContent.includes("الطلبات")){
+      btn.style.display = "none";
+    }
+
+  });
+
+  show("requests");
+}
+
+applyRoleAccess();
+</script>  
 </body>
 </html> 
