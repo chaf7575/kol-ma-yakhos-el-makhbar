@@ -1479,7 +1479,16 @@ async function addInv(){
 
   const { error } = await supabaseClient
   .from("inventory")
-  .insert(item);
+  .insert({
+    "Inventory no": item.item_number,
+    "Name": item.name,
+    "Category": item.category,
+    "Contite": item.quantity,
+    "Condition": item.condition,
+    "Location": item.location,
+    "Date": item.item_date,
+    "Note": item.notes
+  });
 
 if(error){
   alert(error.message);
