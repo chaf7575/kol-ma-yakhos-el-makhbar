@@ -2682,6 +2682,7 @@ async function activatePlatform(){
   if(data === true){
     localStorage.setItem("LAB_ACTIVATED","true");
     document.getElementById("activationBox").style.display = "none";
+    document.getElementById("loginBox").style.display = "flex";
     message.textContent = "";
   }else{
     message.textContent = "❌ كود التفعيل غير صحيح أو غير نشط";
