@@ -2207,49 +2207,41 @@ function sendRequest(){
 
 
 function renderRequests(){
+async function renderRequests(){
 
-  document.getElementById('reqBody').innerHTML=
-    db.requests.map(x=>`
+  const body = document.getElementById("reqBody");
 
-      <tr>
+  const { data, error } = await supabaseClient
+    .from("requests")
+    .select("*")
+    .order("request_date", { ascending: false });
 
-        <td>${esc(x.teacher)}</td>
-        <td>${esc(x.class_name)}</td>
-        <td>${esc(x.date)}</td>
-        <td>${esc(x.time)}</td>
-        <td>${esc(x.experiment)}</td>
-        <td>${esc(x.tools)}</td>
-        <td>${esc(x.notes)}</td>
+  if(error){
+    console.error(error);
+    body.innerHTML =
+      '<tr><td colspan="9">❌ تعذر تحميل الطلبات</td></tr>';
+    return;
+  }
 
-        <td>
+  if(!data || data.length === 0){
+    body.innerHTML =
+      '<tr><td colspan="9">لا توجد طلبات</td></tr>';
+    return;
+  }
 
-          <select
-            onchange="changeReq('${x.id}',this.value)">
-
-            ${['جديد','قيد التحضير','تم','مرفوض']
-              .map(s=>
-                `<option ${s===x.status?'selected':''}>
-                  ${s}
-                </option>`
-              ).join('')}
-
-          </select>
-
-        </td>
-
-        <td class="no-print">
-
-          <button class="danger"
-            onclick="delReq('${x.id}')">
-            حذف
-          </button>
-
-        </td>
-
-      </tr>
-
-    `).join('');
-
+  body.innerHTML = data.map(x => `
+    <tr>
+      <td>${esc(x.teacher || "")}</td>
+      <td>${esc(x.class_name || "")}</td>
+      <td>${esc(x.request_date || "")}</td>
+      <td>—</td>
+      <td>${esc(x.request_text || "")}</td>
+      <td>${esc(x.notes || "")}</td>
+      <td>${esc(x.notes || "")}</td>
+      <td>${esc(x.status || "جديد")}</td>
+      <td class="no-print">—</td>
+    </tr>
+  `).join("");
 }
 
 
