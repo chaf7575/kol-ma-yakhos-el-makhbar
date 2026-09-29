@@ -1491,8 +1491,9 @@ async function addInv(){
   });
 
 if(error){
-  alert(error.message);
+  alert(JSON.stringify(error));
   return;
+}
 }
 
 db.inventory.push(item);
