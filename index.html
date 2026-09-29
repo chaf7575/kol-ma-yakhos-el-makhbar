@@ -1482,8 +1482,7 @@ async function addInv(){
   .insert(item);
 
 if(error){
-  console.error(error);
-  alert("حدث خطأ أثناء الحفظ في Supabase");
+  alert(error.message);
   return;
 }
 
