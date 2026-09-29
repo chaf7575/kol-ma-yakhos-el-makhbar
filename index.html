@@ -2739,5 +2739,11 @@ async function loadUserRole(){
   alert("صلاحية المستخدم: " + data.role);
 }
 </script>
+ <script>
+async function logoutUser(){
+  await supabaseClient.auth.signOut();
+  location.reload();
+}
+</script> 
 </body>
 </html> 
