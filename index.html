@@ -1477,7 +1477,17 @@ function addInv(){
     return;
   }
 
-  db.inventory.push(item);
+  const { error } = await supabaseClient
+  .from("inventory")
+  .insert(item);
+
+if(error){
+  console.error(error);
+  alert("حدث خطأ أثناء الحفظ في Supabase");
+  return;
+}
+
+db.inventory.push(item);
 
   save();
 
