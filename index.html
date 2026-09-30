@@ -1478,26 +1478,25 @@ async function addInv(){
   }
 
   const { error } = await supabaseClient
-  .from("inventory")
-  .insert({
-    "Inventory no": item.item_number,
-    "Name": item.name,
-    "Category": item.category,
-    "Contite": item.quantity,
-    "Condition": item.condition,
-    "Location": item.location,
-    "Date": item.item_date,
-    "Note": item.notes
-  });
+    .from("inventory")
+    .insert({
+      item_number: item.item_number,
+      name: item.name,
+      category: item.category,
+      quantity: item.quantity,
+      condition: item.condition,
+      location: item.location,
+      item_date: item.item_date,
+      notes: item.notes
+    });
 
-if(error){
-  alert(JSON.stringify(error));
-  return;
-}
-}
+  if(error){
+    alert(error.message);
+    console.error(error);
+    return;
+  }
 
-db.inventory.push(item);
-
+  db.inventory.push(item);
   save();
 
   document.getElementById('ino').value='';
@@ -1506,9 +1505,8 @@ db.inventory.push(item);
   document.getElementById('iloc').value='';
   document.getElementById('inote').value='';
 
-  alert('تم حفظ التجهيز');
+  alert('تم حفظ التجهيز بنجاح');
 }
-
 
 function delInv(id){
 
