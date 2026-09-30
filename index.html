@@ -2906,9 +2906,174 @@ async function sendTeacherRequest(){
   }
 }
 </script>
- <script>
-async function hideTeacherSections(){
+  <script>
 
+async function editReq(id){
+
+  const { data, error } =
+    await supabaseClient
+      .from("requests")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+  if(error){
+    console.error(error);
+    alert("❌ تعذر فتح الطلب للتعديل");
+    return;
+  }
+
+  document.getElementById("reqId").value = data.id || "";
+  document.getElementById("reqTeacher").value = data.teacher || "";
+  document.getElementById("reqClass").value = data.class_name || "";
+  document.getElementById("reqText").value = data.request_text || "";
+
+  const parts = String(data.notes || "").split(" | ");
+
+  document.getElementById("reqTools").value = parts[0] || "";
+  document.getElementById("reqNote").value =
+    parts.slice(1).join(" | ");
+
+  document.getElementById("requestFormTitle").textContent =
+    "✏️ تعديل الطلب";
+
+  document.getElementById("cancelReqEdit")
+    .classList.remove("hidden");
+
+  document.getElementById("teacherRequestForm")
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+}
+
+
+function cancelReqEdit(){
+
+  document.getElementById("reqId").value = "";
+  document.getElementById("reqTeacher").value = "";
+  document.getElementById("reqClass").value = "";
+  document.getElementById("reqText").value = "";
+  document.getElementById("reqTools").value = "";
+  document.getElementById("reqNote").value = "";
+
+  document.getElementById("requestFormTitle").textContent =
+    "📝 إرسال طلب جديد";
+
+  document.getElementById("cancelReqEdit")
+    .classList.add("hidden");
+
+  document.getElementById("reqMessage").innerHTML = "";
+}
+
+
+async function deleteReq(id){
+
+  if(!confirm("هل تريد حذف هذا الطلب نهائيًا؟")){
+    return;
+  }
+
+  const { error } =
+    await supabaseClient
+      .from("requests")
+      .delete()
+      .eq("id", id);
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "❌ لم يتم حذف الطلب\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("✅ تم حذف الطلب بنجاح");
+
+  await renderRequests();
+}
+
+</script>
+
+<script>
+async function renderRequests(){
+
+  const body = document.getElementById("reqBody");
+
+  const { data, error } =
+    await supabaseClient
+      .from("requests")
+      .select("*")
+      .order("request_date", { ascending:false });
+
+  if(error){
+
+    console.error(error);
+
+    body.innerHTML =
+      '<tr><td colspan="9">❌ تعذر تحميل الطلبات</td></tr>';
+
+    return;
+  }
+
+  if(!data || data.length === 0){
+
+    body.innerHTML =
+      '<tr><td colspan="9">لا توجد طلبات</td></tr>';
+
+    return;
+  }
+
+  body.innerHTML = data.map(x => {
+
+    const parts =
+      String(x.notes || "").split(" | ");
+
+    const tools = parts[0] || "";
+    const note = parts.slice(1).join(" | ");
+
+    return `
+      <tr>
+
+        <td>${esc(x.teacher || "")}</td>
+
+        <td>${esc(x.class_name || "")}</td>
+
+        <td>${esc(x.request_date || "")}</td>
+
+        <td>—</td>
+
+        <td>${esc(x.request_text || "")}</td>
+
+        <td>${esc(tools)}</td>
+
+        <td>${esc(note)}</td>
+
+        <td>${esc(x.status || "جديد")}</td>
+
+        <td class="no-print">
+
+          <button class="primary"
+            onclick="editReq('${x.id}')">
+            ✏️ تعديل
+          </button>
+
+          <button class="danger"
+            onclick="deleteReq('${x.id}')">
+            🗑️ حذف
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+}
+async function hideTeacherSections(){
   const { data: role } =
     await supabaseClient.rpc("get_my_role");
 
