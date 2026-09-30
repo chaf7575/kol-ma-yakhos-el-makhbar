@@ -205,6 +205,140 @@ footer{
     box-shadow:none
   }
 }
+  /* ===== تصميم فهرس منصة المخبري ===== */
+
+.home-index{
+  margin:20px 0;
+  padding:25px;
+  border-radius:24px;
+  overflow:hidden;
+  position:relative;
+  color:white;
+  background:
+    radial-gradient(circle at 15% 25%,rgba(255,255,255,.18) 0 3px,transparent 4px),
+    radial-gradient(circle at 80% 70%,rgba(255,255,255,.15) 0 4px,transparent 5px),
+    linear-gradient(135deg,#123b5d,#176b87,#159895);
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.home-index:before{
+  content:"⚛  ⚗  🧬  🔬  🧪  ⚛  🧬";
+  position:absolute;
+  bottom:5px;
+  left:0;
+  font-size:42px;
+  opacity:.08;
+  letter-spacing:20px;
+  white-space:nowrap;
+}
+
+.index-title{
+  display:flex;
+  gap:15px;
+  margin-bottom:20px;
+  position:relative;
+  z-index:2;
+}
+
+.index-title>span{
+  font-size:50px;
+}
+
+.index-title h2{
+  margin:0;
+  font-size:28px;
+}
+
+.index-title p{
+  margin:5px 0 0;
+  opacity:.85;
+}
+
+.index-slider{
+  width:100%;
+  overflow:hidden;
+  position:relative;
+  z-index:2;
+}
+
+.index-track{
+  display:flex;
+  gap:15px;
+  width:max-content;
+  animation:labMove 35s linear infinite;
+}
+
+.index-track:hover{
+  animation-play-state:paused;
+}
+
+.index-card{
+  width:210px;
+  min-width:210px;
+  min-height:145px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.96);
+  color:#172033;
+  cursor:pointer;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+  transition:.25s;
+}
+
+.index-card:hover{
+  transform:translateY(-7px) scale(1.03);
+  box-shadow:0 14px 28px rgba(0,0,0,.22);
+}
+
+.index-icon{
+  font-size:42px;
+  margin-bottom:7px;
+}
+
+.index-card h3{
+  margin:5px 0;
+  font-size:17px;
+}
+
+.index-card p{
+  margin:5px 0;
+  font-size:12px;
+  color:#64748b;
+}
+
+@keyframes labMove{
+  from{
+    transform:translateX(0);
+  }
+  to{
+    transform:translateX(-50%);
+  }
+}
+
+@media(max-width:600px){
+
+  .home-index{
+    padding:18px 12px;
+  }
+
+  .index-title h2{
+    font-size:22px;
+  }
+
+  .index-title>span{
+    font-size:40px;
+  }
+
+  .index-card{
+    width:175px;
+    min-width:175px;
+  }
+
+  .index-icon{
+    font-size:36px;
+  }
+}
 </style>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 <script>
@@ -273,7 +407,84 @@ const supabaseClient = window.supabase.createClient(
 <p class="small">إدارة أعمال المخبر.</p>
 </div>
 </div>
+<!-- فهرس منصة المخبري -->
+<div class="home-index">
 
+  <div class="index-title">
+    <span>🔬</span>
+    <div>
+      <h2>منصة المخبري</h2>
+      <p>فهرس أعمال المخبر</p>
+    </div>
+  </div>
+
+  <div class="index-slider">
+    <div class="index-track">
+
+      <div class="index-card" onclick="show('requests')">
+        <div class="index-icon">📨</div>
+        <h3>طلبات الأساتذة</h3>
+        <p>استقبال ومتابعة الطلبات</p>
+      </div>
+
+      <div class="index-card" onclick="show('progress')">
+        <div class="index-icon">📅</div>
+        <h3>التدرج السنوي</h3>
+        <p>البرنامج السنوي</p>
+      </div>
+
+      <div class="index-card" onclick="show('experiments')">
+        <div class="index-icon">🧪</div>
+        <h3>التجارب والمواد</h3>
+        <p>التجارب والوسائل</p>
+      </div>
+
+      <div class="index-card" onclick="show('preparation')">
+        <div class="index-icon">⚗️</div>
+        <h3>التحضير</h3>
+        <p>تحضير التجارب</p>
+      </div>
+
+      <div class="index-card" onclick="show('inventory')">
+        <div class="index-icon">📦</div>
+        <h3>الجرد</h3>
+        <p>معدات وتجهيزات المخبر</p>
+      </div>
+
+      <div class="index-card" onclick="show('chemicals')">
+        <div class="index-icon">🧴</div>
+        <h3>المحاليل</h3>
+        <p>المخزون والاستعمال</p>
+      </div>
+
+      <div class="index-card" onclick="show('movements')">
+        <div class="index-icon">🔄</div>
+        <h3>حركة الأدوات</h3>
+        <p>الدخول والخروج</p>
+      </div>
+
+      <div class="index-card" onclick="show('daily')">
+        <div class="index-icon">📝</div>
+        <h3>التقرير اليومي</h3>
+        <p>أعمال المخبر اليومية</p>
+      </div>
+
+      <div class="index-card" onclick="show('reports')">
+        <div class="index-icon">📊</div>
+        <h3>التقارير</h3>
+        <p>تقارير نشاط المخبر</p>
+      </div>
+
+      <div class="index-card" onclick="show('invoices')">
+        <div class="index-icon">🧾</div>
+        <h3>الفواتير والسجلات</h3>
+        <p>الوثائق والسجلات</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 <div class="stats">
 
 <div class="statbox">
