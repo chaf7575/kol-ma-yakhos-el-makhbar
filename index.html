@@ -2843,7 +2843,7 @@ async function hideTeacherSections(){
 
   if(role !== "teacher") return;
 
-  const allowed = ["requests"];
+  const allowed = ["requests", "progress", "various"];
 
   document.querySelectorAll(".section").forEach(function(sec){
 
