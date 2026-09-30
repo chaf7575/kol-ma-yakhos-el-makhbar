@@ -2270,26 +2270,10 @@ async function renderRequests(){
 }
 
 
-function changeReq(id,status){
-
-  const x=db.requests.find(y=>y.id===id);
-
-  if(!x)return;
-
-  x.status=status;
-
-  save();
-}
 
 
-function delReq(id){
 
-  if(!confirm('حذف الطلب؟'))return;
 
-  db.requests=db.requests.filter(x=>x.id!==id);
-
-  save();
-}
 
 
 /* =========================
