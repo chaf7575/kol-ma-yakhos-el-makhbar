@@ -14,7 +14,7 @@ body{
   color:#172033
 }
 header{
-  background:#123b5d;
+  background:#123b5d; 
   color:#fff;
   padding:18px;
   position:sticky;
@@ -834,7 +834,9 @@ const supabaseClient = window.supabase.createClient(
 </div>
 <div id="teacherRequestForm" style="background:#f8fafc;padding:15px;border-radius:12px;margin:15px 0">
 
-<h3>📝 إرسال طلب جديد</h3>
+<h3 id="requestFormTitle">📝 إرسال طلب جديد</h3>
+
+<input id="reqId" type="hidden">
 
 <input id="reqTeacher" placeholder="اسم الأستاذ">
 
@@ -846,13 +848,19 @@ const supabaseClient = window.supabase.createClient(
 
 <textarea id="reqNote" placeholder="ملاحظة"></textarea>
 
+<div class="actions">
+
 <button class="primary" onclick="sendTeacherRequest()">
 📨 إرسال الطلب
 </button>
 
-<div id="reqMessage"></div>
+<button id="cancelReqEdit" class="hidden" onclick="cancelReqEdit()">
+إلغاء التعديل
+</button>
 
 </div>
+
+<div id="reqMessage"></div>
 <div class="tablewrap">
 
 <table>
@@ -2799,46 +2807,105 @@ applyRoleAccess();
  <script>
 async function sendTeacherRequest(){
 
-  const teacher = document.getElementById("reqTeacher").value.trim();
-  const className = document.getElementById("reqClass").value.trim();
-  const requestText = document.getElementById("reqText").value.trim();
-  const tools = document.getElementById("reqTools").value.trim();
-  const note = document.getElementById("reqNote").value.trim();
-  const message = document.getElementById("reqMessage");
+  const idValue =
+    document.getElementById("reqId").value.trim();
+
+  const teacher =
+    document.getElementById("reqTeacher").value.trim();
+
+  const className =
+    document.getElementById("reqClass").value.trim();
+
+  const requestText =
+    document.getElementById("reqText").value.trim();
+
+  const tools =
+    document.getElementById("reqTools").value.trim();
+
+  const note =
+    document.getElementById("reqNote").value.trim();
+
+  const message =
+    document.getElementById("reqMessage");
 
   if(!teacher || !className || !requestText){
-    message.textContent = "⚠️ أكمل اسم الأستاذ والقسم والتجربة";
+
+    message.textContent =
+      "⚠️ أكمل اسم الأستاذ والقسم والتجربة";
+
     return;
   }
 
-  message.textContent = "جارٍ إرسال الطلب...";
+  message.textContent =
+    idValue
+      ? "جارٍ حفظ التعديل..."
+      : "جارٍ إرسال الطلب...";
 
-  const { error } = await supabaseClient
-    .from("requests")
-    .insert({
-      teacher: teacher,
-      class_name: className,
-      request_text: requestText,
-      request_date: new Date().toISOString().slice(0,10),
-      status: "جديد",
-      notes: tools + (note ? " | " + note : "")
-    });
+  const notes =
+    tools + (note ? " | " + note : "");
 
-  if(error){
-    console.error(error);
-    message.textContent = "❌ حدث خطأ أثناء إرسال الطلب";
-    return;
+  if(idValue){
+
+    const { error } =
+      await supabaseClient
+        .from("requests")
+        .update({
+          teacher: teacher,
+          class_name: className,
+          request_text: requestText,
+          notes: notes
+        })
+        .eq("id", idValue);
+
+    if(error){
+
+      console.error(error);
+
+      message.textContent =
+        "❌ حدث خطأ أثناء تعديل الطلب";
+
+      return;
+    }
+
+    message.innerHTML =
+      '<div class="success">✅ تم تعديل الطلب بنجاح</div>';
+
+  }else{
+
+    const { error } =
+      await supabaseClient
+        .from("requests")
+        .insert({
+          teacher: teacher,
+          class_name: className,
+          request_text: requestText,
+          request_date:
+            new Date().toISOString().slice(0,10),
+          status: "جديد",
+          notes: notes
+        });
+
+    if(error){
+
+      console.error(error);
+
+      message.textContent =
+        "❌ حدث خطأ أثناء إرسال الطلب";
+
+      return;
+    }
+
+    message.innerHTML =
+      '<div class="success">✅ تم إرسال الطلب بنجاح</div>';
   }
 
-  message.textContent = "✅ تم إرسال الطلب بنجاح";
+  cancelReqEdit();
 
-  document.getElementById("reqTeacher").value = "";
-  document.getElementById("reqClass").value = "";
-  document.getElementById("reqText").value = "";
-  document.getElementById("reqTools").value = "";
-  document.getElementById("reqNote").value = "";
+  if(typeof renderRequests === "function"){
+    await renderRequests();
+  }
 }
-</script> 
+</script>
  <script>
 async function hideTeacherSections(){
 
