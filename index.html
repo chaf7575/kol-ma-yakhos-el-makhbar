@@ -2781,9 +2781,13 @@ async function applyRoleAccess(){
 
   nav.querySelectorAll("button").forEach(function(btn){
 
-    if(!btn.textContent.includes("الطلبات")){
-      btn.style.display = "none";
-    }
+    if(
+  !btn.textContent.includes("الطلبات") &&
+  !btn.textContent.includes("التدرج") &&
+  !btn.textContent.includes("منوعات")
+){
+  btn.style.display = "none";
+}
 
   });
 
