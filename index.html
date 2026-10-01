@@ -2244,55 +2244,85 @@ function renderProgress(){
    الطلبات
 ========================= */
 
-function sendRequest(){
+ sendRequest(){
+async function sendRequest(){
 
-  const x={
+  const teacher =
+    document.getElementById('tname').value.trim();
 
-    id:id(),
+  const className =
+    document.getElementById('tclass').value.trim();
 
-    teacher:
-      document.getElementById('tname').value.trim(),
+  const requestDate =
+    document.getElementById('tdate').value ||
+    new Date().toISOString().slice(0,10);
 
-    class_name:
-      document.getElementById('tclass').value.trim(),
+  const requestTime =
+    document.getElementById('ttime').value ||
+    new Date().toTimeString().slice(0,5);
 
-    date:
-      document.getElementById('tdate').value||today(),
+  const requestText =
+    document.getElementById('texp').value.trim();
 
-    time:
-      document.getElementById('ttime').value||nowTime(),
+  const tools =
+    document.getElementById('ttools').value.trim();
 
-    experiment:
-      document.getElementById('texp').value.trim(),
+  const notes =
+    document.getElementById('tnote').value.trim();
 
-    tools:
-      document.getElementById('ttools').value.trim(),
+  const message =
+    document.getElementById('tmsg');
 
-    notes:
-      document.getElementById('tnote').value.trim(),
+  if(!teacher || !className || !requestText){
 
-    status:'جديد'
+    message.innerHTML =
+      '<div>⚠️ أكمل اسم الأستاذ والقسم والتجربة</div>';
 
-  };
-
-  if(!x.teacher){
-    alert('أدخل اسم الأستاذ');
     return;
   }
 
-  db.requests.push(x);
+  message.innerHTML =
+    '<div>⏳ جارٍ إرسال الطلب...</div>';
 
-  save();
+  const { error } =
+    await supabaseClient
+      .from("requests")
+      .insert({
+        teacher: teacher,
+        class_name: className,
+        request_date: requestDate,
+        request_text: requestText,
+        notes: tools + (notes ? " | " + notes : ""),
+        status: "جديد"
+      });
 
-  document.getElementById('tmsg').innerHTML=
-    '<div class="success">تم إرسال الطلب بنجاح.</div>';
+  if(error){
+
+    console.error(error);
+
+    message.innerHTML =
+      "❌ خطأ Supabase:<br>" +
+      error.message +
+      "<br>الكود: " +
+      error.code;
+
+    return;
+  }
+
+  message.innerHTML =
+    '<div class="success">✅ تم إرسال الطلب بنجاح</div>';
 
   document.getElementById('tname').value='';
   document.getElementById('tclass').value='';
+  document.getElementById('tdate').value='';
+  document.getElementById('ttime').value='';
   document.getElementById('texp').value='';
   document.getElementById('ttools').value='';
   document.getElementById('tnote').value='';
-}
+
+  if(typeof renderRequests === "function"){
+    await renderRequests();
+  }
 
 
 
