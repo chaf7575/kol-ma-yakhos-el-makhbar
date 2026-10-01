@@ -1403,7 +1403,10 @@ function show(id){
   }
 
   window.scrollTo(0,0);
-  renderAll();
+
+if(typeof renderRequests === "function"){
+  renderRequests();
+}
 }
 
 function toggle(id){
