@@ -388,25 +388,6 @@ footer{
   .index-icon{
     font-size:36px;
   }
-}
-
-  .index-title h2{
-    font-size:22px;
-  }
-
-  .index-title>span{
-    font-size:40px;
-  }
-
-  .index-card{
-    width:175px;
-    min-width:175px;
-  }
-
-  .index-icon{
-    font-size:36px;
-  }
-}
 </style>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 <script>
@@ -548,71 +529,6 @@ const supabaseClient = window.supabase.createClient(
     <h3>الفواتير والسجلات</h3>
     <p>الوثائق والسجلات</p>
   </div>
-
-  <!-- تكرار البطاقات للحركة المستمرة -->
-
-  <div class="index-card" onclick="show('requests')">
-    <div class="index-icon">📨</div>
-    <h3>طلبات الأساتذة</h3>
-    <p>استقبال ومتابعة الطلبات</p>
-  </div>
-
-  <div class="index-card" onclick="show('progress')">
-    <div class="index-icon">📅</div>
-    <h3>التدرج السنوي</h3>
-    <p>البرنامج السنوي</p>
-  </div>
-
-  <div class="index-card" onclick="show('experiments')">
-    <div class="index-icon">🧪</div>
-    <h3>التجارب والمواد</h3>
-    <p>التجارب والوسائل</p>
-  </div>
-
-  <div class="index-card" onclick="show('preparation')">
-    <div class="index-icon">⚗️</div>
-    <h3>التحضير</h3>
-    <p>تحضير التجارب</p>
-  </div>
-
-  <div class="index-card" onclick="show('inventory')">
-    <div class="index-icon">📦</div>
-    <h3>الجرد</h3>
-    <p>معدات وتجهيزات المخبر</p>
-  </div>
-
-  <div class="index-card" onclick="show('chemicals')">
-    <div class="index-icon">🧴</div>
-    <h3>المحاليل</h3>
-    <p>المخزون والاستعمال</p>
-  </div>
-
-  <div class="index-card" onclick="show('movements')">
-    <div class="index-icon">🔄</div>
-    <h3>حركة الأدوات</h3>
-    <p>الدخول والخروج</p>
-  </div>
-
-  <div class="index-card" onclick="show('daily')">
-    <div class="index-icon">📝</div>
-    <h3>التقرير اليومي</h3>
-    <p>أعمال المخبر اليومية</p>
-  </div>
-
-  <div class="index-card" onclick="show('reports')">
-    <div class="index-icon">📊</div>
-    <h3>التقارير</h3>
-    <p>تقارير نشاط المخبر</p>
-  </div>
-
-  <div class="index-card" onclick="show('invoices')">
-    <div class="index-icon">🧾</div>
-    <h3>الفواتير والسجلات</h3>
-    <p>الوثائق والسجلات</p>
-  </div>
-
-</div>
-
       <div class="index-card" onclick="show('progress')">
         <div class="index-icon">📅</div>
         <h3>التدرج السنوي</h3>
