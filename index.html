@@ -14,7 +14,7 @@ body{
   color:#172033
 }
 header{
-  background:#123b5d;
+  background:#123b5d; 
   color:#fff;
   padding:18px;
   position:sticky;
@@ -834,7 +834,9 @@ const supabaseClient = window.supabase.createClient(
 </div>
 <div id="teacherRequestForm" style="background:#f8fafc;padding:15px;border-radius:12px;margin:15px 0">
 
-<h3>📝 إرسال طلب جديد</h3>
+<h3 id="requestFormTitle">📝 إرسال طلب جديد</h3>
+
+<input id="reqId" type="hidden">
 
 <input id="reqTeacher" placeholder="اسم الأستاذ">
 
@@ -846,13 +848,19 @@ const supabaseClient = window.supabase.createClient(
 
 <textarea id="reqNote" placeholder="ملاحظة"></textarea>
 
+<div class="actions">
+
 <button class="primary" onclick="sendTeacherRequest()">
 📨 إرسال الطلب
 </button>
 
-<div id="reqMessage"></div>
+<button id="cancelReqEdit" class="hidden" onclick="cancelReqEdit()">
+إلغاء التعديل
+</button>
 
 </div>
+
+<div id="reqMessage"></div>
 <div class="tablewrap">
 
 <table>
@@ -2262,26 +2270,10 @@ async function renderRequests(){
 }
 
 
-function changeReq(id,status){
-
-  const x=db.requests.find(y=>y.id===id);
-
-  if(!x)return;
-
-  x.status=status;
-
-  save();
-}
 
 
-function delReq(id){
 
-  if(!confirm('حذف الطلب؟'))return;
 
-  db.requests=db.requests.filter(x=>x.id!==id);
-
-  save();
-}
 
 
 /* =========================
@@ -2781,9 +2773,13 @@ async function applyRoleAccess(){
 
   nav.querySelectorAll("button").forEach(function(btn){
 
-    if(!btn.textContent.includes("الطلبات")){
-      btn.style.display = "none";
-    }
+    if(
+  !btn.textContent.includes("الطلبات") &&
+  !btn.textContent.includes("التدرج") &&
+  !btn.textContent.includes("منوعات")
+){
+  btn.style.display = "none";
+}
 
   });
 
@@ -2795,49 +2791,273 @@ applyRoleAccess();
  <script>
 async function sendTeacherRequest(){
 
-  const teacher = document.getElementById("reqTeacher").value.trim();
-  const className = document.getElementById("reqClass").value.trim();
-  const requestText = document.getElementById("reqText").value.trim();
-  const tools = document.getElementById("reqTools").value.trim();
-  const note = document.getElementById("reqNote").value.trim();
-  const message = document.getElementById("reqMessage");
+  const idValue =
+    document.getElementById("reqId").value.trim();
+
+  const teacher =
+    document.getElementById("reqTeacher").value.trim();
+
+  const className =
+    document.getElementById("reqClass").value.trim();
+
+  const requestText =
+    document.getElementById("reqText").value.trim();
+
+  const tools =
+    document.getElementById("reqTools").value.trim();
+
+  const note =
+    document.getElementById("reqNote").value.trim();
+
+  const message =
+    document.getElementById("reqMessage");
 
   if(!teacher || !className || !requestText){
-    message.textContent = "⚠️ أكمل اسم الأستاذ والقسم والتجربة";
+
+    message.textContent =
+      "⚠️ أكمل اسم الأستاذ والقسم والتجربة";
+
     return;
   }
 
-  message.textContent = "جارٍ إرسال الطلب...";
+  message.textContent =
+    idValue
+      ? "جارٍ حفظ التعديل..."
+      : "جارٍ إرسال الطلب...";
 
-  const { error } = await supabaseClient
-    .from("requests")
-    .insert({
-      teacher: teacher,
-      class_name: className,
-      request_text: requestText,
-      request_date: new Date().toISOString().slice(0,10),
-      status: "جديد",
-      notes: tools + (note ? " | " + note : "")
-    });
+  const notes =
+    tools + (note ? " | " + note : "");
+
+  if(idValue){
+
+    const { error } =
+      await supabaseClient
+        .from("requests")
+        .update({
+          teacher: teacher,
+          class_name: className,
+          request_text: requestText,
+          notes: notes
+        })
+        .eq("id", idValue);
+
+    if(error){
+
+      console.error(error);
+
+      message.textContent =
+        "❌ حدث خطأ أثناء تعديل الطلب";
+
+      return;
+    }
+
+    message.innerHTML =
+      '<div class="success">✅ تم تعديل الطلب بنجاح</div>';
+
+  }else{
+
+    const { error } =
+      await supabaseClient
+        .from("requests")
+        .insert({
+          teacher: teacher,
+          class_name: className,
+          request_text: requestText,
+          request_date:
+            new Date().toISOString().slice(0,10),
+          status: "جديد",
+          notes: notes
+        });
+
+    if(error){
+
+      console.error(error);
+
+      message.textContent =
+        "❌ حدث خطأ أثناء إرسال الطلب";
+
+      return;
+    }
+
+    message.innerHTML =
+      '<div class="success">✅ تم إرسال الطلب بنجاح</div>';
+  }
+
+  cancelReqEdit();
+
+  if(typeof renderRequests === "function"){
+    await renderRequests();
+  }
+}
+</script>
+  <script>
+
+async function editReq(id){
+
+  const { data, error } =
+    await supabaseClient
+      .from("requests")
+      .select("*")
+      .eq("id", id)
+      .single();
 
   if(error){
     console.error(error);
-    message.textContent = "❌ حدث خطأ أثناء إرسال الطلب";
+    alert("❌ تعذر فتح الطلب للتعديل");
     return;
   }
 
-  message.textContent = "✅ تم إرسال الطلب بنجاح";
+  document.getElementById("reqId").value = data.id || "";
+  document.getElementById("reqTeacher").value = data.teacher || "";
+  document.getElementById("reqClass").value = data.class_name || "";
+  document.getElementById("reqText").value = data.request_text || "";
 
+  const parts = String(data.notes || "").split(" | ");
+
+  document.getElementById("reqTools").value = parts[0] || "";
+  document.getElementById("reqNote").value =
+    parts.slice(1).join(" | ");
+
+  document.getElementById("requestFormTitle").textContent =
+    "✏️ تعديل الطلب";
+
+  document.getElementById("cancelReqEdit")
+    .classList.remove("hidden");
+
+  document.getElementById("teacherRequestForm")
+    .scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+}
+
+
+function cancelReqEdit(){
+
+  document.getElementById("reqId").value = "";
   document.getElementById("reqTeacher").value = "";
   document.getElementById("reqClass").value = "";
   document.getElementById("reqText").value = "";
   document.getElementById("reqTools").value = "";
   document.getElementById("reqNote").value = "";
-}
-</script> 
- <script>
-async function hideTeacherSections(){
 
+  document.getElementById("requestFormTitle").textContent =
+    "📝 إرسال طلب جديد";
+
+  document.getElementById("cancelReqEdit")
+    .classList.add("hidden");
+
+  document.getElementById("reqMessage").innerHTML = "";
+}
+
+
+async function deleteReq(id){
+
+  if(!confirm("هل تريد حذف هذا الطلب نهائيًا؟")){
+    return;
+  }
+
+  const { error } =
+    await supabaseClient
+      .from("requests")
+      .delete()
+      .eq("id", id);
+
+  if(error){
+
+    console.error(error);
+
+    alert(
+      "❌ لم يتم حذف الطلب\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("✅ تم حذف الطلب بنجاح");
+
+  await renderRequests();
+}
+
+</script>
+
+<script>
+async function renderRequests(){
+
+  const body = document.getElementById("reqBody");
+
+  const { data, error } =
+    await supabaseClient
+      .from("requests")
+      .select("*")
+      .order("request_date", { ascending:false });
+
+  if(error){
+
+    console.error(error);
+
+    body.innerHTML =
+      '<tr><td colspan="9">❌ تعذر تحميل الطلبات</td></tr>';
+
+    return;
+  }
+
+  if(!data || data.length === 0){
+
+    body.innerHTML =
+      '<tr><td colspan="9">لا توجد طلبات</td></tr>';
+
+    return;
+  }
+
+  body.innerHTML = data.map(x => {
+
+    const parts =
+      String(x.notes || "").split(" | ");
+
+    const tools = parts[0] || "";
+    const note = parts.slice(1).join(" | ");
+
+    return `
+      <tr>
+
+        <td>${esc(x.teacher || "")}</td>
+
+        <td>${esc(x.class_name || "")}</td>
+
+        <td>${esc(x.request_date || "")}</td>
+
+        <td>—</td>
+
+        <td>${esc(x.request_text || "")}</td>
+
+        <td>${esc(tools)}</td>
+
+        <td>${esc(note)}</td>
+
+        <td>${esc(x.status || "جديد")}</td>
+
+        <td class="no-print">
+
+          <button class="primary"
+            onclick="editReq('${x.id}')">
+            ✏️ تعديل
+          </button>
+
+          <button class="danger"
+            onclick="deleteReq('${x.id}')">
+            🗑️ حذف
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+}
+async function hideTeacherSections(){
   const { data: role } =
     await supabaseClient.rpc("get_my_role");
 
