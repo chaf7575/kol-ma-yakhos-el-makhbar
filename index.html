@@ -261,7 +261,7 @@ footer{
   z-index:2;
 }
 
-..index-track{
+.index-track{
   display:flex !important;
   flex-direction:row !important;
   flex-wrap:nowrap !important;
@@ -273,6 +273,9 @@ footer{
 }
 
 .index-track:hover{
+  animation-play-state:paused;
+}
+
 /* ===== فهرس منصة المخبري ===== */
 
 .home-index{
@@ -362,6 +365,9 @@ footer{
 @media(max-width:600px){
 
   .home-index{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
     padding:18px 12px;
   }
 
@@ -383,12 +389,6 @@ footer{
     font-size:36px;
   }
 }
-  .home-index{
-    display:block !important;
-visibility:visible !important;
-opacity:1 !important;
-    padding:18px 12px;
-  }
 
   .index-title h2{
     font-size:22px;
@@ -700,7 +700,7 @@ const supabaseClient = window.supabase.createClient(
 
       <div class="index-card" onclick="show('daily')">
         <div class="index-icon">📝</div>
-        <h3>التقرير اليومي</h3
+        <h3>التقرير اليومي</h3>
 <div class="stats">
 
 <div class="statbox">
