@@ -2929,15 +2929,17 @@ async function sendTeacherRequest(){
           status: "جديد",
           notes: notes
         });
+if(error){
 
-    if(error){
+  console.error(error);
 
-      console.error(error);
+  message.innerHTML =
+    "❌ خطأ Supabase:<br>" +
+    error.message +
+    "<br>الكود: " +
+    error.code;
 
-      message.textContent =
-        "❌ حدث خطأ أثناء إرسال الطلب";
-
-      return;
+  return;
     }
 
     message.innerHTML =
