@@ -244,14 +244,6 @@ const supabaseClient = window.supabase.createClient(
 </div> 
   </div>
 
-<script>
-if(new URLSearchParams(window.location.search).get("teacher") === "1"){
-  document.getElementById("activationBox").style.display = "none";
-  document.getElementById("loginBox").style.display = "none";
-}
-</script>
-
-<header>
 <header>
 <button onclick="logoutUser()" class="primary" style="position:fixed;left:15px;top:15px;z-index:999999">
   تسجيل الخروج
