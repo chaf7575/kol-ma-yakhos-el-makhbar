@@ -3339,7 +3339,7 @@ function openQRTeacherMode(){
     .forEach(function(section){
 
       section.style.display =
-function openQRTeacherMode(){
+        "none";
   document.getElementById("activationBox").style.display = "none";
   document.getElementById("loginBox").style.display = "none";
   const params =
@@ -3393,10 +3393,10 @@ function openQRTeacherMode(){
 
   document
     .querySelectorAll(".section")
-    .forEach(function(sec){
+    .forEach(function(section){
 
-      if(!allowed.includes(sec.id)){
-        sec.style.display = "none";
+      if(!allowed.includes(section.id)){
+        section.style.display = "none";
       }
 
     });
