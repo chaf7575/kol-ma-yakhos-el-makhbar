@@ -3102,87 +3102,162 @@ async function hideTeacherSections(){
 hideTeacherSections();
 </script> 
 </body>
- <script>
+<script>
+
 function generateTeacherQR(){
+
+  const box =
+    document.getElementById("teacherQR");
+
+  const printBtn =
+    document.getElementById("printQRBtn");
+
+  if(!box){
+    alert("❌ لم يتم العثور على مربع QR");
+    return;
+  }
+
+  if(typeof QRCode === "undefined"){
+    alert(
+      "❌ مكتبة QRCode غير محملة.\n" +
+      "تأكد من اتصال الإنترنت ثم أعد تحميل الصفحة."
+    );
+    return;
+  }
 
   const teacherURL =
     window.location.origin +
     window.location.pathname +
     "?teacher=1";
 
-  const box = document.getElementById("teacherQR");
-
   box.innerHTML = "";
 
-  new QRCode(box,{
-    text: teacherURL,
-    width:220,
-    height:220
-  });
+  try{
 
-  document
-    .getElementById("printQRBtn")
-    .classList.remove("hidden");
+    new QRCode(box,{
+      text: teacherURL,
+      width: 220,
+      height: 220,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    if(printBtn){
+      printBtn.classList.remove("hidden");
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "❌ تعذر إنشاء QR\n\n" +
+      error.message
+    );
+
+  }
+
 }
+
 
 function printTeacherQR(){
 
-  const qr =
-    document.getElementById("teacherQR").innerHTML;
+  const box =
+    document.getElementById("teacherQR");
+
+  if(!box || !box.innerHTML.trim()){
+    alert("أنشئ QR أولًا");
+    return;
+  }
 
   const w =
-    window.open("","","width=500,height=600");
+    window.open(
+      "",
+      "_blank",
+      "width=500,height=650"
+    );
+
+  if(!w){
+    alert("اسمح بالنوافذ المنبثقة للطباعة");
+    return;
+  }
 
   w.document.write(`
-    <html dir="rtl">
+    <!doctype html>
+
+    <html lang="ar" dir="rtl">
+
     <head>
+
+      <meta charset="utf-8">
+
       <title>QR دخول الأساتذة</title>
 
       <style>
+
         body{
-          font-family:Arial;
+          font-family:Arial,Tahoma,sans-serif;
           text-align:center;
           padding:40px;
         }
 
         h2{
-          margin-bottom:20px;
+          color:#123b5d;
         }
+
+        img,
+        canvas{
+          display:block;
+          margin:25px auto;
+        }
+
       </style>
+
     </head>
 
     <body>
 
       <h2>🔬 منصة المخبري</h2>
 
-      <h3>دخول الأساتذة</h3>
+      <h3>👨‍🏫 دخول الأساتذة</h3>
 
-      ${qr}
+      ${box.innerHTML}
 
       <p>
         امسح رمز QR للدخول إلى وضع الأستاذ
       </p>
 
     </body>
+
     </html>
   `);
 
   w.document.close();
-  w.focus();
-  w.print();
+
+  setTimeout(function(){
+    w.focus();
+    w.print();
+  },500);
+
 }
-  <script>
+
+
+/* ==============================
+   وضع الأستاذ بواسطة QR
+============================== */
+
 function openQRTeacherMode(){
 
   const params =
-    new URLSearchParams(window.location.search);
+    new URLSearchParams(
+      window.location.search
+    );
 
-  /* ليس دخول QR */
   if(params.get("teacher") !== "1"){
     return;
   }
 
-  /* إخفاء التفعيل وتسجيل الدخول */
   const activationBox =
     document.getElementById("activationBox");
 
@@ -3198,9 +3273,11 @@ function openQRTeacherMode(){
   }
 
 
-  /* اسم الأستاذ */
   let name =
-    sessionStorage.getItem("QR_TEACHER_NAME");
+    sessionStorage.getItem(
+      "QR_TEACHER_NAME"
+    );
+
 
   if(!name){
 
@@ -3229,7 +3306,6 @@ function openQRTeacherMode(){
   }
 
 
-  /* الأقسام المسموحة */
   const allowed = [
     "requests",
     "progress",
@@ -3237,44 +3313,36 @@ function openQRTeacherMode(){
   ];
 
 
-  /* القائمة */
   document
     .querySelectorAll("#mainNav button")
     .forEach(function(btn){
 
-      const txt =
+      const text =
         btn.textContent || "";
 
-      const isAllowed =
-        txt.includes("الطلبات") ||
-        txt.includes("التدرج") ||
-        txt.includes("منوعات");
+      const allowedButton =
+        text.includes("الطلبات") ||
+        text.includes("التدرج") ||
+        text.includes("منوعات");
 
       btn.style.display =
-        isAllowed ? "" : "none";
+        allowedButton ? "" : "none";
 
     });
 
 
-  /* الأقسام */
   document
     .querySelectorAll(".section")
-    .forEach(function(sec){
+    .forEach(function(section){
 
-      if(allowed.includes(sec.id)){
-
-        sec.style.display = "";
-
-      }else{
-
-        sec.style.display = "none";
-
-      }
+      section.style.display =
+        allowed.includes(section.id)
+          ? ""
+          : "none";
 
     });
 
 
-  /* اسم الأستاذ في الطلب */
   const teacherInput =
     document.getElementById("reqTeacher");
 
@@ -3287,13 +3355,13 @@ function openQRTeacherMode(){
   }
 
 
-  /* فتح الطلبات */
   show("requests");
 
 }
 
 
-/* تشغيل QR بعد تحميل الصفحة */
+/* تشغيل وضع QR بعد تحميل الصفحة */
+
 document.addEventListener(
   "DOMContentLoaded",
   function(){
@@ -3302,7 +3370,9 @@ document.addEventListener(
 
   }
 );
+
 </script>
 
 </body>
 </html>
+
