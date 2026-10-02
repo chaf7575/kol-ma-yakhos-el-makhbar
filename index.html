@@ -3337,40 +3337,80 @@ function openQRTeacherMode(){
     .forEach(function(section){
 
       section.style.display =
-        allowed.includes(section.id)
-          ? ""
-          : "none";
+function openQRTeacherMode(){
+
+  const params =
+    new URLSearchParams(window.location.search);
+
+  if(params.get("teacher") !== "1") return;
+
+  const name =
+    prompt("👨‍🏫 أدخل اسم الأستاذ:");
+
+  if(!name || !name.trim()){
+    alert("يرجى إدخال اسم الأستاذ");
+    return;
+  }
+
+  sessionStorage.setItem(
+    "QR_TEACHER",
+    "true"
+  );
+
+  sessionStorage.setItem(
+    "QR_TEACHER_NAME",
+    name.trim()
+  );
+
+  document.getElementById("activationBox").style.display = "none";
+
+  document.getElementById("loginBox").style.display = "none";
+
+  const allowed = [
+    "requests",
+    "progress",
+    "various"
+  ];
+
+  document
+    .querySelectorAll("#mainNav button")
+    .forEach(function(btn){
+
+      const txt = btn.textContent;
+
+      if(
+        !txt.includes("الطلبات") &&
+        !txt.includes("التدرج") &&
+        !txt.includes("منوعات")
+      ){
+        btn.style.display = "none";
+      }
 
     });
 
+  document
+    .querySelectorAll(".section")
+    .forEach(function(sec){
+
+      if(!allowed.includes(sec.id)){
+        sec.style.display = "none";
+      }
+
+    });
 
   const teacherInput =
     document.getElementById("reqTeacher");
 
   if(teacherInput){
-
-    teacherInput.value = name;
-
+    teacherInput.value = name.trim();
     teacherInput.readOnly = true;
-
   }
-
 
   show("requests");
-
 }
 
-
-/* تشغيل وضع QR بعد تحميل الصفحة */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function(){
-
-    openQRTeacherMode();
-
-  }
-);
+openQRTeacherMode();
+  
 
 </script>
 
