@@ -3413,7 +3413,12 @@ openQRTeacherMode();
   
 
 </script>
-
+<script>
+if(new URLSearchParams(window.location.search).get("teacher") === "1"){
+  document.getElementById("activationBox").style.display = "none";
+  document.getElementById("loginBox").style.display = "none";
+}
+</script>
 </body>
 </html>
 
