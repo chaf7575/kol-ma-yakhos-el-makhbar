@@ -215,6 +215,7 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 </script>
+ <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script> 
 </head>
 
 <body>
@@ -1247,7 +1248,29 @@ onchange="restore(event)"
 >
 
 </div>
+<div class="card">
 
+<h3>📱 دخول الأساتذة عبر QR</h3>
+
+<p class="small">
+هذا رمز QR واحد مشترك لجميع الأساتذة.
+عند مسحه يفتح وضع الأستاذ.
+</p>
+
+<button class="primary" onclick="generateTeacherQR()">
+📲 إنشاء QR للأساتذة
+</button>
+
+<div id="teacherQR" style="margin:20px auto;text-align:center"></div>
+
+<button
+  onclick="printTeacherQR()"
+  class="hidden"
+  id="printQRBtn">
+🖨️ طباعة QR
+</button>
+
+</div>
 <div class="card">
 
 <h3>حذف جميع البيانات</h3>
@@ -3079,4 +3102,75 @@ async function hideTeacherSections(){
 hideTeacherSections();
 </script> 
 </body>
-</html> 
+ <script>
+function generateTeacherQR(){
+
+  const teacherURL =
+    window.location.origin +
+    window.location.pathname +
+    "?teacher=1";
+
+  const box = document.getElementById("teacherQR");
+
+  box.innerHTML = "";
+
+  new QRCode(box,{
+    text: teacherURL,
+    width:220,
+    height:220
+  });
+
+  document
+    .getElementById("printQRBtn")
+    .classList.remove("hidden");
+}
+
+function printTeacherQR(){
+
+  const qr =
+    document.getElementById("teacherQR").innerHTML;
+
+  const w =
+    window.open("","","width=500,height=600");
+
+  w.document.write(`
+    <html dir="rtl">
+    <head>
+      <title>QR دخول الأساتذة</title>
+
+      <style>
+        body{
+          font-family:Arial;
+          text-align:center;
+          padding:40px;
+        }
+
+        h2{
+          margin-bottom:20px;
+        }
+      </style>
+    </head>
+
+    <body>
+
+      <h2>🔬 منصة المخبري</h2>
+
+      <h3>دخول الأساتذة</h3>
+
+      ${qr}
+
+      <p>
+        امسح رمز QR للدخول إلى وضع الأستاذ
+      </p>
+
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+  w.focus();
+  w.print();
+}
+</script>
+</body>
+</html>
