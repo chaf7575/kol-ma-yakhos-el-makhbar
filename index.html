@@ -220,8 +220,23 @@ const supabaseClient = window.supabase.createClient(
 <script>
 window.addEventListener("DOMContentLoaded", function(){
   if (new URLSearchParams(location.search).get("teacher") === "1") {
+
     document.getElementById("activationBox").style.display = "none";
     document.getElementById("loginBox").style.display = "none";
+
+    const nav = document.getElementById("mainNav");
+
+    if (nav) {
+      nav.querySelectorAll("button").forEach(function(btn){
+        if (
+          !btn.textContent.includes("الطلبات") &&
+          !btn.textContent.includes("التدرج") &&
+          !btn.textContent.includes("منوعات")
+        ) {
+          btn.style.display = "none";
+        }
+      });
+    }
   }
 });
 </script>
