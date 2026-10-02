@@ -236,6 +236,13 @@ window.addEventListener("DOMContentLoaded", function(){
           btn.style.display = "none";
         }
       });
+      document.querySelectorAll(".section").forEach(function(sec){
+      sec.style.display = "none";
+    });
+
+    document.getElementById("requests").style.display = "block";
+    document.getElementById("progress").style.display = "block";
+    document.getElementById("various").style.display = "block";
     }
   }
 });
