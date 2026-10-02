@@ -216,8 +216,21 @@ const supabaseClient = window.supabase.createClient(
 );
 </script>
 </head>
-
 <body>
+<script>
+window.addEventListener("DOMContentLoaded", function(){
+  if (new URLSearchParams(location.search).get("teacher") === "1") {
+    document.getElementById("activationBox").style.display = "none";
+    document.getElementById("loginBox").style.display = "none";
+  }
+});
+</script>
+<script>
+if (new URLSearchParams(location.search).get("teacher") === "1") {
+  document.getElementById("activationBox").style.display = "none";
+  document.getElementById("loginBox").style.display = "none";
+}
+</script>
 <div id="activationBox" style="position:fixed;inset:0;background:#f4f7fb;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px">
   <div style="background:white;padding:25px;border-radius:15px;max-width:420px;width:100%;text-align:center;box-shadow:0 4px 20px #0002">
     <h2>🔐 تفعيل منصة المخبري</h2>
