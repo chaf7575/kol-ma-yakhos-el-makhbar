@@ -208,6 +208,7 @@ footer{
 </style>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 <script>
+ <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script> 
 const SUPABASE_URL = "https://niedzlyvricaofqasohe.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_iDvPZL5m8A_bfItO0Q9muA_VHJU5-V_";
 const supabaseClient = window.supabase.createClient(
@@ -3128,7 +3129,7 @@ function generateTeacherQR(){
   const teacherURL =
     window.location.origin +
     window.location.pathname +
-    "?teacher=1";
+    "?teacher=1"; 
 
   box.innerHTML = "";
 
