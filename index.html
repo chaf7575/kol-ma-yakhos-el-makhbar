@@ -3171,62 +3171,138 @@ function printTeacherQR(){
   w.focus();
   w.print();
 }
-   <script>
+  <script>
 function openQRTeacherMode(){
 
-  const params = new URLSearchParams(window.location.search);
+  const params =
+    new URLSearchParams(window.location.search);
 
-  if(params.get("teacher") !== "1") return;
-
-  const name = prompt("👨‍🏫 أدخل اسم الأستاذ:");
-
-  if(!name || !name.trim()){
-    alert("يرجى إدخال اسم الأستاذ");
+  /* ليس دخول QR */
+  if(params.get("teacher") !== "1"){
     return;
   }
 
-  sessionStorage.setItem("QR_TEACHER","true");
-  sessionStorage.setItem("QR_TEACHER_NAME",name.trim());
+  /* إخفاء التفعيل وتسجيل الدخول */
+  const activationBox =
+    document.getElementById("activationBox");
 
-  document.getElementById("activationBox").style.display="none";
-  document.getElementById("loginBox").style.display="none";
+  const loginBox =
+    document.getElementById("loginBox");
 
-  const allowed = ["requests","progress","various"];
+  if(activationBox){
+    activationBox.style.display = "none";
+  }
 
-  document.querySelectorAll("#mainNav button").forEach(function(btn){
+  if(loginBox){
+    loginBox.style.display = "none";
+  }
 
-    const txt = btn.textContent;
 
-    if(
-      !txt.includes("الطلبات") &&
-      !txt.includes("التدرج") &&
-      !txt.includes("منوعات")
-    ){
-      btn.style.display="none";
+  /* اسم الأستاذ */
+  let name =
+    sessionStorage.getItem("QR_TEACHER_NAME");
+
+  if(!name){
+
+    name =
+      prompt("👨‍🏫 أدخل اسم الأستاذ:");
+
+    if(!name || !name.trim()){
+
+      alert("يرجى إدخال اسم الأستاذ");
+
+      return;
     }
 
-  });
+    name = name.trim();
 
-  document.querySelectorAll(".section").forEach(function(sec){
+    sessionStorage.setItem(
+      "QR_TEACHER",
+      "true"
+    );
 
-    if(!allowed.includes(sec.id)){
-      sec.style.display="none";
-    }
+    sessionStorage.setItem(
+      "QR_TEACHER_NAME",
+      name
+    );
 
-  });
+  }
 
+
+  /* الأقسام المسموحة */
+  const allowed = [
+    "requests",
+    "progress",
+    "various"
+  ];
+
+
+  /* القائمة */
+  document
+    .querySelectorAll("#mainNav button")
+    .forEach(function(btn){
+
+      const txt =
+        btn.textContent || "";
+
+      const isAllowed =
+        txt.includes("الطلبات") ||
+        txt.includes("التدرج") ||
+        txt.includes("منوعات");
+
+      btn.style.display =
+        isAllowed ? "" : "none";
+
+    });
+
+
+  /* الأقسام */
+  document
+    .querySelectorAll(".section")
+    .forEach(function(sec){
+
+      if(allowed.includes(sec.id)){
+
+        sec.style.display = "";
+
+      }else{
+
+        sec.style.display = "none";
+
+      }
+
+    });
+
+
+  /* اسم الأستاذ في الطلب */
   const teacherInput =
     document.getElementById("reqTeacher");
 
   if(teacherInput){
-    teacherInput.value = name.trim();
+
+    teacherInput.value = name;
+
     teacherInput.readOnly = true;
+
   }
 
+
+  /* فتح الطلبات */
   show("requests");
+
 }
 
-openQRTeacherMode();
+
+/* تشغيل QR بعد تحميل الصفحة */
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    openQRTeacherMode();
+
+  }
+);
 </script>
+
 </body>
 </html>
